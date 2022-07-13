@@ -4,6 +4,8 @@ import Product from '../../models/Product';
 import { apiGetAllProducts } from '../../remote/e-commerce-api/productService';
 import Navbar from '../navbar/Narbar';
 import { ProductCard } from "./ProductCard";
+import Draggable from "react-draggable";
+
 
 const Container = styled.div`
     padding: 20px;
@@ -12,77 +14,118 @@ const Container = styled.div`
     justify-content: space-between;
 `;
 
+interface IProduct {
+  product_id: number;
+  category: string;
+  name: string;
+  description: string;
+  price: number;
+  image_url: string
+}
+
+const api_base = 'https://raw.githubusercontent.com/jsparks9/pics/main/get/';
+let get_paths = ['products'];
+const api_ex = '.JSON';
+
+const img_base = "https://raw.githubusercontent.com/jsparks9/pics/main/images/";
+const img_ex = ".jpg";
+// for use with ID like img_base + product_id + img_ex
+
+let has_init = false;
+
 export const DisplayProducts = () => {
 
-  const [products, setProducts] = useState<Product[]>([])
+  const [products, setProducts] = useState<IProduct[]>([])
+  const [selection, setSelection] = useState<IProduct | undefined>();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await apiGetAllProducts()
-      setProducts(result.payload)
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const result = await apiGetAllProducts()
+  //     setProducts(result.payload)
+  //   }
+  //   fetchData()
+  // }, [])
+
+  const startUp = (async () => {
+    let resp = await fetch(api_base+get_paths[0]+api_ex);
+    if (Math.floor(resp.status/100) === 2) { // 200 expected
+      let data = await resp.json();
+      console.log("Got data, calling mapProducts");
+      setProducts(await data as unknown as IProduct[]);
+    } else {
+      console.log("fetch failed with code "+resp.status);
     }
-    fetchData()
-  }, [])
-  // const products: Product[] = [
-  //   {
-  //       id:1,
-  //       image:"https://d3o2e4jr3mxnm3.cloudfront.net/Mens-Jake-Guitar-Vintage-Crusher-Tee_68382_1_lg.png",
-  //       name: '',
-  //       description: '',
-  //       price: 5,
-  //       quantity: 10,
-  //     },
-  //     {
-  //       id:3,
-  //       image:"https://www.prada.com/content/dam/pradanux_products/U/UCS/UCS319/1YOTF010O/UCS319_1YOT_F010O_S_182_SLF.png",
-  //       name: '',
-  //       description: '',
-  //       price: 5,
-  //       quantity: 10,
-  //     },
-  //     {
-  //       id:4,
-  //       image:"https://www.burdastyle.com/pub/media/catalog/product/cache/7bd3727382ce0a860b68816435d76e26/107/BUS-PAT-BURTE-1320516/1170x1470_BS_2016_05_132_front.png",
-  //       name: '',
-  //       description: '',
-  //       price: 5,
-  //       quantity: 10,
-  //     },
-  //     {
-  //       id:5,
-  //       image:"https://images.ctfassets.net/5gvckmvm9289/3BlDoZxSSjqAvv1jBJP7TH/65f9a95484117730ace42abf64e89572/Noissue-x-Creatsy-Tote-Bag-Mockup-Bundle-_4_-2.png",
-  //       name: '',
-  //       description: '',
-  //       price: 5,
-  //       quantity: 10,
-  //     },
-  //     {
-  //       id:6,
-  //       image:"https://d3o2e4jr3mxnm3.cloudfront.net/Rocket-Vintage-Chill-Cap_66374_1_lg.png",
-  //       name: '',
-  //       description: '',
-  //       price: 5,
-  //       quantity: 10,
-  //     },
-  //     {
-  //       id:8,
-  //       image:"https://www.pngarts.com/files/3/Women-Jacket-PNG-High-Quality-Image.png",
-  //       name: '',
-  //       description: '',
-  //       price: 5,
-  //       quantity: 10,
-  //     },
-  // ]
+  });
+
+  // function mapProducts(data:IProduct[]) {
+  //   // map in a grid
+  //   // this is JSX
+
+  // };
+
+  useEffect( () => {
+    if (!has_init) {
+      has_init = true;
+      startUp();
+    }
+    
+  }, []);
+
+  function popout(prod:Product) {
+    //props.product.product_id
+    console.log("running popup for " + prod.product_id);
+  }//onClick={popout(props.product)}
 
   return (
-    <React.Fragment>
-        <Navbar/>
-        <Container>
-        {products.map((item) => (
-            <ProductCard product={item} key={item.id} />
-        ))}
-        </Container>
-    </React.Fragment>
-    
+    <>
+      {(selection) ? <><div style = {{ position:'fixed', fontSize:50, zIndex:100, 
+      height:"80%", width:"80%", backgroundColor: "ivory", opacity:1,
+      marginLeft:"10%",
+      marginRight:"10%",
+      marginTop:"5%",
+      marginBottom:"10%",
+      boxSizing: "border-box"
+
+    }}
+      onClick={()=> {setSelection(undefined)}}><img src={selection.image_url}
+      style = {{ position:'fixed', fontSize:50, zIndex:10, 
+      maxWidth:"70%", maxHeight:"65%", backgroundColor: "ivory",
+      marginLeft:"5%",
+      marginRight:"5%",
+      marginTop:"5%",
+      marginBottom:"5%",
+      boxSizing: "border-box"
+
+    }}/>
+        
+        </div><Draggable ><div style = {{ position:'fixed', zIndex:100, 
+        width:"300px", height:"350px", opacity:"0.9",
+        backgroundColor:"skyblue", padding:"10px", boxSizing: "border-box",
+        marginLeft:"60%", marginTop:"10%", color:"white", fontWeight:"500",
+        borderRadius: '16px'
+        }}>
+          <p style={{textAlign:"center", fontWeight:700, fontSize:"1.2em"}}>Draggable Information Box</p>
+          <p style={{textAlign:"center", fontWeight:500, fontSize:"1em"}}>(Click image to close)</p>
+          <p>Product ID: {selection.product_id}</p>
+          <p>Description: {selection.description}</p>
+          <p>Product Name: {selection.name}</p>
+          <p>Category: {selection.category}</p>
+          <p>Price: $ {selection.price}</p>
+          <p onClick={() => {console.log("added")}}>Add to Card</p> 
+        </div>
+          
+          </Draggable></> : <></>}
+      <React.Fragment>
+          <Navbar/>
+          <Container>
+          {products.map((item) => (
+              <> 
+              <ProductCard product={item} key={item.product_id} setSelection={setSelection}/>
+              
+              </>
+          ))}
+          </Container>
+      </React.Fragment>
+    </>
   );
 };

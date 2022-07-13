@@ -47,11 +47,13 @@ import Product from "../../models/Product";
   `;
   
   const Image = styled.img`
-    height: 75%;
+    // height: 75%;
+    width:100%;
     z-index: 2;
   `;
   
   const Icon = styled.div`
+
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -67,39 +69,49 @@ import Product from "../../models/Product";
     }
   `;
   
+
   interface productProps {
       product: Product,
       key: number
+      setSelection(arg0: Product | undefined): void;
   }
 
-  export const ProductCard = (props: productProps) => {
+
+
+  export const ProductCard = (props: productProps) => { // CODE STARTS HERE
     const { cart, setCart } = useContext(CartContext);
+
+
 
     const addItemToCart = (product: Product) => {
 
       const newCart = [...cart]
       const index = newCart.findIndex((searchProduct) => {
-        return searchProduct.id === product.id
+        return searchProduct.product_id === product.product_id
       })
 
       if (index === -1) newCart.push(product)
-      else newCart[index].quantity += product.quantity
+      // else newCart[index].quantity += product.quantity
 
       setCart(newCart)
     }
 
     return (
-      <Container>
+      // <div>
+
+      // </div>
+      <Container onClick={() => {props.setSelection(props.product)}}>
         <Circle />
-        <Image src={props.product.image} />
+        <Image src={props.product.image_url} />
         <Info>
           <Icon>
-            <ShoppingCartOutlined onClick={() => {addItemToCart({...props.product, quantity: 1})}} />
+            <ShoppingCartOutlined onClick={() => {addItemToCart({...props.product})}} />
           </Icon>
           <Icon>
             <SearchOutlined />
           </Icon>
         </Info>
       </Container>
+      
     );
   };

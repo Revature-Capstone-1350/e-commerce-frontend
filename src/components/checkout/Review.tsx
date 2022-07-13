@@ -26,11 +26,11 @@ export default function Review(props: reviewProps) {
 
   const handleSubmit = (event: React.MouseEvent) => {
     event.preventDefault();
-    let productPurchaseDtos = cart.map((product) => ({
-      id: product.id,
-      quantity: product.quantity
-    }))
-    apiPurchase(productPurchaseDtos)
+    // let productPurchaseDtos = cart.map((product) => ({
+    //   id: product.product_id,
+    //   quantity: product.quantity
+    // }))
+    // apiPurchase(productPurchaseDtos)
     setCart([])
     props.handleNext()
   }
@@ -40,7 +40,7 @@ export default function Review(props: reviewProps) {
       <Typography variant="h6" gutterBottom>
         Order summary
       </Typography>
-      <List disablePadding>
+      {/* <List disablePadding>
         {cart.map((product) => (
           <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
             <ListItemText primary={`${product.name} x${product.quantity}`} secondary={product.description} />
@@ -53,7 +53,7 @@ export default function Review(props: reviewProps) {
             $ {cart.reduce<number>((total, product) => total + product.price * product.quantity, 0)}
           </Typography>
         </ListItem>
-      </List>
+      </List> */}
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>

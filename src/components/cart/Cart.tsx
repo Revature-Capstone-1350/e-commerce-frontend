@@ -151,19 +151,19 @@ export const Cart = () => {
                 <>
                   <Product>
                     <ProductDetail>
-                      <Image src={product.image} />
+                      <Image src={product.image_url} />
                       <Details>
                         <ProductName>
                           <b>Product:</b> {product.name}
                         </ProductName>
                         <ProductId>
-                          <b>ID:</b> {product.id}
+                          <b>ID:</b> {product.product_id}
                         </ProductId>
                       </Details>
                     </ProductDetail>
                     <PriceDetail>
                       <ProductAmountContainer>
-                        <ProductAmount> {product.quantity} </ProductAmount>
+                        <ProductAmount> {1} </ProductAmount>
                       </ProductAmountContainer>
                       <ProductPrice>$ {product.price}</ProductPrice>
                     </PriceDetail>
