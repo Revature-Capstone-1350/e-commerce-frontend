@@ -78,31 +78,62 @@ export const DisplayProducts = () => {
 
   return (
     <>
-      {(selection) ? <><div style = {{ position:'fixed', fontSize:50, zIndex:100, 
-      height:"80%", width:"80%", backgroundColor: "ivory", opacity:1,
-      marginLeft:"10%",
-      marginRight:"10%",
-      marginTop:"5%",
-      marginBottom:"10%",
-      boxSizing: "border-box"
+      {(selection) ? 
+      <>
+        <div onClick={()=> {setSelection(undefined)}}>
+          {/* <div 
+            style = {{ 
+              position:'fixed', fontSize:50, zIndex:10, 
+              height:"80%", width:"80%", 
+              backgroundColor: "ivory", opacity:0.8,
+              marginLeft:"10%",
+              marginRight:"10%",
+              marginTop:"5%",
+              marginBottom:"10%",
+              boxSizing: "border-box"
+            }}>
+          </div> */}
+          <div 
+            style = {{
+              position:'fixed', zIndex:11, 
+              maxWidth:"70%", height:"90%"
+            }} >
+            <img 
+              src={selection.image_url}
+              style = {{ 
+                fontSize:50, 
+                maxWidth:"100%", maxHeight:"100%",
+                marginLeft:"5%",
+                marginRight:"5%",
+                marginTop:"5%",
+                marginBottom:"5%",
+                boxSizing: "border-box", opacity:"1",
+                border: "20px solid rgba(255, 255, 240, 0.8)",
+                borderRadius: '16px'
+              }}>
 
-    }}
-      onClick={()=> {setSelection(undefined)}}><img src={selection.image_url}
-      style = {{ position:'fixed', fontSize:50, zIndex:10, 
-      maxWidth:"70%", maxHeight:"65%", backgroundColor: "ivory",
-      marginLeft:"5%",
-      marginRight:"5%",
-      marginTop:"5%",
-      marginBottom:"5%",
-      boxSizing: "border-box"
-
-    }}/>
+                {/* <div 
+                style = {{ 
+                  fontSize:50, zIndex:17, 
+                  height:"100px", width:"100px", 
+                  backgroundColor: "red", opacity:0.8,
+                  marginLeft:"10%",
+                  marginRight:"10%",
+                  marginTop:"5%",
+                  marginBottom:"10%",
+                  boxSizing: "border-box"
+                }}>
+              </div> */}
+              </img>
+              
+          </div>
+        
         
         </div><Draggable ><div style = {{ position:'fixed', zIndex:100, 
         width:"300px", height:"350px", opacity:"0.9",
         backgroundColor:"skyblue", padding:"10px", boxSizing: "border-box",
         marginLeft:"60%", marginTop:"10%", color:"white", fontWeight:"500",
-        borderRadius: '16px'
+        borderRadius: '16px', border:"2px solid ivory"
         }}>
           <p style={{textAlign:"center", fontWeight:700, fontSize:"1.2em"}}>Draggable Information Box</p>
           <p style={{textAlign:"center", fontWeight:500, fontSize:"1em"}}>(Click image to close)</p>
