@@ -77,10 +77,21 @@ export const DisplayProducts = () => {
   }//onClick={popout(props.product)}
 
   return (
-    <>
+    <div style = {{ 
+      backgroundImage:`url("https://www.pixelstalk.net/wp-content/uploads/2016/06/Best-Images-Night-Sky.jpg")`,
+      // backgroundImage: `url("https://via.placeholder.com/500")`,
+    }}>
       {(selection) ? 
       <>
         <div onClick={()=> {setSelection(undefined)}}>
+          <div
+            style = {{ 
+              position:'fixed',
+              backgroundImage:`url("C://Users//Name//Desktop//P3//e-commerce-frontend//night.jpg")`,
+              //`url("https://via.placeholder.com/500")`
+              height:"100%", width:"100%"
+            }}>
+          </div>
           {/* <div 
             style = {{ 
               position:'fixed', fontSize:50, zIndex:10, 
@@ -102,7 +113,7 @@ export const DisplayProducts = () => {
               src={selection.image_url}
               style = {{ 
                 fontSize:50, 
-                maxWidth:"100%", maxHeight:"100%",
+                maxWidth:"100%", maxHeight:"100%", 
                 marginLeft:"5%",
                 marginRight:"5%",
                 marginTop:"5%",
@@ -157,6 +168,6 @@ export const DisplayProducts = () => {
           ))}
           </Container>
       </React.Fragment>
-    </>
+    </div>
   );
 };

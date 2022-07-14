@@ -100,9 +100,9 @@ import Product from "../../models/Product";
       // <div>
 
       // </div>
-      <Container onClick={() => {props.setSelection(props.product)}}>
-        <Circle />
-        <Image src={props.product.image_url} />
+      <Container onClick={() => {props.setSelection(props.product)}} style={{backgroundColor:"rgba(8,26,62,0.8)"}}>
+        {/* <Circle /> */}
+        <Image src={props.product.image_url} style={{opacity:"1"}}/>
         <Info>
           <Icon>
             <ShoppingCartOutlined onClick={() => {addItemToCart({...props.product})}} />
