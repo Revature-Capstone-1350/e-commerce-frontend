@@ -151,19 +151,19 @@ export const Cart = () => {
                 <>
                   <Product>
                     <ProductDetail>
-                      <Image src={product.image} />
+                      <Image src={product.image_url_s} />
                       <Details>
                         <ProductName>
                           <b>Product:</b> {product.name}
                         </ProductName>
                         <ProductId>
-                          <b>ID:</b> {product.id}
+                          <b>ID:</b> {product.product_id}
                         </ProductId>
                       </Details>
                     </ProductDetail>
                     <PriceDetail>
                       <ProductAmountContainer>
-                        <ProductAmount> {product.quantity} </ProductAmount>
+                        <ProductAmount> {1} </ProductAmount>
                       </ProductAmountContainer>
                       <ProductPrice>$ {product.price}</ProductPrice>
                     </PriceDetail>
@@ -178,7 +178,7 @@ export const Cart = () => {
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
               <SummaryItemPrice>$ 
-                  {cart.reduce<number>((total, product) => total + product.price * product.quantity, 0)}
+                  {cart.reduce<number>((total, product) => total + product.price * 1, 0)}
               </SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
@@ -192,7 +192,7 @@ export const Cart = () => {
             <SummaryItem>
               <SummaryItemText>Total</SummaryItemText>
               <SummaryItemPrice>$ 
-                {cart.reduce<number>((total, product) => total + product.price * product.quantity, 0)}
+                {cart.reduce<number>((total, product) => total + product.price * 1, 0)}
               </SummaryItemPrice>
             </SummaryItem>
             <Button onClick={() => {navigate('/checkout')}}>CHECKOUT NOW</Button>
