@@ -1,13 +1,14 @@
 import {
-    SearchOutlined,
-    ShoppingCartOutlined,
-  } from "@material-ui/icons";
+  SearchOutlined,
+  ShoppingCartOutlined,
+} from "@material-ui/icons";
 import { useContext } from "react";
-  import styled from "styled-components";
+import styled from "styled-components";
 import { CartContext } from "../../context/cart.context";
 import Product from "../../models/Product";
-  
-  const Info = styled.div`
+
+//Info Styling Component
+const Info = styled.div`
     opacity: 0;
     width: 100%;
     height: 100%;
@@ -22,8 +23,9 @@ import Product from "../../models/Product";
     transition: all 0.5s ease;
     cursor: pointer;
   `;
-  
-  const Container = styled.div`
+
+//Container Styling Componenet
+const Container = styled.div`
     flex: 1;
     margin: 5px;
     min-width: 280px;
@@ -37,21 +39,26 @@ import Product from "../../models/Product";
       opacity: 1;
     }
   `;
-  
-  const Circle = styled.div`
+
+//Circle Styling Component
+const Circle = styled.div`
     width: 200px;
     height: 200px;
     border-radius: 50%;
     background-color: white;
     position: absolute;
   `;
-  
-  const Image = styled.img`
+
+//Image Styling Component
+const Image = styled.img`
+    max-width: 100%;
     height: 75%;
     z-index: 2;
   `;
-  
-  const Icon = styled.div`
+
+//Icon Styling Component
+const Icon = styled.div`
+    color: black;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -66,40 +73,50 @@ import Product from "../../models/Product";
       transform: scale(1.1);
     }
   `;
-  
-  interface productProps {
-      product: Product,
-      key: number
+
+//Props for ProductCard
+interface productProps {
+  product: Product,
+  key: number;
+}
+
+export const ProductCard = (props: productProps) => {
+  //Context for Cart
+  const { cart, setCart } = useContext(CartContext);
+
+  /**
+   * Adds product to cart.
+   * If product is in cart, then it will add 1 to the quantity.
+   * If product is not in cart, then it will add product to cart.
+   * @param product product to be added to cart
+   */
+  const addItemToCart = (product: Product) => {
+    const newCart = [...cart]; // creates new cart list.
+    const index = newCart.findIndex((searchProduct) => {
+      return searchProduct.id === product.id; // checks if product is in cart.
+    });
+
+    if (index === -1)
+      newCart.push(product); // if product is not in cart, then add product to cart.
+    else
+      newCart[index].quantity += product.quantity; // if product is in cart, then add 1 to quantity.
+
+    setCart(newCart); // sets cart to new cart list.
   }
 
-  export const ProductCard = (props: productProps) => {
-    const { cart, setCart } = useContext(CartContext);
-
-    const addItemToCart = (product: Product) => {
-
-      const newCart = [...cart]
-      const index = newCart.findIndex((searchProduct) => {
-        return searchProduct.id === product.id
-      })
-
-      if (index === -1) newCart.push(product)
-      else newCart[index].quantity += product.quantity
-
-      setCart(newCart)
-    }
-
-    return (
-      <Container>
-        <Circle />
-        <Image src={props.product.image} />
-        <Info>
-          <Icon>
-            <ShoppingCartOutlined onClick={() => {addItemToCart({...props.product, quantity: 1})}} />
-          </Icon>
-          <Icon>
-            <SearchOutlined />
-          </Icon>
-        </Info>
-      </Container>
-    );
-  };
+  return (
+    <Container>
+      <Circle />
+      <Image src={props.product.image} />
+      <Info>
+        <Icon>
+          {/* Icon for adding product to cart */}
+          <ShoppingCartOutlined onClick={() => { addItemToCart({ ...props.product, quantity: 1 }) }} />
+        </Icon>
+        <Icon>
+          <SearchOutlined />
+        </Icon>
+      </Info>
+    </Container>
+  );
+};

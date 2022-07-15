@@ -1,0 +1,114 @@
+/*
+Styling for root element as light mode.
+*/
+:root {
+    --font-color: #333 !important;
+    --background-color: ghostwhite;
+    --link-color: blue;
+}
+
+/*
+Styling for data-theme element as dark mode.
+*/
+[data-theme="dark"] {
+    --font-color: ghostwhite !important;
+    --background-color: #333;
+    --link-color: lightblue;
+}
+
+/*
+Styling for body tag
+Colors are set in the root element.
+*/
+body {
+    background-color: var(--background-color);
+    color: var(--font-color) !important;
+}
+
+/*
+Styling for html tag
+Colors are set in the root element.
+*/
+html {
+    background-color: var(--background-color);
+    color: var(--font-color) !important;
+}
+
+/*
+Styling for root id
+Colors are set in the root element.
+*/
+#root {
+    background-color: var(--background-color);
+    color: var(--font-color) !important;
+}
+
+/*
+Styling for a tag
+Colors are set in the root element.
+*/
+a {
+    color: var(--link-color) !important;
+}
+
+/*
+Styling for input tag
+Colors are set in the root element.
+*/
+input {
+    color: var(--font-color) !important;
+    background: var(--background-color) !important;
+}
+
+/*
+Styling for input tag placeholder
+Colors are set in the root element.
+*/
+input::placeholder {
+    color: var(--font-color) !important;
+
+}
+
+/*
+Styling for input tag
+Colors are set in the root element.
+*/
+#demo-simple-select-helper {
+    color: var(--font-color) !important;
+}
+
+/*
+Styling for filter dropdown
+Colors are set in the root element.
+*/
+.MuiInput-underline:before {
+    border-bottom: 1px solid var(--font-color) !important;
+}
+
+/*
+Styling for SVG tag
+Colors are set in the root element.
+*/
+svg {
+    color: var(--font-color) !important;
+}
+
+/*
+Styling for label tag
+Colors are set in the root element.
+*/
+label {
+    color: var(--font-color) !important;
+}
+
+/* Styling for Dark Mode Toggle*/
+.toggle-theme-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Styling for Light/Dark Icon  */
+.toggle-theme-wrapper span {
+    font-size: 20px;
+}
