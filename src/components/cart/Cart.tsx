@@ -175,7 +175,7 @@ export const Cart = () => {
           </Info>
           <Summary>
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
-            <SummaryItem> 
+            <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
               <SummaryItemPrice>$ 
                   {cart.reduce<number>((total, product) => total + product.price * 1, 0)}
