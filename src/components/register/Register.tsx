@@ -12,19 +12,57 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { apiRegister } from '../../remote/e-commerce-api/authService';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 const theme = createTheme();
 
 export default function Register() {
   const navigate = useNavigate(); 
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string[]>([]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setError([]);
     event.preventDefault();
+    const regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+
+    let errors:string[] = [];
+
+    if(!email || regex.test(email) === false){
+      const email_bad = "Email is not valid";
+      if(!error.includes(email_bad)) {
+        errors.push(email_bad);
+        // setError([...error, email_bad]) // deconstructor assignment example
+      } 
+      
+    }
+    if(!password || strongRegex.test(password) === false){
+      const pwd_bad = "Password is not valid";
+      if(!error.includes(pwd_bad)) {
+        errors.push(pwd_bad);
+      } 
+    }
+    if(errors) {
+      setError(errors);
+    }
+
     const data = new FormData(event.currentTarget);
     const response = await apiRegister(`${data.get('firstName')}`, `${data.get('lastName')}`, `${data.get('email')}`, `${data.get('password')}`)
     if (response.status >= 200 && response.status < 300) navigate('/login')
   };
-
+  useEffect( () => {
+    console.log(error)
+  }, [error]);
+  const handleEmail = (e : React.SyntheticEvent) => {
+    setError([]);
+    setEmail((e.target as HTMLInputElement).value)
+  };
+  const handlePassword = (e : React.SyntheticEvent) => {
+    setError([]);
+    setPassword((e.target as HTMLInputElement).value)
+  };
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -68,6 +106,8 @@ export default function Register() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  value={email}
+                  onChange={handleEmail}
                   required
                   fullWidth
                   id="email"
@@ -78,6 +118,8 @@ export default function Register() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  value={password}
+                  onChange={handlePassword}
                   required
                   fullWidth
                   name="password"
@@ -88,6 +130,10 @@ export default function Register() {
                 />
               </Grid>
             </Grid>
+            {(error)?<>{error.map((item) => (
+              <p key={item}>{item}</p>
+            ))}</>:<></>}
+            
             <Button
               type="submit"
               fullWidth

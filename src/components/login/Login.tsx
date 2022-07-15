@@ -12,19 +12,38 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { apiLogin } from '../../remote/e-commerce-api/authService';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 const theme = createTheme();
 
 export default function Login() {
   const navigate = useNavigate();
-
+  
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    if(!email || regex.test(email) === false){
+      setError("Email is not valid")
+      
+    }
     const data = new FormData(event.currentTarget);
     const response = await apiLogin(`${data.get('email')}`, `${data.get('password')}`);
     if (response.status >= 200 && response.status < 300) navigate('/')
   };
 
+  //useeffect... console.log(9error)0, [error]}
+  useEffect( () => {
+    console.log(error)
+  }, [error]);
+  const handleEmail = (e : React.SyntheticEvent) => {
+    setEmail((e.target as HTMLInputElement).value)
+  };
+  const handlePassword = (e : React.SyntheticEvent) => {
+    setPassword((e.target as HTMLInputElement).value)
+  };
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -45,6 +64,8 @@ export default function Login() {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
+              value={email}
+              onChange={handleEmail}
               margin="normal"
               required
               fullWidth
@@ -55,6 +76,8 @@ export default function Login() {
               autoFocus
             />
             <TextField
+              value={password}
+              onChange={handlePassword}
               margin="normal"
               required
               fullWidth
