@@ -151,13 +151,13 @@ export const Cart = () => {
                 <>
                   <Product>
                     <ProductDetail>
-                      <Image src={product.image_url_s} />
+                      <Image src={product.imgUrlSmall} />
                       <Details>
                         <ProductName>
                           <b>Product:</b> {product.name}
                         </ProductName>
                         <ProductId>
-                          <b>ID:</b> {product.product_id}
+                          <b>ID:</b> {product.productId}
                         </ProductId>
                       </Details>
                     </ProductDetail>

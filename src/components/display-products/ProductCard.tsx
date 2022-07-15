@@ -91,7 +91,7 @@ export const ProductCard = (props: productProps) => { // CODE STARTS HERE
 
     const newCart = [...cart]
     const index = newCart.findIndex((searchProduct) => {
-      return searchProduct.product_id === product.product_id
+      return searchProduct.productId === product.productId
     })
 
     if (index === -1) newCart.push(product)
@@ -106,7 +106,7 @@ export const ProductCard = (props: productProps) => { // CODE STARTS HERE
       onClick={() => {props.setSelection(props.product)}} 
       style={{backgroundColor:"rgba(150,150,135,0.3)"}}> {/* Ivory color, 80% visible */}
       {/* <Circle /> */}
-      <Image src={props.product.image_url_s}/>
+      <Image src={props.product.imgUrlSmall}/>
       <Info>
         <Icon>
           <ShoppingCartOutlined onClick={() => {addItemToCart({...props.product})}} />

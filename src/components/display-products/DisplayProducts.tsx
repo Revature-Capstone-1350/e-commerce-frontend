@@ -44,13 +44,13 @@ const Text = styled.h1`
     width: 100%;`
 
 // Start of mock data path
-const api_base = 'https://raw.githubusercontent.com/jsparks9/pics/main/get/';
-let get_paths = ['products0'];
-const api_ex = '.json';
-const mock_data_path = api_base+get_paths[0]+api_ex;
+const apiBase = 'https://raw.githubusercontent.com/jsparks9/pics/main/get/';
+let getPaths = ['products0'];
+const apiEx = '.json';
+const mockDataPath = apiBase+getPaths[0]+apiEx;
 // end of mock data path
 
-let has_gotten_mock_data = false; // ensures initial fetch request runs only once
+let hasGottenMockData = false; // ensures initial fetch request runs only once
 
 const categories:string[] = ['Cloud','Dawn','Day','Dusk','Moon','Night','Space','Sun'];
 // default categories of products; may be changed later to fetch from API
@@ -122,8 +122,8 @@ export const DisplayProducts = () => {
   // }, [])
 
   useEffect( () => { // runs startUp() only once on page load
-    if (!has_gotten_mock_data) {
-      has_gotten_mock_data = true;
+    if (!hasGottenMockData) {
+      hasGottenMockData = true;
       getMockData();
     }
   }, []);
@@ -138,7 +138,7 @@ export const DisplayProducts = () => {
    * stores response body as Products state
    */
   const getMockData = (async () => {
-    let resp = await fetch(mock_data_path);
+    let resp = await fetch(mockDataPath);
     if (Math.floor(resp.status/100) === 2) { // 200 expected
       let data = await resp.json();
       console.log("Mock data fetch successful");
@@ -158,7 +158,7 @@ export const DisplayProducts = () => {
 
     const newCart = [...cart]
     const index = newCart.findIndex((searchProduct) => {
-      return searchProduct.product_id === product.product_id
+      return searchProduct.productId === product.productId
     })
 
     if (index === -1) newCart.push(product)
@@ -179,7 +179,7 @@ export const DisplayProducts = () => {
               maxWidth:"70%", height:"90%"
             }} >
             <img // load the medium-size image to display
-              src={selection.image_url_m}
+              src={selection.imgUrlMed}
               style = {{ 
                 fontSize:50, 
                 maxWidth:"100%", maxHeight:"100%", 
@@ -206,7 +206,7 @@ export const DisplayProducts = () => {
               }}> 
                 <p style={{textAlign:"center", fontWeight:700, fontSize:"1.2em"}}>Draggable Information Box</p>
                 <p style={{textAlign:"center", fontWeight:500, fontSize:"1em"}}>(Click image to close)</p>
-                <p>Product ID: {selection.product_id}</p>
+                <p>Product ID: {selection.productId}</p>
                 <p>Description: {selection.description}</p>
                 <p>Product Name: {selection.name}</p>
                 <p>Category: {selection.category}</p>
@@ -249,7 +249,7 @@ export const DisplayProducts = () => {
           {filteredProducts.length <= 0 && <Text>No Products Found</Text>}
           {/*if filteredProducts length is greater than 0, it renders mapped products*/}
           {filteredProducts.length > 0 && filteredProducts.map((item) => (
-            <ProductCard product={item} key={item.product_id} setSelection={setSelection}/>))}
+            <ProductCard product={item} key={item.productId} setSelection={setSelection}/>))}
         </Container>
       </React.Fragment>
     </div>

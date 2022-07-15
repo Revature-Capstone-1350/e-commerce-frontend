@@ -27,7 +27,7 @@ export default function Review(props: reviewProps) {
   const handleSubmit = (event: React.MouseEvent) => {
     event.preventDefault();
     let productPurchaseDtos = cart.map((product) => ({
-      id: product.product_id,
+      id: product.productId,
       quantity: 1
     }))
     apiPurchase(productPurchaseDtos)
