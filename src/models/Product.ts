@@ -1,19 +1,19 @@
 export default class Product {
-    id: number;
-    name: string;
-    quantity: number;
-    price: number;
-    description: string;
-    image: string;
+    product_id: number;
     category: string;
+    name: string;
+    description: string;
+    price: number;
+    image_url_s: string
+    image_url_m: string
 
-    constructor(id: number, name: string, quantity: number, description: string, price: number, image: string, category: string) {
-        this.id = id;
+    constructor (product_id: number, category: string, name: string, description: string, price: number, image_url_s: string, image_url_m: string) {
+        this.product_id = product_id;
+        this.category = category;
         this.name = name;
-        this.quantity = quantity;
         this.description = description;
         this.price = price;
-        this.image = image;
-        this.category = category;
+        this.image_url_s = image_url_s;
+        this.image_url_m = image_url_m;
     }
 }
