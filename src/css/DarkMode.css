@@ -85,13 +85,6 @@ Colors are set in the root element.
     border-bottom: 1px solid var(--font-color) !important;
 }
 
-/*
-Styling for SVG tag
-Colors are set in the root element.
-*/
-svg {
-    color: var(--font-color) !important;
-}
 
 /*
 Styling for label tag

@@ -1,5 +1,6 @@
-import { FormControl, Input, InputLabel, MenuItem, Select } from '@material-ui/core';
-import React, { SyntheticEvent, useContext, useEffect, useState } from 'react';
+
+import { Select, MenuItem } from '@mui/material';
+import React, { SyntheticEvent, useEffect, useState } from 'react';
 import styled from "styled-components";
 import Product from '../../models/Product';
 import { apiGetAllProducts } from '../../remote/e-commerce-api/productService';
@@ -235,7 +236,6 @@ export const DisplayProducts = () => {
             </Select> : null}
           {/*Filter Option Dropdown Selector*/}
           <Select
-            labelId="demo-simple-select-helper-label"
             id="demo-simple-select-helper"
             value={filterBy}
             label="Search"

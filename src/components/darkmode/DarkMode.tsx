@@ -1,4 +1,4 @@
-import "../../DarkMode.css";
+import "../../css/DarkMode.css";
 import Switch from '@mui/material/Switch';
 import { ChangeEventHandler } from "react";
 
