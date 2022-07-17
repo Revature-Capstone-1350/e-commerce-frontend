@@ -1,4 +1,4 @@
-import { FormControl, Input, InputLabel, MenuItem, Select } from '@material-ui/core';
+import { Select, MenuItem } from '@mui/material';
 import React, { SyntheticEvent, useEffect, useState } from 'react';
 import styled from "styled-components";
 import Product from '../../models/Product';
@@ -113,10 +113,8 @@ export const DisplayProducts = () => {
         {/*Conditionally renders SearchByCategory*/}
         {filterBy === "category" ?
           <Select
-            labelId="demo-simple-select-helper-label"
             id="demo-simple-select-helper"
             value={category}
-            label="Search"
             onChange={event => setCategory(event.target.value as string)}            >
             <MenuItem value="category">Category</MenuItem>
 
@@ -126,10 +124,8 @@ export const DisplayProducts = () => {
           </Select> : null}
         {/*Filter Option Dropdown Selector*/}
         <Select
-          labelId="demo-simple-select-helper-label"
           id="demo-simple-select-helper"
           value={filterBy}
-          label="Search"
           onChange={event => setFilterBy(event.target.value as string)}            >
           <MenuItem value="name">Search By Name</MenuItem>
           <MenuItem value="category">Search By Category</MenuItem>

@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import { Box, Button } from '@mui/material';
 import Address from '../../models/Address';
+import '../../css/customMUI.css';
 
 interface addressFormProps {
   updateAddress: (addresses: Address) => void
@@ -39,6 +40,7 @@ export default function AddressForm(props: addressFormProps) {
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
             <TextField
+              style={{ zIndex: 1 }}
               required
               id="firstName"
               name="firstName"

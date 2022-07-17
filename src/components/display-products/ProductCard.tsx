@@ -1,7 +1,5 @@
-import {
-  SearchOutlined,
-  ShoppingCartOutlined,
-} from "@material-ui/icons";
+
+import { SearchOutlined, ShoppingCartOutlined } from "@mui/icons-material";
 import { useContext } from "react";
 import styled from "styled-components";
 import { CartContext } from "../../context/cart.context";
@@ -58,7 +56,7 @@ const Image = styled.img`
 
 //Icon Styling Component
 const Icon = styled.div`
-    color: black;
+    color: black !important;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -73,6 +71,12 @@ const Icon = styled.div`
       transform: scale(1.1);
     }
   `;
+
+const styles = {
+  icon: {
+    fill: "black !important"
+  }
+}
 
 //Props for ProductCard
 interface productProps {
@@ -111,7 +115,7 @@ export const ProductCard = (props: productProps) => {
       <Info>
         <Icon>
           {/* Icon for adding product to cart */}
-          <ShoppingCartOutlined onClick={() => { addItemToCart({ ...props.product, quantity: 1 }) }} />
+          <ShoppingCartOutlined style={{ ...styles.icon }} onClick={() => { addItemToCart({ ...props.product, quantity: 1 }) }} />
         </Icon>
         <Icon>
           <SearchOutlined />

@@ -4,7 +4,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
-import Product from '../../models/Product';
 import PaymentDetail from '../../models/PaymentDetail';
 import Address from '../../models/Address';
 import { Box, Button } from '@mui/material';
@@ -22,7 +21,7 @@ interface reviewProps {
 
 export default function Review(props: reviewProps) {
 
-  const {cart, setCart} = React.useContext(CartContext)
+  const { cart, setCart } = React.useContext(CartContext)
 
   const handleSubmit = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -60,7 +59,7 @@ export default function Review(props: reviewProps) {
             Shipping
           </Typography>
           <Typography gutterBottom>{`${props.address.firstName} ${props.address.lastName}`}</Typography>
-          <Typography gutterBottom>{`${props.address.address1}${props.address.address2? ', ' + props.address.address2: ''}, ${props.address.city}, ${props.address.state} , ${props.address.zip}, ${props.address.country}`}</Typography>
+          <Typography gutterBottom>{`${props.address.address1}${props.address.address2 ? ', ' + props.address.address2 : ''}, ${props.address.city}, ${props.address.state} , ${props.address.zip}, ${props.address.country}`}</Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>

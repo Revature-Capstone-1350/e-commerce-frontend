@@ -1,13 +1,12 @@
-import { Badge } from "@material-ui/core";
-import { ShoppingCartOutlined } from "@material-ui/icons";
-// import MenuItem from "@mui/material/MenuItem";
+import { ShoppingCartOutlined } from "@mui/icons-material";
+import { Badge } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import DarkMode from "../darkmode/DarkMode";
 
 //Container Styling Componenet
 const Container = styled.div`
-  height: 60px;
+  box-shadow: 0 1px 2px 1px #00000026;
 `;
 
 //Wrapper Styling Component
