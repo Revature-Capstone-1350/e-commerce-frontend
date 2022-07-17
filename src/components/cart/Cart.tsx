@@ -1,7 +1,10 @@
+import { iteratorSymbol } from "immer/dist/internal";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { CartContext } from "../../context/cart.context";
+import { selectCart } from "../../store/cartSlice";
+import { useAppSelector } from "../../store/hooks";
 import Navbar from "../navbar/Navbar";
 
 const Container = styled.div``;
@@ -123,7 +126,7 @@ const Button = styled.button`
 `;
 
 export const Cart = () => {
-  const { cart } = useContext(CartContext);
+  const cart = useAppSelector(selectCart)
 
   const navigate = useNavigate();
 
@@ -139,7 +142,7 @@ export const Cart = () => {
         <Bottom>
           <Info>
             {
-              cart.map((product) => (
+              cart.map((product, idx) => (
                 <>
                   <Product>
                     <ProductDetail>
