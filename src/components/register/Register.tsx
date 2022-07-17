@@ -12,17 +12,22 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { apiRegister } from '../../remote/e-commerce-api/authService';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../store/hooks';
+import { updateUser } from '../../store/userSlice';
 
 const theme = createTheme();
 
 export default function Register() {
   const navigate = useNavigate(); 
+  const dispatch = useAppDispatch();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const response = await apiRegister(`${data.get('firstName')}`, `${data.get('lastName')}`, `${data.get('email')}`, `${data.get('password')}`)
-    if (response.status >= 200 && response.status < 300) navigate('/login')
+    if (response.status >= 200 && response.status < 300) 
+    navigate('/login')
+    dispatch(updateUser(response.payload)) // uses register repsonse details to set user state
   };
 
   return (

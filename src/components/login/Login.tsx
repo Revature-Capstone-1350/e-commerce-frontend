@@ -12,12 +12,16 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { apiLogin } from '../../remote/e-commerce-api/authService';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../store/hooks';
+import { updateUser } from '../../store/userSlice';
+
 
 
 
 export default function Login() {
   //Navigate variable to useNavigate hook
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   /**
    * Handles login button click, sends login request to API
@@ -27,7 +31,10 @@ export default function Login() {
     event.preventDefault(); //Prevents page from refreshing
     const data = new FormData(event.currentTarget); //Gets form data
     const response = await apiLogin(`${data.get('email')}`, `${data.get('password')}`); //Sends login request to API
-    if (response.status >= 200 && response.status < 300) navigate('/') //If login successful, navigate to home page
+    if (response.status >= 200 && response.status < 300) 
+    navigate('/') //If login successful, navigate to home page
+    dispatch(updateUser(response.payload)) // uses login repsonse details to set user state
+    
   };
 
   return (
