@@ -62,8 +62,8 @@ const Navbar = () => {
           <MenuItem onClick={() => { navigate('/register') }}>REGISTER</MenuItem>
           <MenuItem onClick={() => { navigate('/login') }}>SIGN IN</MenuItem>
           <MenuItem onClick={() => { navigate('/cart') }}>
-            <Badge color="primary">
-              <ShoppingCartOutlined />
+            <Badge color="primary" badgeContent={0} showZero>
+              <ShoppingCartOutlined  />
             </Badge>
           </MenuItem>
         </Right>
