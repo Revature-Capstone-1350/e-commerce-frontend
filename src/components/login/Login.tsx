@@ -31,8 +31,8 @@ export default function Login() {
     const data = new FormData(event.currentTarget); //Gets form data
     const response = await apiLogin(`${data.get('email')}`, `${data.get('password')}`); //Sends login request to API
     if (response.status >= 200 && response.status < 300) 
-    navigate('/') //If login successful, navigate to home page
-    dispatch(updateUser(response.payload)) // uses login repsonse details to set user state
+    navigate('/'); //If login successful, navigate to home page
+    dispatch(updateUser(response.payload)); // uses login repsonse details to set user state
     
   };
 

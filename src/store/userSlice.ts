@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 
 //setup user interface to match response object
@@ -40,7 +40,7 @@ const userSlice = createSlice({
 
 
 // we export the reducers action creators to allow for them to be used on the UI
-export const { updateUser } = userSlice.actions
+export const { updateUser } = userSlice.actions;
 
 //export that is used in the store
-export default userSlice.reducer 
+export default userSlice.reducer;

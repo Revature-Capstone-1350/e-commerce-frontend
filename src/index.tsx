@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import { store } from './store/store'
+import { store } from './store/store';
 
 
 // Adding the provider wrapper to allow the whole app to receive state from the store
