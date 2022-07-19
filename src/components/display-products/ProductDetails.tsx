@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router";
-import styled from "styled-components";
-import { CartContext } from "../../context/cart.context";
-import Product from "../../models/Product";
-import { apiGetProductById } from "../../remote/e-commerce-api/productService";
+import React, { useState, useEffect, useContext } from 'react';
+import { useParams } from 'react-router';
+import styled from 'styled-components';
+import { CartContext } from '../../context/cart.context';
+import Product from '../../models/Product';
+import { apiGetProductById } from '../../remote/e-commerce-api/productService';
 import Navbar from '../navbar/Navbar';
 
 
@@ -81,12 +81,12 @@ const ProductDetail = () => {
     // Initialize States
     const [product, setProduct] = useState<Product>({
         productId: 0,
-        name: "",
-        description: "",
+        name: '',
+        description: '',
         price: 0,
-        imgUrlSmall: "",
-        imgUrlMed: "",
-        category: "",
+        imgUrlSmall: '',
+        imgUrlMed: '',
+        category: '',
 
     });
 
@@ -103,12 +103,12 @@ const ProductDetail = () => {
     }, []);
 
     /**
- * Adds product to cart.
- * If product is in cart, then it will add 1 to the quantity.
- * If product is not in cart, then it will add product to cart.
- *
- * @param {Product} product product to be added to cart
- */
+     * Adds product to cart.
+     * If product is in cart, then it will add 1 to the quantity.
+     * If product is not in cart, then it will add product to cart.
+     *
+     * @param {Product} product product to be added to cart
+     */
     const addItemToCart = (product: Product) => {
         const newCart = [...cart]; // creates new cart list.
         const index = newCart.findIndex((searchProduct) => {
@@ -166,6 +166,3 @@ const ProductDetail = () => {
 
 export default ProductDetail;
 
-function addItemToCart(arg0: { productId: number; category: string; name: string; description: string; price: number; imgUrlSmall: string; imgUrlMed: string; }) {
-    throw new Error("Function not implemented.");
-}

@@ -70,17 +70,6 @@ const PriceDetail = styled.div`
     justify-content: center;
 `;
 
-const ProductAmountContainer = styled.div`
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-`;
-
-const ProductAmount = styled.div`
-    font-size: 24px;
-    margin: 5px;
-`;
-
 const ProductPrice = styled.div`
     font-size: 30px;
     font-weight: 200;

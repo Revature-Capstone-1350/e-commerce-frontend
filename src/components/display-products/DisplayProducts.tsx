@@ -121,7 +121,7 @@ export const DisplayProducts = () => {
                     ></SearchBar>
                 ) : null}
                 {/* Conditionally renders SearchByCategory*/}
-                {filterBy === "category" ?
+                {filterBy === 'category' ?
                     <Select
                         labelId="demo-simple-select-helper-label"
                         id="demo-simple-select-helper"

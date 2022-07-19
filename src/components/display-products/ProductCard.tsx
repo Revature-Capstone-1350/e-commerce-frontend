@@ -115,17 +115,17 @@ export const ProductCard = (props: productProps) => {
       <Circle />
       <Image src={props.product.imgUrlSmall} />
       <Info>
-        <Icon>
+        <Icon onClick={() => {
+          addItemToCart({ ...props.product });
+        }}>
           {/* Icon for adding product to cart */}
           <ShoppingCartOutlined
             style={{ ...styles.icon }}
-            onClick={() => {
-              addItemToCart({ ...props.product });
-            }}
+
           />
         </Icon>
-        <Icon>
-          <SearchOutlined onClick={() => navigate(`/${props.product.productId}`)} />
+        <Icon onClick={() => navigate(`/${props.product.productId}`)}>
+          <SearchOutlined />
         </Icon>
       </Info>
     </Container>
