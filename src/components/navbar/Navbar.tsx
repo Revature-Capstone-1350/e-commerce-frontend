@@ -3,7 +3,7 @@ import { Badge } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAppSelector } from '../../store/hooks';
-import { currentUser } from '../../store/userSlice';
+import { currentUser, UserState } from '../../store/userSlice';
 import DarkMode from '../darkmode/DarkMode';
 
 // Container Styling Componenet
@@ -49,7 +49,8 @@ const MenuItem = styled.div`
 const Navbar = () => {
     // Navigate variable to useNavigate function.
     const navigate = useNavigate();
-    const user = useAppSelector(currentUser);
+    // Retrieves user from redux
+    const user: UserState = useAppSelector(currentUser);
 
     return (
         <Container>
@@ -61,26 +62,33 @@ const Navbar = () => {
                             navigate('/');
                         }}
                     >
-                        Revature Swag Shop
+                        SkyView
                     </Logo>
                 </Left>
                 <Right>
                     {/* Right Side of Navbar*/}
                     <DarkMode />
-                    <MenuItem
-                        onClick={() => {
-                            navigate('/register');
-                        }}
-                    >
-                        REGISTER
-                    </MenuItem>
-                    <MenuItem
-                        onClick={() => {
-                            navigate('/login');
-                        }}
-                    >
-                        SIGN IN
-                    </MenuItem>
+                    {/* Navbar Rendering for Guest/Not Logged in*/}
+                    {user.id === 0 &&
+                        <>
+                            <MenuItem onClick={() => { navigate('/register'); }}> REGISTER </MenuItem>
+                            <MenuItem onClick={() => { navigate('/login'); }}>SIGN IN</MenuItem>
+                        </>
+                    }
+                    {/* Navbar Rendering for Admins*/}
+                    {user.role === 'ADMIN' &&
+                        <>
+                            <MenuItem onClick={() => { navigate('/createproduct'); }}>CREATE PRODUCT</MenuItem>
+                            <MenuItem onClick={() => { navigate('/login'); }}>LOGOUT</MenuItem>
+                        </>
+                    }
+                    {/* Navbar Rendering for Basic Users*/}
+                    {user.id !== 0 && user.role !== 'ADMIN' &&
+                        <>
+                            <MenuItem onClick={() => { navigate('/profile'); }}>PROFILE</MenuItem>
+                            <MenuItem onClick={() => { navigate('/login'); }}>LOGOUT</MenuItem>
+                        </>
+                    }
                     <MenuItem
                         onClick={() => {
                             navigate('/cart');
