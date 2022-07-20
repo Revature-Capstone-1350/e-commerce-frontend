@@ -1,23 +1,29 @@
-/**
- * Product model
- */
 export default class Product {
-    id: number;
+    productId: number;
+    category: Category['name'];
     name: string;
-    quantity: number;
-    price: number;
     description: string;
-    image: string;
-    category: string;
+    price: number;
+    imgUrlSmall: string;
+    imgUrlMed: string;
 
-    //constructor for Product class
-    constructor(id: number, name: string, quantity: number, description: string, price: number, image: string, category: string) {
-        this.id = id;
+    constructor(productId: number, category: Category['name'], name: string, description: string, price: number, imgUrlSmall: string, imgUrlMed: string) {
+        this.productId = productId;
+        this.category = category;
         this.name = name;
-        this.quantity = quantity;
         this.description = description;
         this.price = price;
-        this.image = image;
-        this.category = category;
+        this.imgUrlSmall = imgUrlSmall;
+        this.imgUrlMed = imgUrlMed;
+    }
+}
+
+class Category {
+    categoryId: number;
+    name: string;
+
+    constructor(categoryId: number, name: string) {
+        this.categoryId = categoryId;
+        this.name = name;
     }
 }

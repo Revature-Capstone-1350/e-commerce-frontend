@@ -10,7 +10,7 @@ Styling for root element as light mode.
 /*
 Styling for data-theme element as dark mode.
 */
-[data-theme="dark"] {
+[data-theme='dark'] {
     --font-color: ghostwhite !important;
     --background-color: #333;
     --link-color: lightblue;
@@ -66,7 +66,6 @@ Colors are set in the root element.
 */
 input::placeholder {
     color: var(--font-color) !important;
-
 }
 
 /*
@@ -84,7 +83,6 @@ Colors are set in the root element.
 .MuiInput-underline:before {
     border-bottom: 1px solid var(--font-color) !important;
 }
-
 
 /*
 Styling for label tag
@@ -104,4 +102,9 @@ label {
 /* Styling for Light/Dark Icon  */
 .toggle-theme-wrapper span {
     font-size: 20px;
+}
+
+/* Styling for Product Info */
+.productInfo {
+    background-color: var(--background-color) !important;
 }

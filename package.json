@@ -17,6 +17,10 @@
     "@types/react-dom": "^18.0.3",
     "@types/react-redux": "^7.1.24",
     "axios": "^0.27.2",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^2.7.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-redux": "^8.0.2",
@@ -30,15 +34,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm run lint && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "eject": "react-scripts eject",
+    "lint": "eslint src/**/*.{ts,tsx}",
+    "lint:fix": "eslint --fix src/**/*.{ts,tsx}",
+    "format": "prettier --write 'src/**/*.{ts,tsx,css,md,json}' --config ./.prettierrc"
   },
   "browserslist": {
     "production": [
@@ -54,6 +55,12 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.3.3",
-    "@types/styled-components": "^5.1.25"
+    "@types/styled-components": "^5.1.25",
+    "@typescript-eslint/eslint-plugin": "^5.30.6",
+    "@typescript-eslint/parser": "^5.30.6",
+    "eslint": "^8.20.0",
+    "eslint-plugin-filename-rules": "^1.2.0",
+    "eslint-plugin-jsdoc": "^39.3.3",
+    "eslint-plugin-react": "^7.30.1"
   }
 }

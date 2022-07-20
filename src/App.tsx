@@ -5,17 +5,20 @@ import { CartContext } from './context/cart.context';
 import ProductItem from './models/Product';
 import { AppRoutes } from './router/AppRoutes';
 
+/**
+ *@returns {void}
+ */
 function App() {
-  const [cart, setCart] = useState<ProductItem[]>([]);
-  const value = { cart, setCart };
+    const [cart, setCart] = useState<ProductItem[]>([]);
+    const value = { cart, setCart };
 
-  return (
-    <CartContext.Provider value={value}>
-      <Router>
-        <AppRoutes></AppRoutes>
-      </Router>
-    </CartContext.Provider>
-  );
+    return (
+        <CartContext.Provider value={value}>
+            <Router>
+                <AppRoutes></AppRoutes>
+            </Router>
+        </CartContext.Provider>
+    );
 }
 
 export default App;

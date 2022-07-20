@@ -1,14 +1,12 @@
-import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import userReducer from './userSlice'
-import cartReducer from './cartSlice'
+import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import userReducer from './userSlice';
 
 // Where state is stored
 export const store = configureStore({
   reducer: {
-    user: userReducer,
-    cart: cartReducer
+    user: userReducer
   },
-})
+});
 
 // Exports that make it easier in using methods without setting types each time
 export type AppDispatch = typeof store.dispatch;
