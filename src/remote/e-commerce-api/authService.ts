@@ -19,7 +19,7 @@ export const apiRegister = async (
     password: string,
 ): Promise<eCommerceApiResponse> => {
     const response = await eCommerceClient.post<RegisterRequest>(`${baseURL}/register`, {
-        firstname: firstName,
+        firstName: firstName,
         lastName: lastName,
         email: email,
         password: password,

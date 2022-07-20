@@ -2,6 +2,8 @@ import { ShoppingCartOutlined } from '@mui/icons-material';
 import { Badge } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useAppSelector } from '../../store/hooks';
+import { currentUser } from '../../store/userSlice';
 import DarkMode from '../darkmode/DarkMode';
 
 // Container Styling Componenet
@@ -47,6 +49,7 @@ const MenuItem = styled.div`
 const Navbar = () => {
     // Navigate variable to useNavigate function.
     const navigate = useNavigate();
+    const user = useAppSelector(currentUser);
 
     return (
         <Container>
