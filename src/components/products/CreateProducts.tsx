@@ -9,7 +9,7 @@ import axios from "axios";
 function CreateProducts() {
     // initializing state
     const [name, setName] = useState<string>('')
-    const [quantity, setQuantity] = useState<string>('1')
+    
     const [price, setPrice] = useState<string>('')
     const [description, setDescription] = useState<string>('')
     const [image, setImage] = useState<string>('')
