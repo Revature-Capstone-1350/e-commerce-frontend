@@ -1,9 +1,7 @@
 import { ShoppingCartOutlined } from "@mui/icons-material";
 import { Badge } from "@mui/material";
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { CartContext } from "../../context/cart.context";
 import DarkMode from "../darkmode/DarkMode";
 
 //Container Styling Componenet
@@ -50,9 +48,6 @@ const Navbar = () => {
 
   //Navigate variable to useNavigate function.
   const navigate = useNavigate();
-  const { cart } = useContext(CartContext);
-
-  const cartLength = cart.reduce((total, product) => total +  product.quantity, 0)
 
   return (
     <Container>
@@ -67,7 +62,7 @@ const Navbar = () => {
           <MenuItem onClick={() => { navigate('/register') }}>REGISTER</MenuItem>
           <MenuItem onClick={() => { navigate('/login') }}>SIGN IN</MenuItem>
           <MenuItem onClick={() => { navigate('/cart') }}>
-            <Badge color="primary" badgeContent={cartLength} max={999} showZero>
+            <Badge color="primary" badgeContent={0} showZero>
               <ShoppingCartOutlined  />
             </Badge>
           </MenuItem>
