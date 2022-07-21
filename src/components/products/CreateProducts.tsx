@@ -118,6 +118,7 @@ return (
 
                 </FormControl>
                 <br />
+        {/* This is a drop down for category state */}
         <Select
             id="demo-simple-select-helper"
             value={category}
