@@ -1,19 +1,26 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 
 // This is the configuration for sending HTTP Requests with Axios
 // Very simple, but it also doesn't give us much abstraction
 const eCommerceClient = axios.create({
-  withCredentials: true,
-  baseURL: 'http://localhost:5000',
-  headers: {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': 'http://localhost:3000',
-  },
+    baseURL: 'http://localhost:5000/skyview',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'text/plain',
+
+    },
 });
 
 export interface eCommerceApiResponse {
-  status: number;
-  payload: any;
+    status: number;
+    payload: any;
+}
+
+export interface eCommerceLoginResponse {
+    status: number;
+    payload: any;
+    headers: any;
 }
 
 export default eCommerceClient;

@@ -14,34 +14,38 @@ import { apiRegister } from '../../remote/e-commerce-api/authService';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
+
 const theme = createTheme();
 
+/**
+ * @returns {void}
+ */
 export default function Register() {
   const navigate = useNavigate(); 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string[]>([]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setError([]);
     event.preventDefault();
     const regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+    const strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
 
-    let errors:string[] = [];
+    const errors:string[] = [];
 
     if(!email || regex.test(email) === false){
-      const email_bad = "Email is not valid";
-      if(!error.includes(email_bad)) {
-        errors.push(email_bad);
+      const emailBad = 'Email is not valid';
+      if(!error.includes(emailBad)) {
+        errors.push(emailBad);
         // setError([...error, email_bad]) // deconstructor assignment example
       } 
       
     }
     if(!password || strongRegex.test(password) === false){
-      const pwd_bad = "Password is not valid";
-      if(!error.includes(pwd_bad)) {
-        errors.push(pwd_bad);
+      const pwdBad = 'Password is not valid';
+      if(!error.includes(pwdBad)) {
+        errors.push(pwdBad);
       } 
     }
     if(errors) {
@@ -49,19 +53,19 @@ export default function Register() {
     }
 
     const data = new FormData(event.currentTarget);
-    const response = await apiRegister(`${data.get('firstName')}`, `${data.get('lastName')}`, `${data.get('email')}`, `${data.get('password')}`)
-    if (response.status >= 200 && response.status < 300) navigate('/login')
+    const response = await apiRegister(`${data.get('firstName')}`, `${data.get('lastName')}`, `${data.get('email')}`, `${data.get('password')}`);
+    if (response.status >= 200 && response.status < 300) navigate('/login');
   };
   useEffect( () => {
-    console.log(error)
+    
   }, [error]);
   const handleEmail = (e : React.SyntheticEvent) => {
     setError([]);
-    setEmail((e.target as HTMLInputElement).value)
+    setEmail((e.target as HTMLInputElement).value);
   };
   const handlePassword = (e : React.SyntheticEvent) => {
     setError([]);
-    setPassword((e.target as HTMLInputElement).value)
+    setPassword((e.target as HTMLInputElement).value);
   };
   return (
     <ThemeProvider theme={theme}>
