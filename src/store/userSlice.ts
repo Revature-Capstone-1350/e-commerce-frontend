@@ -37,7 +37,7 @@ const userSlice = createSlice({
       state.lastName = action.payload.lastName;
       state.email = action.payload.email;
       state.role = action.payload.role;
-      state.token = action.payload.token
+      state.token = action.payload.token;
     },
   }
 });

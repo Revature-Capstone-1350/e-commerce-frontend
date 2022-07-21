@@ -34,7 +34,7 @@ export default function Login() {
         const response = await apiLogin(`${data.get('email')}`, `${data.get('password')}`); // Sends login request to API
         if (response.status >= 200 && response.status < 300)
             navigate('/'); // If login successful, navigate to home page
-        let user = response.payload; // Gets user from response
+        const user = response.payload; // Gets user from response
         user.token = response.headers.authorization; // Gets token from headers
         dispatch(updateUser(user)); // sets user in redux store
     };
