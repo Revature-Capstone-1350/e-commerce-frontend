@@ -5,8 +5,7 @@ import { CartContext } from '../../context/cart.context';
 import Product from '../../models/Product';
 import { apiGetProductById } from '../../remote/e-commerce-api/productService';
 import { useAppSelector } from '../../store/hooks';
-import { currentUser } from '../../store/userSlice';
-
+import { currentUser, UserState } from '../../store/userSlice';
 const Container = styled.div`
     padding: 20px;
     display: flex;
@@ -91,8 +90,8 @@ const ProductDetail = () => {
     });
 
     const { id } = useParams();
-    const user = useAppSelector(currentUser);
-    console.log(user);
+    // Grabing the current user from state
+    const user: UserState = useAppSelector(currentUser);
     useEffect(() => {
         // Fetch's product by Id and set state of current product
         const fetchData = async () => {
@@ -127,6 +126,27 @@ const ProductDetail = () => {
             <Container>
                 <Flex>
                     <Image src={product.imgUrlMed} />
+                    {/* checking to see if a user is an ADMIN. if they are then render input tags to allow them to edit and update the product. Else we render h tags instead. */}
+                    { user.role === 'ADMIN'? <ProductInfo className="productInfo">
+                        <div>
+                            <label>Name:</label>
+                            <input placeholder={product.name.toUpperCase()}></input>
+                            <label>Price:</label>
+                            <input placeholder={product.price.toString()}></input>
+                            <label>Product Description:</label>
+                            <input placeholder={product.description}></input>
+                        </div>
+                        <ProductInfoBottom>
+                            <input>Category: {product.category}</input>
+                            <input>Product Id: {product.productId}</input>
+                            <AddToCart onClick={() => {
+                                addItemToCart({ ...product });
+                            }}>
+                                Add to Cart
+                            </AddToCart>
+                        </ProductInfoBottom>
+                    </ProductInfo>
+                    :
                     <ProductInfo className="productInfo">
                         <div>
                             <h1>{product.name.toUpperCase()}</h1>
@@ -142,7 +162,7 @@ const ProductDetail = () => {
                                 Add to Cart
                             </AddToCart>
                         </ProductInfoBottom>
-                    </ProductInfo>
+                    </ProductInfo>}
                 </Flex>
                 <ProductReviews>
                     <h1>Product Reviews</h1>
