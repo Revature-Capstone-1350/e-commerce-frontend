@@ -237,7 +237,7 @@ const ProductDetail = () => {
                     {/* This is mapping through reviews to display each review */}
                     {reviews ? reviews.map((review) => <> 
                         <Review>
-                        <h3>{"*".repeat((review.rating)?review.rating:1)}</h3>
+                        <h3>{"☆".repeat((review.rating)?review.rating:1)}</h3>
                         <h5>{review.description}</h5>
                         <h6>- {review.reviewerName}</h6>
                         </Review>
