@@ -32,11 +32,11 @@ function CreateProducts() {
     const [message, setMessage] = useState<string>('');
 
     const sendNewProduct = async () => {
-        if (!name || !description || !price || !imageS || !imageM) {
+        if (!name || !description || !price || !imageS || !imageM) { // If fields are empty, a message will display an error
             setMessage('All fields must be completed');
-        } else if (category === 0) {
+        } else if (category === 0) { // If category hasn't been selected, a message will display an error
             setMessage('Please select a category for this image');
-        } else {
+        } else { // If all fields and category has been set, send the information to the API
             const productResponse: CreateProductRequest = {category: category,
             name: name,
             description: description,
@@ -44,9 +44,9 @@ function CreateProducts() {
             imageUrlS: imageS,
             imageUrlM: imageM};
         const response = await apiCreateProduct(productResponse); // Sends login request to API
-            if (Math.floor(response.status/100) !=2) {
+            if (Math.floor(response.status/100) !=2) { // If the response is not in the 200 range a error message will be displayed
                 setMessage('Could not create a new product, please contact development team.');
-            } else {
+            } else { // If the response is in the 200 range a confirmation message will be displayed
                 setMessage('New Product Created');
             }    
     };
