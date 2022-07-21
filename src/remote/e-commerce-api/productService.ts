@@ -18,15 +18,14 @@ export const apiGetProductById = async (id: string): Promise<eCommerceApiRespons
 export const apiUpdateProduct = async (product: UpdateProduct): Promise<eCommerceApiResponse> => {
     const response = await eCommerceClient.put<UpdateProduct>(`${baseURL}`, product);
     return { status: response.status, payload: product };
-    
+};
+
 export const apiUpsertProduct = async (product: Product): Promise<eCommerceApiResponse> => {
     const response = await eCommerceClient.put<Product>(`${baseURL}`, product);
     return { status: response.status, payload: response.data };
 };
 
-export const apiPurchase = async (
-    products: { id: number; }[],
-): Promise<eCommerceApiResponse> => {
+export const apiPurchase = async (products: { id: number; }[],): Promise<eCommerceApiResponse> => {
     const response = await eCommerceClient.patch<Product[]>(`${baseURL}`, products);
     return { status: response.status, payload: response.data };
 };
