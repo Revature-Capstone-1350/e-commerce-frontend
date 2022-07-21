@@ -1,4 +1,4 @@
-import { SyntheticEvent, useState } from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -18,10 +18,8 @@ const TitleDiv = styled.div`
     justify-content: center;
 `;
 
-/**
- * This component is used to persist a new product to the database
- */
-function CreateProducts() {
+
+export const CreateProducts = () => {
     // initializing state
     const [name, setName] = useState<string>('');
     const [price, setPrice] = useState<string>('');
@@ -52,7 +50,7 @@ function CreateProducts() {
     };
     };
 return (
-    <>
+    <React.Fragment>
         <TitleDiv>
             <h1>Create a new product</h1>
         </TitleDiv>
@@ -142,7 +140,6 @@ return (
                     }
          </Box>
         </CreateDiv>
-</>
-);}
-
-export default CreateProducts;
+</React.Fragment>
+);
+};
