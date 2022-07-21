@@ -1,3 +1,4 @@
+import CreateProductRequest from '../../models/CreateProductRequest';
 import Product from '../../models/Product';
 import eCommerceClient, { eCommerceApiResponse } from './eCommerceClient';
 
@@ -28,4 +29,16 @@ export const apiPurchase = async (
 export const apiDeleteProduct = async (id: number): Promise<eCommerceApiResponse> => {
     const response = await eCommerceClient.delete<Product>(`${baseURL}/${id}`);
     return { status: response.status, payload: response.data };
+};
+
+export const apiCreateProduct = async (product: CreateProductRequest): Promise<eCommerceApiResponse> => {
+    const response = await eCommerceClient.post<Product>(`${baseURL}/createproduct`,{
+        category: product.category,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        imageUrlS: product.imageUrlS,
+        imageUrlM: product.imageUrlM
+    });
+    return { status: response.status, payload: product };
 };
