@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { MenuItem, Select } from '@mui/material';
+import React, { useState, useEffect, useContext, SyntheticEvent } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { CartContext } from '../../context/cart.context';
 import Product from '../../models/Product';
-import { apiGetProductById } from '../../remote/e-commerce-api/productService';
+import UpdateProductRequest from '../../models/UpdateProduct';
+import { apiGetProductById, apiUpdateProduct } from '../../remote/e-commerce-api/productService';
 import { useAppSelector } from '../../store/hooks';
 import { currentUser, UserState } from '../../store/userSlice';
 const Container = styled.div`
@@ -58,6 +60,22 @@ const AddToCart = styled.button`
         }
     `;
 
+const UpdateProduct = styled.button`
+    width: 100%;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    font-weight: 600;
+    margin: 10px 0px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    &:hover {
+        background-color: #0a71bb;
+        }
+    `;
+
 const ProductReviews = styled.div`
     display: flex;
     flex-direction: column;
@@ -88,6 +106,11 @@ const ProductDetail = () => {
         category: '',
 
     });
+    const [name, setName] = useState<string>('');
+    const [price, setPrice] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+    const [category, setCategory] = useState<number>(0);
+    const [message, setMessage] = useState<string>('');
 
     const { id } = useParams();
     // Grabing the current user from state
@@ -97,10 +120,43 @@ const ProductDetail = () => {
         const fetchData = async () => {
             const result = await apiGetProductById(id!);
             setProduct(result.payload);
-            console.log(result.payload);
         };
         fetchData();
     }, []);
+
+    useEffect(() => { // if fields empty set default information
+        if (!name || !price || !description) { 
+            setMessage('ribbit, fields are empty');
+            setName(product.name);
+            setPrice((product.price).toString());
+            setDescription(product.description);
+            console.log(message);
+        }
+    });
+
+    /**
+     * update product funtion
+     */
+    const updateProduct = async () => {     
+        // create a product request object
+        const productResponse: UpdateProductRequest = {category: category,
+            id: +id!,
+            name: name,
+            description: description,
+            price: +price,
+            imageUrlS: product.imgUrlSmall,
+            imageUrlM: product.imgUrlMed};
+
+        if (!name || !price || !description || category == 0) { // checks if fields are empty
+            console.log('Ribbit');
+        } else {
+            const response = await apiUpdateProduct(productResponse); // Sends login request to API
+            if (response.status >= 200 && response.status < 300) {
+                setMessage('update successful');
+            }
+        }
+                
+    };
 
     /**
      * Adds product to cart.
@@ -130,20 +186,32 @@ const ProductDetail = () => {
                     { user.role === 'ADMIN'? <ProductInfo className="productInfo">
                         <div>
                             <label>Name:</label>
-                            <input placeholder={product.name.toUpperCase()}></input>
+                            <input onChange={(e: SyntheticEvent) => setName((e.target as HTMLInputElement).value)} 
+                                placeholder={product.name.toUpperCase()} defaultValue={name}></input>
                             <label>Price:</label>
-                            <input placeholder={product.price.toString()}></input>
+                            <input onChange={(e: SyntheticEvent) => setPrice((e.target as HTMLInputElement).value)} 
+                                placeholder={product.price.toString()} defaultValue={price.toString()}></input>
                             <label>Product Description:</label>
-                            <input placeholder={product.description}></input>
+                            <input onChange={(e: SyntheticEvent) => setDescription((e.target as HTMLInputElement).value)} 
+                                placeholder={product.description} defaultValue={description} ></input>
+                            <Select
+                                id="demo-simple-select-helper"
+                                value={category}
+                                label="Search"
+                                onChange={event => setCategory(event.target.value as number)}>
+                                <MenuItem value={0}>Category</MenuItem>
+                                <MenuItem value={1}>Cloud</MenuItem>
+                                <MenuItem value={2}>Dawn</MenuItem>
+                                <MenuItem value={3}>Day</MenuItem>
+                                <MenuItem value={4}>Dusk</MenuItem>
+                                <MenuItem value={5}>Moon</MenuItem>
+                                <MenuItem value={6}>Cloud</MenuItem>
+                            </Select>
                         </div>
                         <ProductInfoBottom>
-                            <input>Category: {product.category}</input>
-                            <input>Product Id: {product.productId}</input>
-                            <AddToCart onClick={() => {
-                                addItemToCart({ ...product });
-                            }}>
-                                Add to Cart
-                            </AddToCart>
+                            <UpdateProduct onClick={updateProduct}>
+                                Update Product
+                            </UpdateProduct>
                         </ProductInfoBottom>
                     </ProductInfo>
                     :
