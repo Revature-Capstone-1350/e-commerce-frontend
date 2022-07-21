@@ -1,13 +1,11 @@
-import { Box, TextField, Button, Grid } from '@mui/material';
+import { Box, TextField, Button } from '@mui/material';
 import axios from 'axios';
-import React, { useState, useEffect, useContext, SyntheticEvent } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { CartContext } from '../../context/cart.context';
 import Product from '../../models/Product';
 import Rating from '../../models/RatingResponse';
-import eCommerceClient from '../../remote/e-commerce-api/eCommerceClient';
 import { apiGetProductById, apiGetReviewByProductId } from '../../remote/e-commerce-api/productService';
 import { useAppSelector } from '../../store/hooks';
 import { currentUser } from '../../store/userSlice';
@@ -116,14 +114,8 @@ const ProductDetail = () => {
             console.log(result.payload);
         };
         fetchReviews();
-
-        // export const apiGetReviewByProductId = async (id: string): Promise<eCommerceApiResponse> => {
-//     const response = await eCommerceClient.get<Rating>(`${baseURL}/rating/${id}`);
-//     return { status: response.status, payload: response.data }; 
-// };
     }, []);
 
-    // useEffect
 
     /**
      * Adds product to cart.
@@ -144,8 +136,8 @@ const ProductDetail = () => {
         setCart(newCart); // sets cart to new cart list.
     };
 
-    const addReview = (e:SyntheticEvent) => {
-        console.log("clicked");
+    const addReview = () => {
+        console.log('clicked');
         setDisplay(true);
 
     };
@@ -153,29 +145,19 @@ const ProductDetail = () => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevents page from refreshing
         const data = new FormData(event.currentTarget); // Gets form data
-        // let object:string  = {};
-        // data.forEach((value,key) => object[key] = value);
-
-
-        const token = "LYLlialoLs+dVZ0gmLRdjcyhrsTpeYhyi8MDwgd0I4UxroW+Xvdd2cu0NswtUVNxmJG9Vtap9Kqd6bVlalHGX7jWR9pu6moTT9qhsoqlkfP7TPSA8z4AoZV8jdKrTb1Ee9XUY7oX5twppfW5b9WxSQfv2Hh3RhYgpSJscdCXq+n8KYOH1kd7QP1ROiNKqHCSRxn6TMQNxCk1WXSW7eQV3Y+LKJtE+luv8k8t5hU+laTfrs/iqeTA/wQeY8WI0gob593UuzypXhXrVFbE6t6K62myIEWZgKL+Zv4fFotoGK+Ldq5z/zozPB3ck34yaY21VZCIR/sQSfwJh4SzmUXPZXY7jlaAm/qCwldqH2sq2Lje8HG9lbLLkhb+HlrvFsm1AYtTPq8VPUfXDMkKVjJOJTz5UApnZKp8Dh0rPE8KFoKcN3mHq1LdjJ4UU6qsS+gbTKAsg2b+XMwAbfWefcWr9/FoF7q3lSZF9o2AxP0eQe4PZg3H/3b+hQ5U2G5ZINq8wZZC99WFL51ViK99hWMc68AJeXoTtxZRK1ljX+CXSwECSCcGKW698O1IBTgCSiLPobRdv2flIFqokbmHOkNEGmAfJgYmde+ZIarbACVBAu4GC0aTGyBeWlgfZnvIYge503gwXgKXWD7F5RBtxqoLUVtb+ZilWfRTYfAKG/h5kBq3Gyma82pTfs1sowDhsyhP1adJYnYNX4KWAr/5oySkFr38EkoBK3OIU+95nQIvmUkrHtcChDhJ/QwHCxqKYnuqdvzC8uONivk2V2Exk/QQVskFTBZNXgbK6xIhRVjY0xcl0jCHfh+gmpRZPlSUxjsq4tpV1aCjv68U4beI/qcDTEGVT4s9fUr5Z4o3JgymL82K75KcU8iuGj3nedGpVMxmMWk3DmKx4+E1iFASZCqJaYFJwAnJO02eFHNbGWRZsfqcXOhi2UhH30PgMuVaGvdL+CtuK2z85iZzSUGQNcZnAMl9N7MoytzAb/eSaQTiBy8THiOkKusr6pKfkHzVMA76iVtppAX3WEsf3tyt1TYe9dQuCxdw5KzR6DwTeIDhpKisZWQmNLsDbH+h1QpavD8n8a7MTT9EiiffBzcDyqJfyQHy0v6ZTRfoxfPJedR79jSJt3wRHHfVB8cmOeFYKgMSK+rEHOPxGC+OM/ghQWDoqIHh8qk1knndOoXJ2ufB5CJUwW1cQvSZ/hx1rfhHN2O05gnvTVFd/TTpORNse7tkFp610xW5ujRzeEyyViNeiD3R0qSn4YnOxxYiL81M752xWnGQJYRrOQ6/dhlO2VhXxvgxrtL4G3fDwUJxdOOcz5Npch/tzKZKns+Lakx3MLB6FP2a22DUM9L2qniLxa71gg==";
+        const token = 'LYLlialoLs+dVZ0gmLRdjcyhrsTpeYhyi8MDwgd0I4UxroW+Xvdd2cu0NswtUVNxmJG9Vtap9Kqd6bVlalHGX7jWR9pu6moTT9qhsoqlkfP7TPSA8z4AoZV8jdKrTb1Ee9XUY7oX5twppfW5b9WxSQfv2Hh3RhYgpSJscdCXq+n8KYOH1kd7QP1ROiNKqHCSRxn6TMQNxCk1WXSW7eQV3Y+LKJtE+luv8k8t5hU+laTfrs/iqeTA/wQeY8WI0gob593UuzypXhXrVFbE6t6K62myIEWZgKL+Zv4fFotoGK+Ldq5z/zozPB3ck34yaY21VZCIR/sQSfwJh4SzmUXPZXY7jlaAm/qCwldqH2sq2Lje8HG9lbLLkhb+HlrvFsm1AYtTPq8VPUfXDMkKVjJOJTz5UApnZKp8Dh0rPE8KFoKcN3mHq1LdjJ4UU6qsS+gbTKAsg2b+XMwAbfWefcWr9/FoF7q3lSZF9o2AxP0eQe4PZg3H/3b+hQ5U2G5ZINq8wZZC99WFL51ViK99hWMc68AJeXoTtxZRK1ljX+CXSwECSCcGKW698O1IBTgCSiLPobRdv2flIFqokbmHOkNEGmAfJgYmde+ZIarbACVBAu4GC0aTGyBeWlgfZnvIYge503gwXgKXWD7F5RBtxqoLUVtb+ZilWfRTYfAKG/h5kBq3Gyma82pTfs1sowDhsyhP1adJYnYNX4KWAr/5oySkFr38EkoBK3OIU+95nQIvmUkrHtcChDhJ/QwHCxqKYnuqdvzC8uONivk2V2Exk/QQVskFTBZNXgbK6xIhRVjY0xcl0jCHfh+gmpRZPlSUxjsq4tpV1aCjv68U4beI/qcDTEGVT4s9fUr5Z4o3JgymL82K75KcU8iuGj3nedGpVMxmMWk3DmKx4+E1iFASZCqJaYFJwAnJO02eFHNbGWRZsfqcXOhi2UhH30PgMuVaGvdL+CtuK2z85iZzSUGQNcZnAMl9N7MoytzAb/eSaQTiBy8THiOkKusr6pKfkHzVMA76iVtppAX3WEsf3tyt1TYe9dQuCxdw5KzR6DwTeIDhpKisZWQmNLsDbH+h1QpavD8n8a7MTT9EiiffBzcDyqJfyQHy0v6ZTRfoxfPJedR79jSJt3wRHHfVB8cmOeFYKgMSK+rEHOPxGC+OM/ghQWDoqIHh8qk1knndOoXJ2ufB5CJUwW1cQvSZ/hx1rfhHN2O05gnvTVFd/TTpORNse7tkFp610xW5ujRzeEyyViNeiD3R0qSn4YnOxxYiL81M752xWnGQJYRrOQ6/dhlO2VhXxvgxrtL4G3fDwUJxdOOcz5Npch/tzKZKns+Lakx3MLB6FP2a22DUM9L2qniLxa71gg==';
         const rating = `${data.get('rating')}`;
         const description = `${data.get('description')}`;
         const config = {
             headers: {
-                "Authorization": token,
+                'Authorization': token,
             }
           };
           
           axios.post(
-            "http://localhost:5000/skyview/api/product/rating/"+product.productId, 
+            'http://localhost:5000/skyview/api/product/rating/'+product.productId, 
             JSON.parse(JSON.stringify({rating:rating, description:description})), 
             config).then(); 
-        
-        // const response = await apiLogin(`${data.get('email')}`, `${data.get('password')}`); // Sends login request to API
-        // if (response.status >= 200 && response.status < 300) 
-        // navigate('/'); // If login successful, navigate to home page
-        // dispatch(updateUser(response.payload)); // uses login repsonse details to set user state
-        
       };
 
     return (
@@ -237,7 +219,7 @@ const ProductDetail = () => {
                     {/* This is mapping through reviews to display each review */}
                     {reviews ? reviews.map((review) => <> 
                         <Review>
-                        <h3>{"☆".repeat((review.rating)?review.rating:1)}</h3>
+                        <h3>{'☆'.repeat((review.rating)?review.rating:1)}</h3>
                         <h5>{review.description}</h5>
                         <h6>- {review.reviewerName}</h6>
                         </Review>
@@ -249,4 +231,3 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
-
