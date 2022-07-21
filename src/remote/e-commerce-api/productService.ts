@@ -19,6 +19,11 @@ export const apiGetReviewByProductId = async (id: string): Promise<eCommerceApiR
     return { status: response.status, payload: response.data }; 
 };
 
+// export const apiPostReviewByProductId = async (id: string): Promise<eCommerceApiResponse> => {
+//     const response = await eCommerceClient.post<Rating>(`${baseURL}/rating/${id}`);
+//     return { status: response.status, payload: response.data }; 
+// };
+
 export const apiUpsertProduct = async (product: Product): Promise<eCommerceApiResponse> => {
     const response = await eCommerceClient.put<Product>(`${baseURL}`, product);
     return { status: response.status, payload: response.data };
