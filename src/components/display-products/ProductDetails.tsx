@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { CartContext } from '../../context/cart.context';
 import Product from '../../models/Product';
 import { apiGetProductById } from '../../remote/e-commerce-api/productService';
-import Navbar from '../navbar/Navbar';
-
+import { useAppSelector } from '../../store/hooks';
+import { currentUser } from '../../store/userSlice';
 
 const Container = styled.div`
     padding: 20px;
@@ -91,7 +91,8 @@ const ProductDetail = () => {
     });
 
     const { id } = useParams();
-
+    const user = useAppSelector(currentUser);
+    console.log(user);
     useEffect(() => {
         // Fetch's product by Id and set state of current product
         const fetchData = async () => {
@@ -123,7 +124,6 @@ const ProductDetail = () => {
 
     return (
         <React.Fragment>
-            <Navbar />
             <Container>
                 <Flex>
                     <Image src={product.imgUrlMed} />
