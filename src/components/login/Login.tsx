@@ -19,24 +19,25 @@ import { updateUser } from '../../store/userSlice';
  * @returns {void}
  */
 export default function Login() {
-  // Navigate variable to useNavigate hook
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+    // Navigate variable to useNavigate hook
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     /**
      * Handles login button click, sends login request to API
      *
      * @param {React.FormEvent<HTMLFormElement>}event event listener
      */
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Prevents page from refreshing
-    const data = new FormData(event.currentTarget); // Gets form data
-    const response = await apiLogin(`${data.get('email')}`, `${data.get('password')}`); // Sends login request to API
-    if (response.status >= 200 && response.status < 300) 
-    navigate('/'); // If login successful, navigate to home page
-    dispatch(updateUser(response.payload)); // uses login repsonse details to set user state
-    
-  };
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault(); // Prevents page from refreshing
+        const data = new FormData(event.currentTarget); // Gets form data
+        const response = await apiLogin(`${data.get('email')}`, `${data.get('password')}`); // Sends login request to API
+        if (response.status >= 200 && response.status < 300)
+            navigate('/'); // If login successful, navigate to home page
+        let user = response.payload; // Gets user from response
+        user.token = response.headers.authorization; // Gets token from headers
+        dispatch(updateUser(user)); // sets user in redux store
+    };
 
     return (
         <Container className='login-container' component='main' maxWidth='xs'>
