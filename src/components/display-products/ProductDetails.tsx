@@ -1,14 +1,15 @@
-import { Box, TextField, Button } from '@mui/material';
+import { MenuItem, Select, Box, TextField, Button } from '@mui/material';
 import axios from 'axios';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, SyntheticEvent } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { CartContext } from '../../context/cart.context';
 import Product from '../../models/Product';
-import Rating from '../../models/RatingResponse';
-import { apiGetProductById, apiGetReviewByProductId } from '../../remote/e-commerce-api/productService';
+import UpdateProductRequest from '../../models/UpdateProduct';
 import { useAppSelector } from '../../store/hooks';
-import { currentUser } from '../../store/userSlice';
+import { currentUser, UserState } from '../../store/userSlice';
+import Rating from '../../models/RatingResponse';
+import { apiGetProductById, apiGetReviewByProductId, apiUpdateProduct } from '../../remote/e-commerce-api/productService';
 
 const Container = styled.div`
     padding: 20px;
@@ -62,6 +63,22 @@ const AddToCart = styled.button`
         }
     `;
 
+const UpdateProduct = styled.button`
+    width: 100%;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    font-weight: 600;
+    margin: 10px 0px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    &:hover {
+        background-color: #0a71bb;
+        }
+    `;
+
 const ProductReviews = styled.div`
     display: flex;
     flex-direction: column;
@@ -93,18 +110,25 @@ const ProductDetail = () => {
         category: '',
 
     });
+
+    const [name, setName] = useState<string>('');
+    const [price, setPrice] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+    const [category, setCategory] = useState<number>(0);
+    const [message, setMessage] = useState<string>('');
+
+    const { id } = useParams();
+    // Grabing the current user from state
+    const user: UserState = useAppSelector(currentUser);
+    
     const [reviews, setReviews] = useState<Rating[]>([]);
     const [display, setDisplay] = useState(false);
 
-    const { id } = useParams();
-    const user = useAppSelector(currentUser);
-    console.log(user);
     useEffect(() => {
         // Fetch's product by Id and set state of current product
         const fetchData = async () => {
             const result = await apiGetProductById(id!);
             setProduct(result.payload);
-            console.log(result.payload);
         };
         fetchData();
 
@@ -116,6 +140,39 @@ const ProductDetail = () => {
         fetchReviews();
     }, []);
 
+    useEffect(() => { // if fields empty set default information
+        if (!name || !price || !description) { 
+            setMessage('ribbit, fields are empty');
+            setName(product.name);
+            setPrice((product.price).toString());
+            setDescription(product.description);
+            console.log(message);
+        }
+    });
+
+    /**
+     * update product funtion
+     */
+    const updateProduct = async () => {     
+        // create a product request object
+        const productResponse: UpdateProductRequest = {category: category,
+            id: +id!,
+            name: name,
+            description: description,
+            price: +price,
+            imageUrlS: product.imgUrlSmall,
+            imageUrlM: product.imgUrlMed};
+
+        if (!name || !price || !description || category == 0) { // checks if fields are empty
+            console.log('Ribbit');
+        } else {
+            const response = await apiUpdateProduct(productResponse); // Sends login request to API
+            if (response.status >= 200 && response.status < 300) {
+                setMessage('update successful');
+            }
+        }
+                
+    };
 
     /**
      * Adds product to cart.
@@ -165,6 +222,39 @@ const ProductDetail = () => {
             <Container>
                 <Flex>
                     <Image src={product.imgUrlMed} />
+                    {/* checking to see if a user is an ADMIN. if they are then render input tags to allow them to edit and update the product. Else we render h tags instead. */}
+                    { user.role === 'ADMIN'? <ProductInfo className="productInfo">
+                        <div>
+                            <label>Name:</label>
+                            <input onChange={(e: SyntheticEvent) => setName((e.target as HTMLInputElement).value)} 
+                                placeholder={product.name.toUpperCase()} defaultValue={name}></input>
+                            <label>Price:</label>
+                            <input onChange={(e: SyntheticEvent) => setPrice((e.target as HTMLInputElement).value)} 
+                                placeholder={product.price.toString()} defaultValue={price.toString()}></input>
+                            <label>Product Description:</label>
+                            <input onChange={(e: SyntheticEvent) => setDescription((e.target as HTMLInputElement).value)} 
+                                placeholder={product.description} defaultValue={description} ></input>
+                            <Select
+                                id="demo-simple-select-helper"
+                                value={category}
+                                label="Search"
+                                onChange={event => setCategory(event.target.value as number)}>
+                                <MenuItem value={0}>Category</MenuItem>
+                                <MenuItem value={1}>Cloud</MenuItem>
+                                <MenuItem value={2}>Dawn</MenuItem>
+                                <MenuItem value={3}>Day</MenuItem>
+                                <MenuItem value={4}>Dusk</MenuItem>
+                                <MenuItem value={5}>Moon</MenuItem>
+                                <MenuItem value={6}>Cloud</MenuItem>
+                            </Select>
+                        </div>
+                        <ProductInfoBottom>
+                            <UpdateProduct onClick={updateProduct}>
+                                Update Product
+                            </UpdateProduct>
+                        </ProductInfoBottom>
+                    </ProductInfo>
+                    :
                     <ProductInfo className="productInfo">
                         <div>
                             <h1>{product.name.toUpperCase()}</h1>
@@ -180,7 +270,7 @@ const ProductDetail = () => {
                                 Add to Cart
                             </AddToCart>
                         </ProductInfoBottom>
-                    </ProductInfo>
+                    </ProductInfo>}
                 </Flex>
                 <ProductReviews>
                     

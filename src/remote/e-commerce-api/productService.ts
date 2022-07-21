@@ -1,5 +1,6 @@
 import CreateProductRequest from '../../models/CreateProductRequest';
 import Product from '../../models/Product';
+import UpdateProduct from '../../models/UpdateProduct';
 import Rating from '../../models/RatingResponse';
 import eCommerceClient, { eCommerceApiResponse } from './eCommerceClient';
 
@@ -15,24 +16,12 @@ export const apiGetProductById = async (id: string): Promise<eCommerceApiRespons
     return { status: response.status, payload: response.data };
 };
 
-export const apiGetReviewByProductId = async (id: string): Promise<eCommerceApiResponse> => {
-    const response = await eCommerceClient.get<Rating>(`${baseURL}/rating/${id}`);
-    return { status: response.status, payload: response.data }; 
+export const apiUpdateProduct = async (product: UpdateProduct): Promise<eCommerceApiResponse> => {
+    const response = await eCommerceClient.put<UpdateProduct>(`${baseURL}`, product);
+    return { status: response.status, payload: product };
 };
 
-// export const apiPostReviewByProductId = async (id: string): Promise<eCommerceApiResponse> => {
-//     const response = await eCommerceClient.post<Rating>(`${baseURL}/rating/${id}`);
-//     return { status: response.status, payload: response.data }; 
-// };
-
-export const apiUpsertProduct = async (product: Product): Promise<eCommerceApiResponse> => {
-    const response = await eCommerceClient.put<Product>(`${baseURL}`, product);
-    return { status: response.status, payload: response.data };
-};
-
-export const apiPurchase = async (
-    products: { id: number; }[],
-): Promise<eCommerceApiResponse> => {
+export const apiPurchase = async (products: { id: number; }[],): Promise<eCommerceApiResponse> => {
     const response = await eCommerceClient.patch<Product[]>(`${baseURL}`, products);
     return { status: response.status, payload: response.data };
 };
@@ -53,3 +42,9 @@ export const apiCreateProduct = async (product: CreateProductRequest): Promise<e
     });
     return { status: response.status, payload: product };
 };
+
+export const apiGetReviewByProductId = async (id: string): Promise<eCommerceApiResponse> => {
+    const response = await eCommerceClient.get<Rating>(`${baseURL}/rating/${id}`);
+    return { status: response.status, payload: response.data }; 
+};
+
