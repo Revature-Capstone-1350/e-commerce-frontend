@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { CartContext } from '../../context/cart.context';
-import Navbar from '../navbar/Navbar';
 
 const Container = styled.div``;
 
@@ -118,7 +117,6 @@ export const Cart = () => {
 
     return (
         <Container>
-            <Navbar />
             <Wrapper>
                 <Title>YOUR BAG</Title>
                 <Top>

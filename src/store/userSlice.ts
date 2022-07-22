@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from './store';
 
 
 // setup user interface to match response object
@@ -8,6 +9,7 @@ export interface UserState {
   lastName: string;
   email: string;
   role: string;
+  token: string;
 }
 
 // setup of initial state to show before change
@@ -17,6 +19,7 @@ const initialState: UserState = {
   lastName: '',
   email: '',
   role: '',
+  token: '',
 };
 
 
@@ -34,6 +37,7 @@ const userSlice = createSlice({
       state.lastName = action.payload.lastName;
       state.email = action.payload.email;
       state.role = action.payload.role;
+      state.token = action.payload.token;
     },
   }
 });
@@ -41,6 +45,6 @@ const userSlice = createSlice({
 
 // we export the reducers action creators to allow for them to be used on the UI
 export const { updateUser } = userSlice.actions;
-
+export const currentUser = (state: RootState) => state.user;
 // export that is used in the store
 export default userSlice.reducer;

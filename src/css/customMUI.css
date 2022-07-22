@@ -1,3 +1,7 @@
 .MuiInputLabel-root {
     z-index: 1;
 }
+
+.stars {
+    width: 100%;
+}

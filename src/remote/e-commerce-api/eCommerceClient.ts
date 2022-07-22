@@ -7,12 +7,20 @@ const eCommerceClient = axios.create({
     baseURL: 'http://localhost:5000/skyview',
     headers: {
         'Content-Type': 'application/json',
+        'Authorization': 'text/plain',
+
     },
 });
 
 export interface eCommerceApiResponse {
     status: number;
     payload: any;
+}
+
+export interface eCommerceLoginResponse {
+    status: number;
+    payload: any;
+    headers: any;
 }
 
 export default eCommerceClient;
