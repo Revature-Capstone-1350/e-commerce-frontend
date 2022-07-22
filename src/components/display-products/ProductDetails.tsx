@@ -200,6 +200,7 @@ const ProductDetail = () => {
 
     };
 
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevents page from refreshing
         const data = new FormData(event.currentTarget); // Gets form data
