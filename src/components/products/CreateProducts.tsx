@@ -7,11 +7,13 @@ import { Button, MenuItem, Select} from '@mui/material';
 import styled from 'styled-components';
 import { apiCreateProduct } from '../../remote/e-commerce-api/productService';
 import CreateProductRequest from '../../models/CreateProductRequest';
+import axios from 'axios';
 
 const CreateDiv = styled.div`
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    text-align: center;
 `;
 const TitleDiv = styled.div`
     display: flex;
@@ -30,6 +32,7 @@ export const CreateProducts = () => {
     const [message, setMessage] = useState<string>('');
 
     const sendNewProduct = async () => {
+        
         if (!name || !description || !price || !imageS || !imageM) { // If fields are empty, a message will display an error
             setMessage('All fields must be completed');
         } else if (category === 0) { // If category hasn't been selected, a message will display an error
@@ -41,13 +44,17 @@ export const CreateProducts = () => {
             price: +price,
             imageUrlS: imageS,
             imageUrlM: imageM};
-        const response = await apiCreateProduct(productResponse); // Sends login request to API
-            if (Math.floor(response.status/100) !=2) { // If the response is not in the 200 range a error message will be displayed
-                setMessage('Could not create a new product, please contact development team.');
-            } else { // If the response is in the 200 range a confirmation message will be displayed
-                setMessage('New Product Created');
-            }    
+            
+        try {
+            const response = await apiCreateProduct(productResponse); // Sends login request to API
+                    if (response.status == 201) { // If the response is not in the 200 range a error message will be displayed
+                        setMessage('New Product Created');
+                    } 
+        } catch (err: any) {
+            setMessage(err.response.data.message);  
+        }
     };
+
     };
 return (
     <React.Fragment>

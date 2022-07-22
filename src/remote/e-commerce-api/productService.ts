@@ -52,4 +52,6 @@ export const apiCreateProduct = async (product: CreateProductRequest): Promise<e
         imageUrlM: product.imageUrlM
     });
     return { status: response.status, payload: product };
+    
+    
 };
