@@ -8,6 +8,8 @@ import { Button, MenuItem, Select } from '@mui/material';
 import styled from 'styled-components';
 import { apiCreateProduct } from '../../remote/e-commerce-api/productService';
 import CreateProductRequest from '../../models/CreateProductRequest';
+import { useAppSelector } from '../../store/hooks';
+import { UserState, currentUser } from '../../store/userSlice';
 
 const CreateDiv = styled.div`
     display: flex;
