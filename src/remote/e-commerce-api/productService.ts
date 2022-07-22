@@ -40,10 +40,9 @@ export const apiCreateProduct = async (product: CreateProductRequest): Promise<e
         imageUrlS: product.imageUrlS,
         imageUrlM: product.imageUrlM
     });
-    return { status: response.status, payload: product };
-    
-    
+    return { status: response.status, payload: product };  
 };
+
 export const apiGetReviewByProductId = async (id: string): Promise<eCommerceApiResponse> => {
     const response = await eCommerceClient.get<Rating>(`${baseURL}/rating/${id}`);
     return { status: response.status, payload: response.data }; 

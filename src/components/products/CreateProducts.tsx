@@ -7,7 +7,6 @@ import { Button, MenuItem, Select} from '@mui/material';
 import styled from 'styled-components';
 import { apiCreateProduct } from '../../remote/e-commerce-api/productService';
 import CreateProductRequest from '../../models/CreateProductRequest';
-import axios from 'axios';
 
 const CreateDiv = styled.div`
     display: flex;
@@ -51,6 +50,8 @@ export const CreateProducts = () => {
                         setMessage('New Product Created');
                     } 
         } catch (err: any) { // The Axios error is cast as any in order to be able to access the message inside the error object
+            console.log(err);
+            
             setMessage(err.response.data.message);  // Renders the error message sent from the API on screen 
         }
     };
