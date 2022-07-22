@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { CartContext } from '../../context/cart.context';
+import Product from '../../models/Product';
 
 const Container = styled.div``;
 
@@ -36,7 +37,7 @@ const Info = styled.div`
     flex: 3;
 `;
 
-const Product = styled.div`
+const ProductDiv = styled.div`
     display: flex;
     justify-content: space-between;
 `;
@@ -108,12 +109,32 @@ const Button = styled.button`
     background-color: black;
     color: white;
     font-weight: 600;
+    cursor: pointer;
+`;
+const XButton = styled.button`
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+   ;
 `;
 
 export const Cart = () => {
-    const { cart } = useContext(CartContext);
+    const { cart, setCart } = useContext(CartContext);
 
     const navigate = useNavigate();
+
+    const removeItemFromCart = (product: Product) => {
+        const newCart = [...cart]; // creates new cart list.
+        const index = newCart.findIndex((searchProduct) => {
+            return searchProduct.productId === product.productId; // checks if product is in cart.
+        });
+        
+        if (index > -1)
+            newCart.splice(index, 1); // if product isin cart, then remove product to cart.
+        
+        setCart(newCart); // sets cart to new cart list.
+    };
+
 
     return (
         <Container>
@@ -136,29 +157,32 @@ export const Cart = () => {
                     </TopButton>
                 </Top>
                 <Bottom>
-                    <Info>
-                        {cart.map((product) => (
-                            <>
-                                <Product>
-                                    <ProductDetail>
-                                        <Image src={product.imgUrlSmall} />
-                                        <Details>
-                                            <ProductName>
-                                                <b>Product:</b> {product.name}
-                                            </ProductName>
-                                            <ProductId>
-                                                <b>ID:</b> {product.productId}
-                                            </ProductId>
-                                        </Details>
-                                    </ProductDetail>
-                                    <PriceDetail>
-                                        <ProductPrice>$ {product.price}</ProductPrice>
-                                    </PriceDetail>
-                                </Product>
-                                <Hr />
-                            </>
-                        ))}
-                    </Info>
+                        <Info>
+                            {cart.map((product: Product) => (
+                                <>
+                                    <ProductDiv>
+                                        <ProductDetail>
+                                            <Image src={product.imgUrlSmall} />
+                                            <Details>
+                                                <ProductName>
+                                                    <b>Product:</b> {product.name}
+                                                </ProductName>
+                                                <ProductId>
+                                                    <b>ID:</b> {product.productId}
+                                                </ProductId>
+                                            </Details>
+                                        </ProductDetail>
+                                        <PriceDetail>
+                                            <ProductPrice>$ {product.price}</ProductPrice>
+                                        </PriceDetail>
+                
+                                        <XButton title='Remove from cart' onClick={() => removeItemFromCart(product)} value={product.productId}>
+                                            x
+                                        </XButton>
+                                    </ProductDiv><Hr />
+                                </>
+                            ))}
+                        </Info>
                     <Summary>
                         <SummaryTitle>ORDER SUMMARY</SummaryTitle>
                         <SummaryItem>
