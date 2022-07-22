@@ -289,11 +289,11 @@ const ProductDetail = () => {
                                     autoComplete='rating'
                                 >
                                     <MenuItem value="">Star Rating</MenuItem>
-                                    <MenuItem value={1}>*</MenuItem>
-                                    <MenuItem value={2}>**</MenuItem>
-                                    <MenuItem value={3}>***</MenuItem>
-                                    <MenuItem value={4}>****</MenuItem>
-                                    <MenuItem value={5}>*****</MenuItem>
+                                    <MenuItem value={1}>&#9734;</MenuItem>
+                                    <MenuItem value={2}>&#9734;&#9734;</MenuItem>
+                                    <MenuItem value={3}>&#9734;&#9734;&#9734;</MenuItem>
+                                    <MenuItem value={4}>&#9734;&#9734;&#9734;&#9734;</MenuItem>
+                                    <MenuItem value={5}>&#9734;&#9734;&#9734;&#9734;&#9734;</MenuItem>
                                 </Select>
                             </FormControl>
                             <TextField
