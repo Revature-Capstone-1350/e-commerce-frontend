@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -12,7 +13,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { apiRegister } from '../../remote/e-commerce-api/authService';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 
 const theme = createTheme();
@@ -24,6 +25,38 @@ export default function Register() {
   const navigate = useNavigate();
   const [error, setError] = useState<string>('');
 
+  /**
+   * Checks if password is valid
+   *
+   * @param {string} value Password to be tested
+   */
+  const checkPassword = (value: string) => {
+    const isContainsUppercase = /^(?=.*[A-Z]).*$/;
+    if (!isContainsUppercase.test(value)) { // Test if string contains UpperCase character
+      setError('Password must have at least one Uppercase Character.');
+    }
+
+    const isContainsLowercase = /^(?=.*[a-z]).*$/;
+    if (!isContainsLowercase.test(value)) { // Test if string contains LowerCase character
+      setError('Password must have at least one Lowercase Character.');
+    }
+
+    const isContainsNumber = /^(?=.*[0-9]).*$/;
+    if (!isContainsNumber.test(value)) { // Test if string contains Number
+      setError('Password must contain at least one Number.');
+    }
+
+    const isContainsSymbol = /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/;
+    if (!isContainsSymbol.test(value)) { // Test if string contains Special Character
+      setError('Password must contain at least one Special Symbol.');
+    }
+
+    const isValidLength = /^.{8,}$/;
+    if (!isValidLength.test(value)) { // Test if string is 8 characters long
+      setError('Password must be atleast 8 Characters Long.');
+    }
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -31,23 +64,30 @@ export default function Register() {
     const lastName = data.get('lastName'); // creates local password variable from data
     const email = data.get('email'); // creates local email variable from data
     const password = data.get('password'); // creates local password variable from data
-    const regex = new RegExp('/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i');
-    const strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    const passwordRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
+
 
     if (!firstName || !lastName || !email || !password) {
       setError('Please fill out all fields');
-    } else if (!regex.test(email!.toString()!)) {
+    } else if (!emailRegex.test(email!.toString()!)) {
       setError('Enter valid email'); // if email fails regex test, set error message.
-    } else if (!strongRegex.test(password!.toString()!)) {
-      setError('Enter valid password'); // if password fails regex test, set error message.
+      console.log('not valid email');
+      console.log(email!.toString()!);
+    } else if (!passwordRegex.test(password!.toString()!)) {
+      checkPassword(password!.toString()); // if password fails regex test, run checkPassword function.
+    } else {
+      try {
+        const response = await apiRegister(`${data.get('firstName')}`, `${data.get('lastName')}`, `${data.get('email')}`, `${data.get('password')}`);
+        if (response.status >= 200 && response.status < 300) navigate('/login');
+      } catch (error: any) {
+        if (error.response.status === 409) {
+          setError('There is already a User with that Email.');
+        }
+      }
     }
 
-    try {
-      const response = await apiRegister(`${data.get('firstName')}`, `${data.get('lastName')}`, `${data.get('email')}`, `${data.get('password')}`);
-      if (response.status >= 200 && response.status < 300) navigate('/login');
-    } catch (error: any) {
-      console.log(error.response.status);
-    }
+
 
 
   };

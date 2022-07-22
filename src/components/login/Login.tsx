@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -11,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { apiLogin } from '../../remote/e-commerce-api/authService';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import { updateUser } from '../../store/userSlice';
 
@@ -24,7 +25,40 @@ export default function Login() {
   // Navigate variable to useNavigate hook
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
+
+  /**
+   * Checks if password is valid
+   *
+   * @param {string} value Password to be tested
+   */
+  const checkPassword = (value: string) => {
+    const isContainsUppercase = /^(?=.*[A-Z]).*$/;
+    if (!isContainsUppercase.test(value)) { // Test if string contains UpperCase character
+      setError('Password must have at least one Uppercase Character.');
+    }
+
+    const isContainsLowercase = /^(?=.*[a-z]).*$/;
+    if (!isContainsLowercase.test(value)) { // Test if string contains LowerCase character
+      setError('Password must have at least one Lowercase Character.');
+    }
+
+    const isContainsNumber = /^(?=.*[0-9]).*$/;
+    if (!isContainsNumber.test(value)) { // Test if string contains Number
+      setError('Password must contain at least one Number.');
+    }
+
+    const isContainsSymbol = /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/;
+    if (!isContainsSymbol.test(value)) { // Test if string contains Special Character
+      setError('Password must contain at least one Special Symbol.');
+    }
+
+    const isValidLength = /^.{8,}$/;
+    if (!isValidLength.test(value)) { // Test if string is 8 characters long
+      setError('Password must be atleast 8 Characters Long.');
+    }
+  };
+
   /**
    * Handles login button click, sends login request to API
    *
@@ -36,30 +70,32 @@ export default function Login() {
     const email = data.get('email'); // creates local email variable from data
     const password = data.get('password'); // creates local password variable from data
     // regex for input validation of email and password.
-    const regex = new RegExp('/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i');
+    const regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     const strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
 
     if (!data.get('email') || !data.get('password')) {
-      setError("Please enter email and password."); // if email and password is null, set error message.
+      setError('Please enter email and password.'); // if email and password is null, set error message.
     }
     else if (!regex.test(email!.toString()!)) {
       setError('Enter valid email'); // if email fails regex test, set error message.
     } else if (!strongRegex.test(password!.toString()!)) {
-      setError('Enter valid password'); // if password fails regex test, set error message.
-    }
-    try {
-      const response = await apiLogin(`${data.get('email')}`, `${data.get('password')}`); // Sends login request to API
-      if (response.status >= 200 && response.status < 300) {
-        navigate('/'); // If login successful, navigate to home page
+      checkPassword(password!.toString()); // if password fails regex test, run checkPassword function.
+    } else {
+      try {
+        const response = await apiLogin(`${data.get('email')}`, `${data.get('password')}`); // Sends login request to API
+        if (response.status >= 200 && response.status < 300) {
+          navigate('/'); // If login successful, navigate to home page
+        }
+        const user = response.payload; // Gets user from response
+        user.token = response.headers.authorization; // Gets token from headers
+        dispatch(updateUser(user)); // sets user in redux store 
+      } catch (error: any) {
+        if (error.response.status === 401) {
+          setError('Invalid Creditials: Cannot find User!'); //  if status is 401, set error message.
+        }
       }
-      const user = response.payload; // Gets user from response
-      user.token = response.headers.authorization; // Gets token from headers
-      dispatch(updateUser(user)); // sets user in redux store 
-    } catch (error: any) {
-      if (error.response.status === 401) {
-        setError('Invalid Creditials: Cannot find User!'); //  if status is 401, set error message.
-      }
     }
+
   };
 
   return (
