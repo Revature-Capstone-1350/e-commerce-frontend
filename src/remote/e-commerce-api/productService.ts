@@ -16,8 +16,12 @@ export const apiGetProductById = async (id: string): Promise<eCommerceApiRespons
     return { status: response.status, payload: response.data };
 };
 
-export const apiUpdateProduct = async (product: UpdateProduct): Promise<eCommerceApiResponse> => {
-    const response = await eCommerceClient.put<UpdateProduct>(`${baseURL}`, product);
+export const apiUpdateProduct = async (product: UpdateProduct, token: string): Promise<eCommerceApiResponse> => {
+    const response = await eCommerceClient.put<UpdateProduct>(`${baseURL}`, product, {
+        headers: {
+            Authorization: token,
+        },
+    });
     return { status: response.status, payload: product };
 };
 
@@ -31,19 +35,40 @@ export const apiDeleteProduct = async (id: number): Promise<eCommerceApiResponse
     return { status: response.status, payload: response.data };
 };
 
-export const apiCreateProduct = async (product: CreateProductRequest): Promise<eCommerceApiResponse> => {
-    const response = await eCommerceClient.post<Product>(`${baseURL}/createproduct`,{
+export const apiCreateProduct = async (product: CreateProductRequest, token: string): Promise<eCommerceApiResponse> => {
+    const response = await eCommerceClient.post<Product>(`${baseURL}/createproduct`, {
         category: product.category,
         name: product.name,
         description: product.description,
         price: product.price,
         imageUrlS: product.imageUrlS,
         imageUrlM: product.imageUrlM
+    }, {
+        headers: {
+            Authorization: token,
+        },
     });
-    return { status: response.status, payload: product };  
+    return { status: response.status, payload: product };
+};
+
+export const apiPostReviewByProductId = async (
+    id: string,
+    rating: Record<string, never>,
+    token: string,
+): Promise<eCommerceApiResponse> => {
+    const response = await eCommerceClient.post<Rating>(
+        `${baseURL}/rating/${id}`,
+        JSON.parse(JSON.stringify(rating)),
+        {
+            headers: {
+                Authorization: token,
+            },
+        },
+    );
+    return { status: response.status, payload: response.data };
 };
 
 export const apiGetReviewByProductId = async (id: string): Promise<eCommerceApiResponse> => {
     const response = await eCommerceClient.get<Rating>(`${baseURL}/rating/${id}`);
-    return { status: response.status, payload: response.data }; 
+    return { status: response.status, payload: response.data };
 };
