@@ -168,7 +168,7 @@ const ProductDetail = () => {
         if (!name || !price || !description || category == 0) { // checks if fields are empty
             console.log('Ribbit');
         } else {
-            const response = await apiUpdateProduct(productResponse); // Sends login request to API
+            const response = await apiUpdateProduct(productResponse, user.token); // Sends login request to API
             if (response.status >= 200 && response.status < 300) {
                 setMessage('update successful');
             }

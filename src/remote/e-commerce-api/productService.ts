@@ -15,8 +15,12 @@ export const apiGetProductById = async (id: string): Promise<eCommerceApiRespons
     return { status: response.status, payload: response.data };
 };
 
-export const apiUpdateProduct = async (product: UpdateProduct): Promise<eCommerceApiResponse> => {
-    const response = await eCommerceClient.put<UpdateProduct>(`${baseURL}`, product);
+export const apiUpdateProduct = async (product: UpdateProduct, token: string): Promise<eCommerceApiResponse> => {
+    const response = await eCommerceClient.put<UpdateProduct>(`${baseURL}`, product, {
+        headers: {
+            Authorization: token,
+        },
+    });
     return { status: response.status, payload: product };
 };
 
@@ -32,5 +36,5 @@ export const apiDeleteProduct = async (id: number): Promise<eCommerceApiResponse
 
 export const apiGetReviewByProductId = async (id: string): Promise<eCommerceApiResponse> => {
     const response = await eCommerceClient.get<Rating>(`${baseURL}/rating/${id}`);
-    return { status: response.status, payload: response.data }; 
+    return { status: response.status, payload: response.data };
 };
