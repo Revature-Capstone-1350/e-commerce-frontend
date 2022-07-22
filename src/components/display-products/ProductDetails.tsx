@@ -245,7 +245,9 @@ const ProductDetail = () => {
                                 <MenuItem value={3}>Day</MenuItem>
                                 <MenuItem value={4}>Dusk</MenuItem>
                                 <MenuItem value={5}>Moon</MenuItem>
-                                <MenuItem value={6}>Cloud</MenuItem>
+                                <MenuItem value={6}>Night</MenuItem>
+                                <MenuItem value={7}>Space</MenuItem>
+                                <MenuItem value={8}>Sun</MenuItem>
                             </Select>
                         </div>
                         <ProductInfoBottom>
