@@ -45,13 +45,13 @@ export const CreateProducts = () => {
             imageUrlS: imageS,
             imageUrlM: imageM};
             
-        try {
+        try { // This Try/Catch block is needed to handle Axios exceptions
             const response = await apiCreateProduct(productResponse); // Sends login request to API
                     if (response.status == 201) { // If the response is not in the 200 range a error message will be displayed
                         setMessage('New Product Created');
                     } 
-        } catch (err: any) {
-            setMessage(err.response.data.message);  
+        } catch (err: any) { // The Axios error is cast as any in order to be able to access the message inside the error object
+            setMessage(err.response.data.message);  // Renders the error message sent from the API on screen 
         }
     };
 

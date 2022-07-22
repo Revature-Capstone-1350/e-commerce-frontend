@@ -31,7 +31,6 @@ export const apiDeleteProduct = async (id: number): Promise<eCommerceApiResponse
     return { status: response.status, payload: response.data };
 };
 
-<<<<<<< HEAD
 export const apiCreateProduct = async (product: CreateProductRequest): Promise<eCommerceApiResponse> => {
     const response = await eCommerceClient.post<Product>(`${baseURL}/createproduct`,{
         category: product.category,
@@ -45,9 +44,7 @@ export const apiCreateProduct = async (product: CreateProductRequest): Promise<e
     
     
 };
-=======
 export const apiGetReviewByProductId = async (id: string): Promise<eCommerceApiResponse> => {
     const response = await eCommerceClient.get<Rating>(`${baseURL}/rating/${id}`);
     return { status: response.status, payload: response.data }; 
 };
->>>>>>> f21f4a6be40b9e613b03251967a3f9cadd56bfe4
