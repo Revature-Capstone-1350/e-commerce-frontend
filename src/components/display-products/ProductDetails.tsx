@@ -115,6 +115,8 @@ const ProductDetail = () => {
     const [description, setDescription] = useState<string>('');
     const [category, setCategory] = useState<number>(0);
     const [message, setMessage] = useState<string>('');
+    const [error, setError] = useState<string>('');
+
 
     const { id } = useParams();
     // Grabing the current user from state
@@ -141,11 +143,9 @@ const ProductDetail = () => {
 
     useEffect(() => { // if fields empty set default information
         if (!name || !price || !description) {
-            setMessage('ribbit, fields are empty');
             setName(product.name);
             setPrice((product.price).toString());
             setDescription(product.description);
-            console.log(message);
         }
     });
 
@@ -165,11 +165,11 @@ const ProductDetail = () => {
         };
 
         if (!name || !price || !description || category == 0) { // checks if fields are empty
-            console.log('Ribbit');
+            setError('Fields are empty!');
         } else {
             const response = await apiUpdateProduct(productResponse, user.token); // Sends login request to API
             if (response.status >= 200 && response.status < 300) {
-                setMessage('update successful');
+                setError('update successful');
             }
         }
 
@@ -195,7 +195,6 @@ const ProductDetail = () => {
     };
 
     const addReview = () => {
-        console.log('clicked');
         setDisplay(true);
 
     };
@@ -206,11 +205,19 @@ const ProductDetail = () => {
         const data = new FormData(event.currentTarget); // Gets form data
         const rating = `${data.get('rating')}`;
         const description = `${data.get('description')}`;
-        apiPostReviewByProductId(
-            `${product.productId}`,
-            JSON.parse(JSON.stringify({ rating: rating, description: description })),
-            user.token,
-        );
+        if (!rating) {
+            setMessage('Please leave a Star Rating');
+        } else if (!description) {
+            setMessage('Please write a description for your review!');
+        } else {
+            setMessage('Review Added!');
+            apiPostReviewByProductId(
+                `${product.productId}`,
+                JSON.parse(JSON.stringify({ rating: rating, description: description })),
+                user.token,
+            );
+        }
+
     };
 
     return (
@@ -301,6 +308,7 @@ const ProductDetail = () => {
                                 id='description'
                                 autoComplete='current-description'
                             />
+                            {message && <p>{message}</p>}
                             <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
                                 Submit review
                             </Button>
