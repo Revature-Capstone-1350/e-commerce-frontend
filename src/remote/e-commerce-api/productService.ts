@@ -51,6 +51,23 @@ export const apiCreateProduct = async (product: CreateProductRequest, token: str
     return { status: response.status, payload: product };
 };
 
+export const apiPostReviewByProductId = async (
+    id: string,
+    rating: Record<string, never>,
+    token: string,
+): Promise<eCommerceApiResponse> => {
+    const response = await eCommerceClient.post<Rating>(
+        `${baseURL}/rating/${id}`,
+        JSON.parse(JSON.stringify(rating)),
+        {
+            headers: {
+                Authorization: token,
+            },
+        },
+    );
+    return { status: response.status, payload: response.data };
+};
+
 export const apiGetReviewByProductId = async (id: string): Promise<eCommerceApiResponse> => {
     const response = await eCommerceClient.get<Rating>(`${baseURL}/rating/${id}`);
     return { status: response.status, payload: response.data };
