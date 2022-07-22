@@ -9,6 +9,7 @@ export interface UserState {
   lastName: string;
   email: string;
   role: string;
+  token: string;
 }
 
 // setup of initial state to show before change
@@ -18,6 +19,7 @@ const initialState: UserState = {
   lastName: '',
   email: '',
   role: '',
+  token: '',
 };
 
 
@@ -35,6 +37,7 @@ const userSlice = createSlice({
       state.lastName = action.payload.lastName;
       state.email = action.payload.email;
       state.role = action.payload.role;
+      state.token = action.payload.token;
     },
   }
 });
