@@ -34,6 +34,7 @@ module.exports = {
         "no-duplicate-imports": "error",
         "@typescript-eslint/no-empty-function": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
+        "no-useless-escape": "off",
     },
     "settings": {
         "import/resolver": {

@@ -21,52 +21,37 @@ const theme = createTheme();
  * @returns {void}
  */
 export default function Register() {
-  const navigate = useNavigate(); 
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState<string[]>([]);
+  const navigate = useNavigate();
+  const [error, setError] = useState<string>('');
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    setError([]);
     event.preventDefault();
-    const regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    const data = new FormData(event.currentTarget);
+    const firstName = data.get('firstName'); // creates local email variable from data
+    const lastName = data.get('lastName'); // creates local password variable from data
+    const email = data.get('email'); // creates local email variable from data
+    const password = data.get('password'); // creates local password variable from data
+    const regex = new RegExp('/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i');
     const strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
 
-    const errors:string[] = [];
-
-    if(!email || regex.test(email) === false){
-      const emailBad = 'Email is not valid';
-      if(!error.includes(emailBad)) {
-        errors.push(emailBad);
-        // setError([...error, email_bad]) // deconstructor assignment example
-      } 
-      
-    }
-    if(!password || strongRegex.test(password) === false){
-      const pwdBad = 'Password is not valid';
-      if(!error.includes(pwdBad)) {
-        errors.push(pwdBad);
-      } 
-    }
-    if(errors) {
-      setError(errors);
+    if (!firstName || !lastName || !email || !password) {
+      setError('Please fill out all fields');
+    } else if (!regex.test(email!.toString()!)) {
+      setError('Enter valid email'); // if email fails regex test, set error message.
+    } else if (!strongRegex.test(password!.toString()!)) {
+      setError('Enter valid password'); // if password fails regex test, set error message.
     }
 
-    const data = new FormData(event.currentTarget);
-    const response = await apiRegister(`${data.get('firstName')}`, `${data.get('lastName')}`, `${data.get('email')}`, `${data.get('password')}`);
-    if (response.status >= 200 && response.status < 300) navigate('/login');
+    try {
+      const response = await apiRegister(`${data.get('firstName')}`, `${data.get('lastName')}`, `${data.get('email')}`, `${data.get('password')}`);
+      if (response.status >= 200 && response.status < 300) navigate('/login');
+    } catch (error: any) {
+      console.log(error.response.status);
+    }
+
+
   };
-  useEffect( () => {
-    
-  }, [error]);
-  const handleEmail = (e : React.SyntheticEvent) => {
-    setError([]);
-    setEmail((e.target as HTMLInputElement).value);
-  };
-  const handlePassword = (e : React.SyntheticEvent) => {
-    setError([]);
-    setPassword((e.target as HTMLInputElement).value);
-  };
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -110,8 +95,6 @@ export default function Register() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  value={email}
-                  onChange={handleEmail}
                   required
                   fullWidth
                   id="email"
@@ -122,8 +105,6 @@ export default function Register() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  value={password}
-                  onChange={handlePassword}
                   required
                   fullWidth
                   name="password"
@@ -134,10 +115,7 @@ export default function Register() {
                 />
               </Grid>
             </Grid>
-            {(error)?<>{error.map((item) => (
-              <p key={item}>{item}</p>
-            ))}</>:<></>}
-            
+            {error && <p>{error}</p>}
             <Button
               type="submit"
               fullWidth
