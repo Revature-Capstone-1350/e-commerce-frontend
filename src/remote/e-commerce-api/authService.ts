@@ -1,6 +1,7 @@
 import LoginRequest from '../../models/LoginRequest';
 import RegisterRequest from '../../models/RegisterRequest';
-import eCommerceClient, { eCommerceApiResponse, eCommerceLoginResponse } from './eCommerceClient';
+import ResetRequest from '../../models/ResetRequest';
+import eCommerceClient, { eCommerceApiResponse, eCommerceLoginResponse, eCommerceResetResponse } from './eCommerceClient';
 
 const baseURL = '/auth';
 
@@ -26,3 +27,15 @@ export const apiRegister = async (
     });
     return { status: response.status, payload: response.data };
 };
+
+export const apiResetPassword = async (resetRequest: ResetRequest, token: string): Promise<eCommerceResetResponse> => {
+    const response = await eCommerceClient.patch<ResetRequest>(`${baseURL}/reset`, resetRequest,
+        {
+            headers: {
+                Authorization: token,
+            },
+        });
+    return { status: response.status, payload: response.data, headers: response.headers };
+};
+
+

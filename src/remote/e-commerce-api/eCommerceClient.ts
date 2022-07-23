@@ -23,4 +23,11 @@ export interface eCommerceLoginResponse {
     headers: any;
 }
 
+export interface eCommerceResetResponse {
+    status: number;
+    payload: any;
+    headers: any;
+}
+
+
 export default eCommerceClient;

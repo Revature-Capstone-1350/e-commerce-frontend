@@ -165,7 +165,7 @@ const ProductDetail = () => {
         };
 
         if (!name || !price || !description || category == 0) { // checks if fields are empty
-            setError('Fields are empty!');
+            console.log(error);
         } else {
             const response = await apiUpdateProduct(productResponse, user.token); // Sends login request to API
             if (response.status >= 200 && response.status < 300) {

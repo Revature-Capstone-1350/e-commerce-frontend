@@ -128,10 +128,10 @@ export const Cart = () => {
         const index = newCart.findIndex((searchProduct) => {
             return searchProduct.productId === product.productId; // checks if product is in cart.
         });
-        
+
         if (index > -1)
-            newCart.splice(index, 1); // if product isin cart, then remove product to cart.
-        
+            newCart.splice(index, 1); // if product is in cart, then remove product to cart.
+
         setCart(newCart); // sets cart to new cart list.
     };
 
@@ -157,32 +157,32 @@ export const Cart = () => {
                     </TopButton>
                 </Top>
                 <Bottom>
-                        <Info>
-                            {cart.map((product: Product) => (
-                                <>
-                                    <ProductDiv>
-                                        <ProductDetail>
-                                            <Image src={product.imgUrlSmall} />
-                                            <Details>
-                                                <ProductName>
-                                                    <b>Product:</b> {product.name}
-                                                </ProductName>
-                                                <ProductId>
-                                                    <b>ID:</b> {product.productId}
-                                                </ProductId>
-                                            </Details>
-                                        </ProductDetail>
-                                        <PriceDetail>
-                                            <ProductPrice>$ {product.price}</ProductPrice>
-                                        </PriceDetail>
-                
-                                        <XButton title='Remove from cart' onClick={() => removeItemFromCart(product)} value={product.productId}>
-                                            x
-                                        </XButton>
-                                    </ProductDiv><Hr />
-                                </>
-                            ))}
-                        </Info>
+                    <Info>
+                        {cart.map((product: Product) => (
+                            <>
+                                <ProductDiv>
+                                    <ProductDetail>
+                                        <Image src={product.imgUrlSmall} />
+                                        <Details>
+                                            <ProductName>
+                                                <b>Product:</b> {product.name}
+                                            </ProductName>
+                                            <ProductId>
+                                                <b>ID:</b> {product.productId}
+                                            </ProductId>
+                                        </Details>
+                                    </ProductDetail>
+                                    <PriceDetail>
+                                        <ProductPrice>$ {product.price}</ProductPrice>
+                                    </PriceDetail>
+
+                                    <XButton title='Remove from cart' onClick={() => removeItemFromCart(product)} value={product.productId}>
+                                        x
+                                    </XButton>
+                                </ProductDiv><Hr />
+                            </>
+                        ))}
+                    </Info>
                     <Summary>
                         <SummaryTitle>ORDER SUMMARY</SummaryTitle>
                         <SummaryItem>
