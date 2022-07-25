@@ -101,7 +101,7 @@ export default function Checkout() {
             ></AppBar>
             <Container component='main' maxWidth='sm' sx={{ mb: 4 }}>
                 <Paper variant='outlined' sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
-                style={{backgroundColor:"rgba(255,255,240,0.5)"}}
+                style={{backgroundColor:'rgba(255,255,240,0.5)'}}
                 >
                     <Typography component='h1' variant='h4' align='center'>
                         Checkout
