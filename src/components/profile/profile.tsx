@@ -127,18 +127,18 @@ export default function Profile() {
 
         if (!passwordRegex.test(newPassword!.toString())) { // if new password fails test, run checkPassword()
             checkPassword(newPassword!.toString());
-        }
+        } else {
+            try {
+                const response = await apiResetPassword(newUpdateUser, user.token);
+                if (response.status >= 200 && response.status < 300) { // if status is good set message
+                    setMessage2('Password Updated Successfully');
+                    setTimeout(() => setMessage2(''), 2000);
 
-        try {
-            const response = await apiResetPassword(newUpdateUser, user.token);
-            if (response.status >= 200 && response.status < 300) { // if status is good set message
-                setMessage2('Password Updated Successfully');
-                setTimeout(() => setMessage2(''), 2000);
-
-            }
-        } catch (error: any) {
-            if (error.response.status === 401) { // if status is 401 set message
-                setMessage2('Current Password is incorrect');
+                }
+            } catch (error: any) {
+                if (error.response.status === 401) { // if status is 401 set message
+                    setMessage2('Current Password is incorrect');
+                }
             }
         }
     };
