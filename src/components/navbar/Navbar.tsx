@@ -4,8 +4,8 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { CartContext } from '../../context/cart.context';
-import { useAppSelector, useAppDispatch } from '../../store/hooks';
-import { currentUser, UserState, updateUser } from '../../store/userSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { currentUser, updateUser, UserState } from '../../store/userSlice';
 import DarkMode from '../darkmode/DarkMode';
 
 // Container Styling Componenet
@@ -59,24 +59,16 @@ const Navbar = () => {
     const { cart } = useContext(CartContext);
     const cartLength = cart.length;
 
-
-    /**
-     * Logs user out of application.
-     * 
-     * @returns {void}
-     */
-    const handleLogout = () => {
-        const emptyUser: UserState = {
+    const logout = function () {
+        dispatch(updateUser({
             id: 0,
             firstName: '',
             lastName: '',
             email: '',
             role: '',
             token: '',
-        };
-        dispatch(updateUser(emptyUser)); // sets user in redux store 
-
-        navigate('/login');
+          }));
+          navigate('/login');
     };
 
     return (
@@ -106,14 +98,14 @@ const Navbar = () => {
                     {user.role === 'ADMIN' &&
                         <>
                             <MenuItem onClick={() => { navigate('/createproduct'); }}>CREATE PRODUCT</MenuItem>
-                            <MenuItem onClick={() => { handleLogout(); }}>LOGOUT</MenuItem>
+                            <MenuItem onClick={() => { logout(); }}>LOGOUT</MenuItem>
                         </>
                     }
                     {/* Navbar Rendering for Basic Users*/}
                     {user.id !== 0 && user.role !== 'ADMIN' &&
                         <>
                             <MenuItem onClick={() => { navigate('/profile'); }}>PROFILE</MenuItem>
-                            <MenuItem onClick={() => { handleLogout(); }}>LOGOUT</MenuItem>
+                            <MenuItem onClick={() => { logout(); }}>LOGOUT</MenuItem>
                         </>
                     }
                     <MenuItem

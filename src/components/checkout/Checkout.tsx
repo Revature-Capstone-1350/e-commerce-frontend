@@ -13,7 +13,6 @@ import PaymentForm from './PaymentForm';
 import Review from './Review';
 import Address from '../../models/Address';
 import PaymentDetail from '../../models/PaymentDetail';
-import Navbar from '../navbar/Navbar';
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
@@ -100,9 +99,10 @@ export default function Checkout() {
                     borderBottom: (t) => `1px solid ${t.palette.divider}`,
                 }}
             ></AppBar>
-            <Navbar />
             <Container component='main' maxWidth='sm' sx={{ mb: 4 }}>
-                <Paper variant='outlined' sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+                <Paper variant='outlined' sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+                style={{backgroundColor:'rgba(255,255,240,0.5)'}}
+                >
                     <Typography component='h1' variant='h4' align='center'>
                         Checkout
                     </Typography>

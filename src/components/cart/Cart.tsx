@@ -188,11 +188,11 @@ export const Cart = () => {
                         <SummaryItem>
                             <SummaryItemText>Subtotal</SummaryItemText>
                             <SummaryItemPrice>
-                                $
+                                $&nbsp;
                                 {cart.reduce<number>(
-                                    (total, product) => total + product.price,
+                                    (total, product) => Math.round(total*100 + product.price*100)/100,
                                     0,
-                                )}
+                                ).toFixed(2)}
                             </SummaryItemPrice>
                         </SummaryItem>
                         <SummaryItem>
@@ -206,11 +206,11 @@ export const Cart = () => {
                         <SummaryItem>
                             <SummaryItemText>Total</SummaryItemText>
                             <SummaryItemPrice>
-                                $
+                                $&nbsp;
                                 {cart.reduce<number>(
-                                    (total, product) => total + product.price,
+                                    (total, product) => Math.round(total*100 + product.price*100)/100,
                                     0,
-                                )}
+                                ).toFixed(2)}
                             </SummaryItemPrice>
                         </SummaryItem>
                         <Button
