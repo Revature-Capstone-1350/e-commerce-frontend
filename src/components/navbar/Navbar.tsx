@@ -59,26 +59,6 @@ const Navbar = () => {
     const { cart } = useContext(CartContext);
     const cartLength = cart.length;
 
-
-    /**
-     * Logs user out of application.
-     * 
-     * @returns {void}
-     */
-    const handleLogout = () => {
-        const emptyUser: UserState = {
-            id: 0,
-            firstName: '',
-            lastName: '',
-            email: '',
-            role: '',
-            token: '',
-        };
-        dispatch(updateUser(emptyUser)); // sets user in redux store 
-
-        navigate('/login');
-    };
-
     const logout = function () {
         dispatch(updateUser({
             id: 0,
