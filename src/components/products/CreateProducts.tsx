@@ -37,7 +37,7 @@ export const CreateProducts = () => {
     const user: UserState = useAppSelector(currentUser);
 
     const sendNewProduct = async () => {
-        const priceNum = parseFloat(price).toFixed(2);
+        const priceNum = parseFloat(price).toFixed(2); // converts price to a number with 2 decimal places
 
         if (!name || !description || !price || !imageS || !imageM) { // If fields are empty, a message will display an error
             setMessage('All fields must be completed');

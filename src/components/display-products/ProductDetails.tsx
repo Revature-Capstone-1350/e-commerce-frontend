@@ -165,7 +165,7 @@ const ProductDetail = () => {
             imageUrlM: product.imgUrlMed
         };
 
-        if (category === 0) {
+        if (category === 0) { // if category is not selected set error message
             setError('Please select a category');
         } else if (!name || !price || !description) { // checks if fields are empty
             console.log(error);
@@ -177,9 +177,9 @@ const ProductDetail = () => {
         else {
             try {
                 console.log(productResponse);
-                const response = await apiUpdateProduct(productResponse, user.token); // Sends login request to API
+                const response = await apiUpdateProduct(productResponse, user.token); // Sends update product request to API
                 if (response.status >= 200 && response.status < 300) {
-                    setError('Update Successful');
+                    setError('Update Successful'); // if successful, set error message
                 }
             } catch (error: any) {
                 setError(error.response.data.message.toString()); // if error set error message
