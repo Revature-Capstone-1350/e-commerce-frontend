@@ -58,7 +58,7 @@ export const apiPostReviewByProductId = async (
 ): Promise<eCommerceApiResponse> => {
     const response = await eCommerceClient.post<Rating>(
         `${baseURL}/rating/${id}`,
-        JSON.parse(JSON.stringify(rating)),
+        rating,
         {
             headers: {
                 Authorization: token,
