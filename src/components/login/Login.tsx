@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import { updateUser } from '../../store/userSlice';
+import { checkPassword, CheckPasswordOutput } from '../../utils/checkPassword';
 
 
 /**
@@ -26,38 +27,7 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [error, setError] = useState<string>('');
-
-  /**
-   * Checks if password is valid
-   *
-   * @param {string} value Password to be tested
-   */
-  const checkPassword = (value: string) => {
-    const isContainsUppercase = /^(?=.*[A-Z]).*$/;
-    if (!isContainsUppercase.test(value)) { // Test if string contains UpperCase character
-      setError('Password must have at least one Uppercase Character.');
-    }
-
-    const isContainsLowercase = /^(?=.*[a-z]).*$/;
-    if (!isContainsLowercase.test(value)) { // Test if string contains LowerCase character
-      setError('Password must have at least one Lowercase Character.');
-    }
-
-    const isContainsNumber = /^(?=.*[0-9]).*$/;
-    if (!isContainsNumber.test(value)) { // Test if string contains Number
-      setError('Password must contain at least one Number.');
-    }
-
-    const isContainsSymbol = /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/;
-    if (!isContainsSymbol.test(value)) { // Test if string contains Special Character
-      setError('Password must contain at least one Special Symbol.');
-    }
-
-    const isValidLength = /^.{8,}$/;
-    if (!isValidLength.test(value)) { // Test if string is 8 characters long
-      setError('Password must be atleast 8 Characters Long.');
-    }
-  };
+  const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
 
   /**
    * Handles login button click, sends login request to API
@@ -70,16 +40,15 @@ export default function Login() {
     const email = data.get('email'); // creates local email variable from data
     const password = data.get('password'); // creates local password variable from data
     // regex for input validation of email and password.
-    const regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    const strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
+    const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    const passwordObject: CheckPasswordOutput = checkPassword(password!.toString());
 
     if (!data.get('email') || !data.get('password')) {
       setError('Please enter email and password.'); // if email and password is null, set error message.
-    }
-    else if (!regex.test(email!.toString()!)) {
+    } else if (!emailRegex.test(email!.toString()!)) {
       setError('Enter valid email'); // if email fails regex test, set error message.
-    } else if (!strongRegex.test(password!.toString()!)) {
-      checkPassword(password!.toString()); // if password fails regex test, run checkPassword function.
+    } else if (!passwordObject.isValid) { // if new password fails test, run checkPassword()
+      setPasswordErrors(passwordObject.errorMessages);
     } else {
       try {
         const response = await apiLogin(`${data.get('email')}`, `${data.get('password')}`); // Sends login request to API
@@ -92,6 +61,7 @@ export default function Login() {
       } catch (error: any) {
         if (error.response.status === 401) {
           setError('Invalid Creditials: Cannot find User!'); //  if status is 401, set error message.
+          setPasswordErrors([]);
         }
       }
     }
@@ -140,6 +110,7 @@ export default function Login() {
             autoComplete='current-password'
           />
           {error && <p>{error}</p>}
+          {passwordErrors && passwordErrors.map((error: string) => <p key={error}>{error}</p>)}
           <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
             Sign In
           </Button>

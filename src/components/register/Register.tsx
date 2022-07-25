@@ -14,6 +14,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { apiRegister } from '../../remote/e-commerce-api/authService';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { CheckPasswordOutput, checkPassword } from '../../utils/checkPassword';
 
 
 const theme = createTheme();
@@ -24,38 +25,7 @@ const theme = createTheme();
 export default function Register() {
   const navigate = useNavigate();
   const [error, setError] = useState<string>('');
-
-  /**
-   * Checks if password is valid
-   *
-   * @param {string} value Password to be tested
-   */
-  const checkPassword = (value: string) => {
-    const isContainsUppercase = /^(?=.*[A-Z]).*$/;
-    if (!isContainsUppercase.test(value)) { // Test if string contains UpperCase character
-      setError('Password must have at least one Uppercase Character.');
-    }
-
-    const isContainsLowercase = /^(?=.*[a-z]).*$/;
-    if (!isContainsLowercase.test(value)) { // Test if string contains LowerCase character
-      setError('Password must have at least one Lowercase Character.');
-    }
-
-    const isContainsNumber = /^(?=.*[0-9]).*$/;
-    if (!isContainsNumber.test(value)) { // Test if string contains Number
-      setError('Password must contain at least one Number.');
-    }
-
-    const isContainsSymbol = /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/;
-    if (!isContainsSymbol.test(value)) { // Test if string contains Special Character
-      setError('Password must contain at least one Special Symbol.');
-    }
-
-    const isValidLength = /^.{8,}$/;
-    if (!isValidLength.test(value)) { // Test if string is 8 characters long
-      setError('Password must be atleast 8 Characters Long.');
-    }
-  };
+  const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -65,7 +35,7 @@ export default function Register() {
     const email = data.get('email'); // creates local email variable from data
     const password = data.get('password'); // creates local password variable from data
     const emailRegex = /^\S+@\S+\.\S+$/;
-    const passwordRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
+    const passwordObject: CheckPasswordOutput = checkPassword(password!.toString());
 
 
     if (!firstName || !lastName || !email || !password) {
@@ -74,14 +44,16 @@ export default function Register() {
       setError('Enter valid email'); // if email fails regex test, set error message.
       console.log('not valid email');
       console.log(email!.toString()!);
-    } else if (!passwordRegex.test(password!.toString()!)) {
-      checkPassword(password!.toString()); // if password fails regex test, run checkPassword function.
+    } else if (!passwordObject.isValid) { // if new password fails test, run checkPassword()
+      setError('');
+      setPasswordErrors(passwordObject.errorMessages);
     } else {
       try {
         const response = await apiRegister(`${data.get('firstName')}`, `${data.get('lastName')}`, `${data.get('email')}`, `${data.get('password')}`);
         if (response.status >= 200 && response.status < 300) navigate('/login');
       } catch (error: any) {
         if (error.response.status === 409) {
+          setPasswordErrors([]);
           setError('There is already a User with that Email.');
         }
       }
@@ -152,6 +124,7 @@ export default function Register() {
               </Grid>
             </Grid>
             {error && <p>{error}</p>}
+            {passwordErrors && passwordErrors.map((error: string) => <p key={error}>{error}</p>)}
             <Button
               type="submit"
               fullWidth

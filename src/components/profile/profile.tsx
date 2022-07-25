@@ -6,6 +6,7 @@ import ResetRquest from '../../models/ResetRequest';
 import { apiResetPassword } from '../../remote/e-commerce-api/authService';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { currentUser, updateUser, UserState } from '../../store/userSlice';
+import { checkPassword, CheckPasswordOutput } from '../../utils/checkPassword';
 
 /**
  * 
@@ -17,39 +18,7 @@ export default function Profile() {
 
     const [message, setMessage] = useState<string>('');
     const [message2, setMessage2] = useState<string>('');
-
-
-    /**
-     * Checks if password is valid
-     *
-     * @param {string} value Password to be tested
-     */
-    const checkPassword = (value: string) => {
-        const isContainsUppercase = /^(?=.*[A-Z]).*$/;
-        if (!isContainsUppercase.test(value)) { // Test if string contains UpperCase character
-            setMessage2('New Password must have at least one Uppercase Character.');
-        }
-
-        const isContainsLowercase = /^(?=.*[a-z]).*$/;
-        if (!isContainsLowercase.test(value)) { // Test if string contains LowerCase character
-            setMessage2('New Password must have at least one Lowercase Character.');
-        }
-
-        const isContainsNumber = /^(?=.*[0-9]).*$/;
-        if (!isContainsNumber.test(value)) { // Test if string contains Number
-            setMessage2('New Password must contain at least one Number.');
-        }
-
-        const isContainsSymbol = /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/;
-        if (!isContainsSymbol.test(value)) { // Test if string contains Special Character
-            setMessage2('New Password must contain at least one Special Symbol.');
-        }
-
-        const isValidLength = /^.{8,}$/;
-        if (!isValidLength.test(value)) { // Test if string is 8 characters long
-            setMessage2('New Password must be atleast 8 Characters Long.');
-        }
-    };
+    const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
 
     const updateProfile = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -98,7 +67,7 @@ export default function Profile() {
             dispatch(updateUser(newUserData)); // sets user in redux store
 
         } catch (error: any) {
-            if (error.response.status === 401) { // if status is 401 set message
+            if (error.response.status >= 400) { // if status is 401 set message
                 setMessage('Current Password is incorrect');
             }
         }
@@ -109,7 +78,7 @@ export default function Profile() {
         const data = new FormData(event.currentTarget);
         const newPassword = data.get('newPassword'); // creates local email variable from data
         const currentPassword = data.get('currentPassword'); // creates local password variable from data
-        const passwordRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
+        const passwordObject: CheckPasswordOutput = checkPassword(newPassword!.toString());
 
         // If email is empty set email to empty string
         const newUpdateUser: ResetRquest = {
@@ -124,19 +93,21 @@ export default function Profile() {
             setMessage2('Please fill out all fields');
         }
 
-        if (!passwordRegex.test(newPassword!.toString())) { // if new password fails test, run checkPassword()
-            checkPassword(newPassword!.toString());
+        if (!passwordObject.isValid) { // if new password fails test, run checkPassword()
+            setPasswordErrors(passwordObject.errorMessages);
         } else {
             try {
                 const response = await apiResetPassword(newUpdateUser, user.token);
                 if (response.status >= 200 && response.status < 300) { // if status is good set message
                     setMessage2('Password Updated Successfully');
                     setTimeout(() => setMessage2(''), 2000);
+                    setPasswordErrors([]);
 
                 }
             } catch (error: any) {
-                if (error.response.status === 401) { // if status is 401 set message
+                if (error.response.status >= 400) { // if status is 401 set message
                     setMessage2('Current Password is incorrect');
+                    setPasswordErrors([]);
                 }
             }
         }
@@ -150,7 +121,7 @@ export default function Profile() {
     return (
         <Container component='main' maxWidth='lg'>
             <CssBaseline />
-            <Box>
+            <Box className='profileHeader'>
                 <h5>First Name: {user.firstName}</h5>
                 <h5>Last Name: {user.lastName}</h5>
                 <h5>Email: {user.email}</h5>
@@ -226,14 +197,19 @@ export default function Profile() {
                     type='password'
                     id='newPassword'
                     autoComplete='off'
-
                 />
 
-                {message2 && <p>{message2}</p>}
+                <div>
+                    {message2 && <p>{message2}</p>}
+                    {passwordErrors && passwordErrors.map((errorMessage: string) => <p key={errorMessage}>{errorMessage}</p>)}
+
+                </div>
+
                 <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
                     Reset Password
                 </Button>
             </Box>
+
 
         </Container>
     );

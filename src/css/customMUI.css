@@ -5,3 +5,8 @@
 .stars {
     width: 100%;
 }
+
+.profileHeader {
+    display: flex;
+    justify-content: space-around;
+}
