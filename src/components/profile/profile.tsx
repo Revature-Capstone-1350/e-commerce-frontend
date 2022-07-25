@@ -84,23 +84,24 @@ export default function Profile() {
             if (!emailRegex.test(email!.toString())) {
                 setMessage('Email is not valid');
             }
-        }
+        } else {
 
-        try {
-            const response = await apiResetPassword(newUpdateUser, user.token);
-            if (response.status >= 200 && response.status < 300) { // if status is good set message
-                setMessage('Profile Updated Successfully');
-                setTimeout(() => setMessage(''), 2000);
+            try {
+                const response = await apiResetPassword(newUpdateUser, user.token);
+                if (response.status >= 200 && response.status < 300) { // if status is good set message
+                    setMessage('Profile Updated Successfully');
+                    setTimeout(() => setMessage(''), 2000);
 
 
-            }
-            const newUserData = response.payload; // Gets user from response
-            newUserData.token = response.headers.authorization; // Gets token from headers
-            dispatch(updateUser(newUserData)); // sets user in redux store
+                }
+                const newUserData = response.payload; // Gets user from response
+                newUserData.token = response.headers.authorization; // Gets token from headers
+                dispatch(updateUser(newUserData)); // sets user in redux store
 
-        } catch (error: any) {
-            if (error.response.status === 401) { // if status is 401 set message
-                setMessage('Current Password is incorrect');
+            } catch (error: any) {
+                if (error.response.status === 401) { // if status is 401 set message
+                    setMessage('Current Password is incorrect');
+                }
             }
         }
     };
