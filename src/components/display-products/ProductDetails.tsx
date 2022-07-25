@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { MenuItem, Select, Box, TextField, Button, FormControl, InputLabel } from '@mui/material';
 import React, { useState, useEffect, useContext, SyntheticEvent } from 'react';
 import { useParams } from 'react-router';
