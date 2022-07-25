@@ -19,6 +19,7 @@ export default function Profile() {
     const [message, setMessage] = useState<string>('');
     const [message2, setMessage2] = useState<string>('');
     const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
+    const [currentPasswordErrors, setCurrentPasswordErrors] = useState<string[]>([]);
 
     const updateProfile = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -27,6 +28,7 @@ export default function Profile() {
         let lastName = data.get('newLastName'); // creates local password variable from data
         let email = data.get('newEmail'); // creates local email variable from data
         const currentPassword = data.get('currentPassword'); // creates local password variable from data
+        const currentPasswordObject: CheckPasswordOutput = checkPassword(currentPassword!.toString());
         const emailRegex = /^\S+@\S+\.\S+$/;
 
         if (!email) {
@@ -48,27 +50,35 @@ export default function Profile() {
             oldPassword: currentPassword!.toString(),
         };
 
+        let formIsValid = true;
 
         if (email) { // if email is not empty and does not pass regex test update message
             if (!emailRegex.test(email!.toString())) {
                 setMessage('Email is not valid');
+                formIsValid = false;
             }
         }
-        try {
-            const response = await apiResetPassword(newUpdateUser, user.token);
-            if (response.status >= 200 && response.status < 300) { // if status is good set message
-                setMessage('Profile Updated Successfully');
-                setTimeout(() => setMessage(''), 2000);
 
+        if (!currentPasswordObject.isValid) { // if new password fails test, run checkPassword()
+            setCurrentPasswordErrors(currentPasswordObject.errorMessages.map((msg) => `Current Password: ${msg}`));
+            formIsValid = false;
+        }
 
-            }
-            const newUserData = response.payload; // Gets user from response
-            newUserData.token = response.headers.authorization; // Gets token from headers
-            dispatch(updateUser(newUserData)); // sets user in redux store
+        if (formIsValid) {
+            try {
+                const response = await apiResetPassword(newUpdateUser, user.token);
+                if (response.status >= 200 && response.status < 300) { // if status is good set message
+                    setMessage('Profile Updated Successfully');
+                    setTimeout(() => setMessage(''), 2000);
+                }
+                const newUserData = response.payload; // Gets user from response
+                newUserData.token = response.headers.authorization; // Gets token from headers
+                dispatch(updateUser(newUserData)); // sets user in redux store
 
-        } catch (error: any) {
-            if (error.response.status >= 400) { // if status is 401 set message
-                setMessage('Current Password is incorrect');
+            } catch (error: any) {
+                if (error.response.status >= 400) { // if status is 401 set message
+                    setMessage('Current Password is incorrect');
+                }
             }
         }
     };
@@ -78,6 +88,7 @@ export default function Profile() {
         const data = new FormData(event.currentTarget);
         const newPassword = data.get('newPassword'); // creates local email variable from data
         const currentPassword = data.get('currentPassword'); // creates local password variable from data
+        const currentPasswordObject: CheckPasswordOutput = checkPassword(currentPassword!.toString());
         const passwordObject: CheckPasswordOutput = checkPassword(newPassword!.toString());
 
         // If email is empty set email to empty string
@@ -89,13 +100,24 @@ export default function Profile() {
             oldPassword: currentPassword!.toString(),
         };
 
+        let formIsValid = true;
+
         if (!newPassword || !currentPassword) { // if both fields are empty set message
             setMessage2('Please fill out all fields');
+            formIsValid = false;
+        }
+
+        if (!currentPasswordObject.isValid) { // if new password fails test, run checkPassword()
+            setPasswordErrors(currentPasswordObject.errorMessages.map(msg => `Old password: ${msg}`));
+            formIsValid = false;
         }
 
         if (!passwordObject.isValid) { // if new password fails test, run checkPassword()
-            setPasswordErrors(passwordObject.errorMessages);
-        } else {
+            setPasswordErrors(passwordObject.errorMessages.map(msg => `New password: ${msg}`));
+            formIsValid = false;
+        }
+
+        if (formIsValid) {
             try {
                 const response = await apiResetPassword(newUpdateUser, user.token);
                 if (response.status >= 200 && response.status < 300) { // if status is good set message
@@ -168,6 +190,7 @@ export default function Profile() {
 
                 />
 
+                {currentPasswordErrors && currentPasswordErrors.map((errorMessage: string) => <p key={errorMessage}>{errorMessage}</p>)}
                 {message && <p>{message}</p>}
                 <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
                     Update User
