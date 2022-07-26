@@ -25,6 +25,15 @@ export const apiUpdateProduct = async (product: UpdateProduct, token: string): P
     return { status: response.status, payload: product };
 };
 
+export const apiDeleteProductByProductId = async (id: string, token: string): Promise<eCommerceApiResponse> => {
+    const response = await eCommerceClient.delete<UpdateProduct>(`${baseURL}/deleteproduct/${id}`, {
+        headers: {
+            Authorization: token,
+        },
+    });
+    return { status: response.status, payload: response.data };
+};
+
 export const apiPurchase = async (products: { id: number; }[],): Promise<eCommerceApiResponse> => {
     const response = await eCommerceClient.patch<Product[]>(`${baseURL}`, products);
     return { status: response.status, payload: response.data };

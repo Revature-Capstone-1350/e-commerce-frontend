@@ -9,7 +9,7 @@ import UpdateProductRequest from '../../models/UpdateProduct';
 import { useAppSelector } from '../../store/hooks';
 import { currentUser, UserState } from '../../store/userSlice';
 import Rating from '../../models/RatingResponse';
-import { apiGetProductById, apiGetReviewByProductId, apiPostReviewByProductId, apiUpdateProduct } from '../../remote/e-commerce-api/productService';
+import { apiGetProductById, apiGetReviewByProductId, apiPostReviewByProductId, apiUpdateProduct, apiDeleteProductByProductId } from '../../remote/e-commerce-api/productService';
 
 const Container = styled.div`
     padding: 20px;
@@ -234,46 +234,64 @@ const ProductDetail = () => {
 
     };
 
+    const handleDelete = async function() {
+        try {
+            const response = await apiDeleteProductByProductId(
+                `${product.productId}`,
+                user.token
+            );
+            setError('Product Deleted!');
+        } catch (error: any) {
+            setError('Could not delete product!');
+        }
+    };
+
     return (
         <React.Fragment>
             <Container>
                 <Flex>
                     <Image src={product.imgUrlMed} />
                     {/* checking to see if a user is an ADMIN. if they are then render input tags to allow them to edit and update the product. Else we render h tags instead. */}
-                    {user.role === 'ADMIN' ? <ProductInfo className="productInfo">
-                        <div>
-                            <label>Name:</label>
-                            <input onChange={(e: SyntheticEvent) => setName((e.target as HTMLInputElement).value)}
-                                placeholder={product.name.toUpperCase()} defaultValue={name}></input>
-                            <label>Price:</label>
-                            <input onChange={(e: SyntheticEvent) => setPrice((e.target as HTMLInputElement).value)}
-                                placeholder={product.price.toString()} defaultValue={price.toString()}></input>
-                            <label>Product Description:</label>
-                            <input onChange={(e: SyntheticEvent) => setDescription((e.target as HTMLInputElement).value)}
-                                placeholder={product.description} defaultValue={description} ></input>
-                            <Select
-                                id="demo-simple-select-helper"
-                                value={category}
-                                label="Search"
-                                onChange={event => setCategory(event.target.value as number)}>
-                                <MenuItem value={0}>Category</MenuItem>
-                                <MenuItem value={1}>Cloud</MenuItem>
-                                <MenuItem value={2}>Dawn</MenuItem>
-                                <MenuItem value={3}>Day</MenuItem>
-                                <MenuItem value={4}>Dusk</MenuItem>
-                                <MenuItem value={5}>Moon</MenuItem>
-                                <MenuItem value={6}>Night</MenuItem>
-                                <MenuItem value={7}>Space</MenuItem>
-                                <MenuItem value={8}>Sun</MenuItem>
-                            </Select>
-                        </div>
-                        <ProductInfoBottom>
-                            {error && <p>{error}</p>}
-                            <UpdateProduct onClick={updateProduct}>
-                                Update Product
-                            </UpdateProduct>
-                        </ProductInfoBottom>
-                    </ProductInfo>
+                    {user.role === 'ADMIN' ? 
+                        <ProductInfo className="productInfo">
+                            <div>
+                                <label>Name:</label>
+                                <input onChange={(e: SyntheticEvent) => setName((e.target as HTMLInputElement).value)}
+                                    placeholder={product.name.toUpperCase()} defaultValue={name}></input>
+                                <label>Price:</label>
+                                <input onChange={(e: SyntheticEvent) => setPrice((e.target as HTMLInputElement).value)}
+                                    placeholder={product.price.toString()} defaultValue={price.toString()}></input>
+                                <label>Product Description:</label>
+                                <input onChange={(e: SyntheticEvent) => setDescription((e.target as HTMLInputElement).value)}
+                                    placeholder={product.description} defaultValue={description} ></input>
+                                <Select
+                                    style={{marginTop:'1em'}}
+                                    id="demo-simple-select-helper"
+                                    value={category}
+                                    label="Search"
+                                    onChange={event => setCategory(event.target.value as number)}>
+                                    <MenuItem value={0}>Category</MenuItem>
+                                    <MenuItem value={1}>Cloud</MenuItem>
+                                    <MenuItem value={2}>Dawn</MenuItem>
+                                    <MenuItem value={3}>Day</MenuItem>
+                                    <MenuItem value={4}>Dusk</MenuItem>
+                                    <MenuItem value={5}>Moon</MenuItem>
+                                    <MenuItem value={6}>Night</MenuItem>
+                                    <MenuItem value={7}>Space</MenuItem>
+                                    <MenuItem value={8}>Sun</MenuItem>
+                                </Select>
+                            </div>
+                            
+                            <ProductInfoBottom>
+                                {error && <p>{error}</p>}
+                                <UpdateProduct onClick={updateProduct}>
+                                    Update Product
+                                </UpdateProduct>
+                                <UpdateProduct onClick={() => {handleDelete();}}>
+                                    DELETE PRODUCT
+                                </UpdateProduct>
+                            </ProductInfoBottom>
+                        </ProductInfo>
                         :
                         <ProductInfo className="productInfo">
                             <div>
