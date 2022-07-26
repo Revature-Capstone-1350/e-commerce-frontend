@@ -90,7 +90,7 @@ const Navbar = () => {
                     {/* Navbar Rendering for Guest/Not Logged in*/}
                     {user.id === 0 &&
                         <>
-                            <MenuItem onClick={() => { navigate('/register'); }}> REGISTER </MenuItem>
+                            <MenuItem className='register-btn' onClick={() => { navigate('/register'); }}> REGISTER </MenuItem>
                             <MenuItem onClick={() => { navigate('/login'); }}>SIGN IN</MenuItem>
                         </>
                     }
