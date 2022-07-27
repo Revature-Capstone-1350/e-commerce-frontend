@@ -49,33 +49,3 @@ describe("Attempt to register", () => {
         expect(result.status).toBe(200);
     });
 });
-
-// describe("Attempting to reset password", () => {
-//     it("if api call is good", async () => {
-
-//         const resetRequest = {
-//             newFirstname: "",
-//             newLastname: "",
-//             newEmail: "",
-//             newPassword: "Tester12@",
-//             oldPassword: "TesterSon@"
-//         };
-
-//         // Mock the response from the API
-//         (eCommerceClientMock.post as jest.MockedFunction<typeof eCommerceClient.post>).mockResolvedValue({
-//             data: resetRequest,
-//             status: 200
-//         });
-
-//         // Call the API
-//         const result = await apiResetPassword(resetRequest, "token");
-
-//         // Assert the result
-//         expect(eCommerceClient.post).toHaveBeenCalledWith("/auth/reset", resetRequest, {
-//             headers: {
-//                 Authorization: "token",
-//             },
-//         });
-//         expect(result.status).toBe(200);
-//     });
-// });
