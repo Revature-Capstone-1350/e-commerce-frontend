@@ -4,7 +4,7 @@ import axios from 'axios';
 // This is the configuration for sending HTTP Requests with Axios
 // Very simple, but it also doesn't give us much abstraction
 const eCommerceClient = axios.create({
-    baseURL: 'http://skyviewapp-env.eba-vrxrqpxz.us-east-2.elasticbeanstalk.com/skyview',
+    baseURL: process.env.REACT_APP_API_URL,
     headers: {
         'Content-Type': 'application/json',
         'Authorization': 'text/plain',

@@ -34,8 +34,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "npm run lint && react-scripts build",
+    "start:local": "REACT_APP_API_URL=http://localhost:5000/skyview react-scripts start",
+    "start:remote": "if [ -f \".env\" ]; then npm run lint && react-scripts start; else echo \".env does not exist, aborting app start\"; fi",
+    "build:local": "REACT_APP_API_URL=http://localhost:5000/skyview npm run lint && react-scripts build",
+    "build:remote": "if [ -f \".env\" ]; then npm run lint && react-scripts build else echo \".env does not exist, aborting app start\"; fi",
     "test": "react-scripts test --coverage",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.{ts,tsx}",
