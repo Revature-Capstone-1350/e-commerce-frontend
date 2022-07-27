@@ -1,21 +1,21 @@
-import eCommerceClient from "../remote/e-commerce-api/eCommerceClient";
-import { apiCreateProduct, apiGetAllProducts, apiGetProductById, apiGetReviewByProductId, apiPostReviewByProductId, apiUpdateProduct } from "../remote/e-commerce-api/productService";
+import eCommerceClient from '../remote/e-commerce-api/eCommerceClient';
+import { apiCreateProduct, apiGetAllProducts, apiGetProductById, apiGetReviewByProductId, apiPostReviewByProductId, apiUpdateProduct } from '../remote/e-commerce-api/productService';
 
 jest.mock('../remote/e-commerce-api/eCommerceClient');
 
 const eCommerceClientMock = eCommerceClient as jest.Mocked<typeof eCommerceClient>;
 
-describe("Fetch All Products", () => {
-    it("should return products list", async () => {
+describe('Fetch All Products', () => {
+    it('should return products list', async () => {
         const products = [
             {
                 productId: 1,
-                name: "Product 1",
-                description: "Description 1",
+                name: 'Product 1',
+                description: 'Description 1',
                 price: 1,
-                imageUrlSmall: "imageUrlSmall 1",
-                imageUrlMed: "imageUrlMed 1",
-                category: "Category 1",
+                imageUrlSmall: 'imageUrlSmall 1',
+                imageUrlMed: 'imageUrlMed 1',
+                category: 'Category 1',
                 numberOfRatings: 6,
                 sumOfRatings: 16
             }
@@ -37,28 +37,28 @@ describe("Fetch All Products", () => {
     });
 });
 
-describe("Fetch Product By Id", () => {
-    it("should return single product", async () => {
+describe('Fetch Product By Id', () => {
+    it('should return single product', async () => {
         const products = [
             {
                 productId: 1,
-                name: "Product 1",
-                description: "Description 1",
+                name: 'Product 1',
+                description: 'Description 1',
                 price: 1,
-                imageUrlSmall: "imageUrlSmall 1",
-                imageUrlMed: "imageUrlMed 1",
-                category: "Category 1",
+                imageUrlSmall: 'imageUrlSmall 1',
+                imageUrlMed: 'imageUrlMed 1',
+                category: 'Category 1',
                 numberOfRatings: 6,
                 sumOfRatings: 16
             },
             {
                 productId: 2,
-                name: "Product 1",
-                description: "Description 1",
+                name: 'Product 1',
+                description: 'Description 1',
                 price: 1,
-                imageUrlSmall: "imageUrlSmall 1",
-                imageUrlMed: "imageUrlMed 1",
-                category: "Category 1",
+                imageUrlSmall: 'imageUrlSmall 1',
+                imageUrlMed: 'imageUrlMed 1',
+                category: 'Category 1',
                 numberOfRatings: 6,
                 sumOfRatings: 16
             }
@@ -71,7 +71,7 @@ describe("Fetch Product By Id", () => {
         });
 
         // Call the API
-        const result = await apiGetProductById("2");
+        const result = await apiGetProductById('2');
 
         // Assert the result
         expect(eCommerceClient.get).toHaveBeenCalledWith('/api/product/2');
@@ -80,15 +80,15 @@ describe("Fetch Product By Id", () => {
     });
 });
 
-describe("Update Product", () => {
-    it("should update product", async () => {
+describe('Update Product', () => {
+    it('should update product', async () => {
         const product = {
             id: 1,
-            name: "Product 1",
-            description: "Description 1",
+            name: 'Product 1',
+            description: 'Description 1',
             price: 1,
-            imageUrlS: "imageUrlSmall 1",
-            imageUrlM: "imageUrlMed 1",
+            imageUrlS: 'imageUrlSmall 1',
+            imageUrlM: 'imageUrlMed 1',
             category: 1,
             numberOfRatings: 6,
             sumOfRatings: 16
@@ -101,12 +101,12 @@ describe("Update Product", () => {
         });
 
         // Call the API
-        const result = await apiUpdateProduct(product, "token");
+        const result = await apiUpdateProduct(product, 'token');
 
         // Assert the result
         expect(eCommerceClient.put).toHaveBeenCalledWith('/api/product', product, {
             headers: {
-                Authorization: "token",
+                Authorization: 'token',
             },
         });
         expect(result.status).toBe(204);
@@ -114,14 +114,14 @@ describe("Update Product", () => {
     });
 });
 
-describe("Create Product", () => {
-    it("should create product", async () => {
+describe('Create Product', () => {
+    it('should create product', async () => {
         const product = {
-            name: "Product 1",
-            description: "Description 1",
+            name: 'Product 1',
+            description: 'Description 1',
             price: 1,
-            imageUrlS: "imageUrlSmall 1",
-            imageUrlM: "imageUrlMed 1",
+            imageUrlS: 'imageUrlSmall 1',
+            imageUrlM: 'imageUrlMed 1',
             category: 1,
         };
 
@@ -132,12 +132,12 @@ describe("Create Product", () => {
         });
 
         // Call the API
-        const result = await apiCreateProduct(product, "token");
+        const result = await apiCreateProduct(product, 'token');
 
         // Assert the result
         expect(eCommerceClient.post).toHaveBeenCalledWith('/api/product/createproduct', product, {
             headers: {
-                Authorization: "token",
+                Authorization: 'token',
             },
         });
         expect(result.status).toBe(201);
@@ -145,11 +145,11 @@ describe("Create Product", () => {
     });
 });
 
-describe("Add Review", () => {
-    it("should add review", async () => {
+describe('Add Review', () => {
+    it('should add review', async () => {
         const review = {
             rating: 5,
-            description: "comment"
+            description: 'comment'
         };
 
         // Mock the response from the API
@@ -159,13 +159,13 @@ describe("Add Review", () => {
         });
 
         // Call the API
-        const result = await apiPostReviewByProductId("1",
-            JSON.parse(JSON.stringify({ rating: 5, description: "comment" })), "token");
+        const result = await apiPostReviewByProductId('1',
+            JSON.parse(JSON.stringify({ rating: 5, description: 'comment' })), 'token');
 
         // Assert the result
         expect(eCommerceClient.post).toHaveBeenCalledWith('/api/product/rating/1', review, {
             headers: {
-                Authorization: "token",
+                Authorization: 'token',
             },
         });
         expect(result.status).toBe(201);
@@ -173,18 +173,18 @@ describe("Add Review", () => {
     });
 });
 
-describe("Get Review By Product Id", () => {
-    it("should get review by product id", async () => {
+describe('Get Review By Product Id', () => {
+    it('should get review by product id', async () => {
         const reviews = [
             {
                 rating: 5,
-                description: "comment",
-                reviewerName: "John Doe"
+                description: 'comment',
+                reviewerName: 'John Doe'
             },
             {
                 rating: 3,
-                description: "commenting",
-                reviewerName: "Jane Doe"
+                description: 'commenting',
+                reviewerName: 'Jane Doe'
             }
         ];
 
@@ -195,7 +195,7 @@ describe("Get Review By Product Id", () => {
         });
 
         // Call the API
-        const result = await apiGetReviewByProductId("1");
+        const result = await apiGetReviewByProductId('1');
 
         // Assert the result    
         expect(eCommerceClient.get).toHaveBeenCalledWith('/api/product/rating/1');
