@@ -9,9 +9,6 @@ import Address from '../../models/Address';
 import { Box, Button } from '@mui/material';
 import { apiPurchase } from '../../remote/e-commerce-api/productService';
 import { CartContext } from '../../context/cart.context';
-import Order from '../../models/Order';
-import { useAppSelector } from '../../store/hooks';
-import { UserState, currentUser } from '../../store/userSlice';
 
 interface reviewProps {
   handleBack: () => void;
@@ -27,13 +24,12 @@ interface reviewProps {
 export default function Review(props: reviewProps) {
   const { cart, setCart } = React.useContext(CartContext);
 
-  const user: UserState = useAppSelector(currentUser);
-
   const handleSubmit = (event: React.MouseEvent) => {
     event.preventDefault();
-
-    const order = new Order(0,0,props.address,cart,'');
-    apiPurchase(order, user.token);
+    const productPurchaseDtos = cart.map((product) => ({
+      id: product.productId,
+    }));
+    apiPurchase(productPurchaseDtos);
     setCart([]);
     props.handleNext();
   };
@@ -72,7 +68,7 @@ export default function Review(props: reviewProps) {
           <Typography
             gutterBottom
           >{`${props.address.firstName} ${props.address.lastName}`}</Typography>
-          <Typography gutterBottom>{`${props.address.street}${props.address.street2 ? ', ' + props.address.street2 : ''
+          <Typography gutterBottom>{`${props.address.address1}${props.address.address2 ? ', ' + props.address.address2 : ''
             }, ${props.address.city}, ${props.address.state} , ${props.address.zip}, ${props.address.country
             }`}</Typography>
         </Grid>

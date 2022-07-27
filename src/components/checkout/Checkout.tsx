@@ -19,8 +19,8 @@ const steps = ['Shipping address', 'Payment details', 'Review your order'];
 let address = {
     firstName: '',
     lastName: '',
-    street: '',
-    street2: '',
+    address1: '',
+    address2: '',
     city: '',
     state: '',
     zip: '',
