@@ -184,7 +184,7 @@ export default function Profile() {
                     fullWidth
                     name='currentPassword'
                     label='Current Password'
-                    type='text'
+                    type='password'
                     id='currentPassword'
                     autoComplete='off'
 
