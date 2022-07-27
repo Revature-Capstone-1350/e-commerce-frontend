@@ -252,7 +252,7 @@ const ProductDetail = () => {
                 <Flex>
                     <Image src={product.imgUrlMed} />
                     {/* checking to see if a user is an ADMIN. if they are then render input tags to allow them to edit and update the product. Else we render h tags instead. */}
-                    {user.role === 'ADMIN' ? <ProductInfo className="productInfo">
+                    {user.role === 'ADMIN' ? <ProductInfo className='productInfo'>
                         <div>
                             <label>Name:</label>
                             <input onChange={(e: SyntheticEvent) => setName((e.target as HTMLInputElement).value)}
@@ -265,9 +265,9 @@ const ProductDetail = () => {
                                 placeholder={product.description} defaultValue={description} ></input>
                             <Select
                                 style={{marginTop:'1em'}}
-                                id="demo-simple-select-helper"
+                                id='demo-simple-select-helper'
                                 value={category}
-                                label="Search"
+                                label='Search'
                                 onChange={event => setCategory(event.target.value as number)}>
                                 <MenuItem value={0}>Category</MenuItem>
                                 <MenuItem value={1}>Cloud</MenuItem>
@@ -291,7 +291,7 @@ const ProductDetail = () => {
                         </ProductInfoBottom>
                     </ProductInfo>
                         :
-                        <ProductInfo className="productInfo">
+                        <ProductInfo className='productInfo'>
                             <div>
                                 <h1>{product.name.toUpperCase()}</h1>
                                 <h5>Price: ${product.price}</h5>
@@ -316,13 +316,13 @@ const ProductDetail = () => {
                     {(user.id != 0 && display) ?
                         <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                             <FormControl className='stars'>
-                                <InputLabel id="demo-simple-select-helper">Star Rating</InputLabel>
+                                <InputLabel id='demo-simple-select-helper'>Star Rating</InputLabel>
                                 <Select
                                     id='demo-simple-select-helper'
                                     name='rating'
                                     autoComplete='rating'
                                 >
-                                    <MenuItem value="">Star Rating</MenuItem>
+                                    <MenuItem value=''>Star Rating</MenuItem>
                                     <MenuItem value={1}>&#9734;</MenuItem>
                                     <MenuItem value={2}>&#9734;&#9734;</MenuItem>
                                     <MenuItem value={3}>&#9734;&#9734;&#9734;</MenuItem>

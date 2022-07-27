@@ -3,8 +3,8 @@ import Switch from '@mui/material/Switch';
 import { ChangeEventHandler } from 'react';
 
 /**
- *Sets "theme" to "dark" in localStorage,
- *Updates "data-theme" attribute to dark
+ *Sets 'theme' to 'dark' in localStorage,
+ *Updates 'data-theme' attribute to dark
  */
 const setDark = () => {
     localStorage.setItem('theme', 'dark');
@@ -12,24 +12,24 @@ const setDark = () => {
 };
 
 /**
- *Sets "theme" to "light" in localStorage
- *Updates "data-theme" attribute to dark
+ *Sets 'theme' to 'light' in localStorage
+ *Updates 'data-theme' attribute to dark
  */
 const setLight = () => {
     localStorage.setItem('theme', 'light');
     document.documentElement.setAttribute('data-theme', 'light');
 };
 
-// Retrieves "theme" from localStorage
+// Retrieves 'theme' from localStorage
 const storedTheme = localStorage.getItem('theme');
 
-// If theme is "dark", setDark function is called
+// If theme is 'dark', setDark function is called
 if (storedTheme === 'dark') {
     setDark();
 }
 
 /**
- * Toggles "theme" between "dark" and "light"
+ * Toggles 'theme' between 'dark' and 'light'
  *
  * @param {ChangeEventHandler} e event listener 
  */
@@ -48,8 +48,8 @@ const DarkMode = () => {
             {/* Toggle switch */}
             <Switch
                 role='switch'
-                defaultChecked={storedTheme === 'dark' ? true : false} // If theme is "dark", set defaultChecked to true
-                onChange={toggleTheme} // Toggles "theme" between "dark" and "light"
+                defaultChecked={storedTheme === 'dark' ? true : false} // If theme is 'dark', set defaultChecked to true
+                onChange={toggleTheme} // Toggles 'theme' between 'dark' and 'light'
                 inputProps={{ 'aria-label': 'controlled' }}
             />
             <span>🌑</span>

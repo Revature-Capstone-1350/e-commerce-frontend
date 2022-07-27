@@ -32,7 +32,7 @@ export default function Review(props: reviewProps) {
   const handleSubmit = (event: React.MouseEvent) => {
     event.preventDefault();
 
-    const order = new Order(0,0,props.address,cart,"");
+    const order = new Order(0,0,props.address,cart,'');
     apiPurchase(order, user.token);
     setCart([]);
     props.handleNext();

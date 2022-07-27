@@ -1,5 +1,5 @@
-import Address from "./Address";
-import Product from "./Product";
+import Address from './Address';
+import Product from './Product';
 
 export default class Order {
   orderId: number;

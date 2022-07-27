@@ -71,8 +71,8 @@ export const DisplayProducts = () => {
     };
 
     /**
-     * Checks if category state equals "category",
-     * If category does not equal "category",
+     * Checks if category state equals 'category',
+     * If category does not equal 'category',
      * then it will filter the products.
      */
     const categorySearch = () => {
@@ -122,12 +122,12 @@ export const DisplayProducts = () => {
                 {/* Conditionally renders SearchByCategory*/}
                 {filterBy === 'category' ?
                     <Select
-                        labelId="demo-simple-select-helper-label"
-                        id="demo-simple-select-helper"
+                        labelId='demo-simple-select-helper-label'
+                        id='demo-simple-select-helper'
                         value={category}
-                        label="Search"
+                        label='Search'
                         onChange={event => setCategory(event.target.value as string)}            >
-                        <MenuItem value="category">Category</MenuItem>
+                        <MenuItem value='category'>Category</MenuItem>
                         {categories.map((cat) => (  // builds dropdown menu from categories
                             <MenuItem value={cat} key={cat}>{cat}</MenuItem>
                         ))}

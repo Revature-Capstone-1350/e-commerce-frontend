@@ -78,68 +78,68 @@ export const CreateProducts = () => {
 
                 <br />
                 <Box
-                    component="form"
+                    component='form'
                     sx={{
                         '& > :not(style)': { m: 1 },
                     }}
                     noValidate
-                    autoComplete="off"
+                    autoComplete='off'
                 >
                     <FormControl>
-                        <InputLabel htmlFor="component-outlined">Name</InputLabel>
+                        <InputLabel htmlFor='component-outlined'>Name</InputLabel>
                         <OutlinedInput
-                            id="component-outlined"
+                            id='component-outlined'
                             value={name}
-                            label="Name"
+                            label='Name'
                             onChange={(e: SyntheticEvent) => setName((e.target as HTMLInputElement).value)} />
 
                     </FormControl>
                     <br />
                     <FormControl>
-                        <InputLabel htmlFor="component-outlined">Description</InputLabel>
+                        <InputLabel htmlFor='component-outlined'>Description</InputLabel>
                         <OutlinedInput
-                            id="component-outlined"
+                            id='component-outlined'
                             value={description}
-                            label="Description"
+                            label='Description'
                             onChange={(e: SyntheticEvent) => setDescription((e.target as HTMLInputElement).value)} />
 
                     </FormControl>
                     <br />
                     <FormControl>
-                        <InputLabel htmlFor="component-outlined">Price</InputLabel>
+                        <InputLabel htmlFor='component-outlined'>Price</InputLabel>
                         <OutlinedInput
-                            id="component-outlined"
+                            id='component-outlined'
                             value={price}
-                            label="Price"
+                            label='Price'
                             onChange={(e: SyntheticEvent) => setPrice((e.target as HTMLInputElement).value)} />
 
                     </FormControl>
                     <br />
                     <FormControl>
-                        <InputLabel htmlFor="component-outlined">Small Image URL</InputLabel>
+                        <InputLabel htmlFor='component-outlined'>Small Image URL</InputLabel>
                         <OutlinedInput
-                            id="component-outlined"
+                            id='component-outlined'
                             value={imageS}
-                            label="Small Image URL"
+                            label='Small Image URL'
                             onChange={(e: SyntheticEvent) => setImageS((e.target as HTMLInputElement).value)} />
 
                     </FormControl>
                     <br />
                     <FormControl>
-                        <InputLabel htmlFor="component-outlined">Medium Image </InputLabel>
+                        <InputLabel htmlFor='component-outlined'>Medium Image </InputLabel>
                         <OutlinedInput
-                            id="component-outlined"
+                            id='component-outlined'
                             value={imageM}
-                            label="Medium Image URL"
+                            label='Medium Image URL'
                             onChange={(e: SyntheticEvent) => setImageM((e.target as HTMLInputElement).value)} />
 
                     </FormControl>
                     <br />
                     {/* This is a drop down for category state */}
                     <Select
-                        id="demo-simple-select-helper"
+                        id='demo-simple-select-helper'
                         value={category}
-                        label="Search"
+                        label='Search'
                         onChange={event => setCategory(event.target.value as number)}>
                         <MenuItem value={0}>Category</MenuItem>
                         <MenuItem value={1}>Cloud</MenuItem>
@@ -156,7 +156,7 @@ export const CreateProducts = () => {
                         :
                         <><br /></>
                     }
-                    <Button id="createButton" onClick={sendNewProduct} variant="contained">Create</Button>
+                    <Button id='createButton' onClick={sendNewProduct} variant='contained'>Create</Button>
 
                 </Box>
             </CreateDiv>

@@ -115,7 +115,7 @@ export default function Profile() {
 
     if (user.id === 0) { // if user is not logged in navigate to login
         return (
-            <Navigate to="/login" />
+            <Navigate to='/login' />
         );
     }
     return (
