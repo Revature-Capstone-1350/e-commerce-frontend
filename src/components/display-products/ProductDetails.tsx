@@ -9,7 +9,7 @@ import UpdateProductRequest from '../../models/UpdateProduct';
 import { useAppSelector } from '../../store/hooks';
 import { currentUser, UserState } from '../../store/userSlice';
 import Rating from '../../models/RatingResponse';
-import { apiGetProductById, apiGetReviewByProductId, apiPostReviewByProductId, apiUpdateProduct } from '../../remote/e-commerce-api/productService';
+import { apiDeleteProductByProductId, apiGetProductById, apiGetReviewByProductId, apiPostReviewByProductId, apiUpdateProduct } from '../../remote/e-commerce-api/productService';
 
 const Container = styled.div`
     padding: 20px;
@@ -234,13 +234,25 @@ const ProductDetail = () => {
 
     };
 
+    const handleDelete = async function() {
+        try {
+            await apiDeleteProductByProductId(
+                `${product.productId}`,
+                user.token
+            );
+            setError('Product Deleted!');
+        } catch (error: any) {
+            setError('Could not delete product!');
+        }
+    };
+
     return (
         <React.Fragment>
             <Container>
                 <Flex>
                     <Image src={product.imgUrlMed} />
                     {/* checking to see if a user is an ADMIN. if they are then render input tags to allow them to edit and update the product. Else we render h tags instead. */}
-                    {user.role === 'ADMIN' ? <ProductInfo className="productInfo">
+                    {user.role === 'ADMIN' ? <ProductInfo className='productInfo'>
                         <div>
                             <label>Name:</label>
                             <input onChange={(e: SyntheticEvent) => setName((e.target as HTMLInputElement).value)}
@@ -252,9 +264,10 @@ const ProductDetail = () => {
                             <input onChange={(e: SyntheticEvent) => setDescription((e.target as HTMLInputElement).value)}
                                 placeholder={product.description} defaultValue={description} ></input>
                             <Select
-                                id="demo-simple-select-helper"
+                                style={{marginTop:'1em'}}
+                                id='demo-simple-select-helper'
                                 value={category}
-                                label="Search"
+                                label='Search'
                                 onChange={event => setCategory(event.target.value as number)}>
                                 <MenuItem value={0}>Category</MenuItem>
                                 <MenuItem value={1}>Cloud</MenuItem>
@@ -272,10 +285,13 @@ const ProductDetail = () => {
                             <UpdateProduct onClick={updateProduct}>
                                 Update Product
                             </UpdateProduct>
+                            <UpdateProduct onClick={() => {handleDelete();}}>
+                                DELETE PRODUCT
+                            </UpdateProduct>
                         </ProductInfoBottom>
                     </ProductInfo>
                         :
-                        <ProductInfo className="productInfo">
+                        <ProductInfo className='productInfo'>
                             <div>
                                 <h1>{product.name.toUpperCase()}</h1>
                                 <h5>Price: ${product.price}</h5>
@@ -284,7 +300,9 @@ const ProductDetail = () => {
                             <ProductInfoBottom>
                                 <h5>Category: {product.category}</h5>
                                 <h5>Product Id: {product.productId}</h5>
+                                {error && <p>{error}</p>}
                                 <AddToCart onClick={() => {
+                                    setError('Item Added!');
                                     addItemToCart({ ...product });
                                 }}>
                                     Add to Cart
@@ -298,13 +316,13 @@ const ProductDetail = () => {
                     {(user.id != 0 && display) ?
                         <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                             <FormControl className='stars'>
-                                <InputLabel id="demo-simple-select-helper">Star Rating</InputLabel>
+                                <InputLabel id='demo-simple-select-helper'>Star Rating</InputLabel>
                                 <Select
                                     id='demo-simple-select-helper'
                                     name='rating'
                                     autoComplete='rating'
                                 >
-                                    <MenuItem value="">Star Rating</MenuItem>
+                                    <MenuItem value=''>Star Rating</MenuItem>
                                     <MenuItem value={1}>&#9734;</MenuItem>
                                     <MenuItem value={2}>&#9734;&#9734;</MenuItem>
                                     <MenuItem value={3}>&#9734;&#9734;&#9734;</MenuItem>

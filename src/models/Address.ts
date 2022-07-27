@@ -1,8 +1,8 @@
 export default class Address {
     firstName: string;
     lastName: string;
-    address1: string;
-    address2: string;
+    street: string;
+    street2: string;
     city: string;
     state: string;
     zip: string;
@@ -11,8 +11,8 @@ export default class Address {
     constructor(
         firstName: string,
         lastName: string,
-        address1: string,
-        address2: string,
+        street: string,
+        street2: string,
         city: string,
         state: string,
         zip: string,
@@ -20,8 +20,8 @@ export default class Address {
     ) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address1 = address1;
-        this.address2 = address2;
+        this.street = street;
+        this.street2 = street2;
         this.city = city;
         this.state = state;
         this.zip = zip;
