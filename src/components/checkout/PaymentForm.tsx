@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import PaymentDetail from '../../models/PaymentDetail';
 import { Box, Button } from '@mui/material';
+import { useState } from 'react';
 
 interface paymentFormProps {
     handleBack: () => void;
@@ -16,6 +17,8 @@ interface paymentFormProps {
  * @param {paymentFormProps} props props for payment form
  */
 export default function PaymentForm(props: paymentFormProps) {
+    const [error, setError] = useState<string>('');
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -25,7 +28,17 @@ export default function PaymentForm(props: paymentFormProps) {
             { name: 'Card Number', detail: formatCardNumber(`${data.get('cardNumber')}`) },
             { name: 'Expiry Date', detail: `${data.get('expDate')}` },
         ]);
-        props.handleNext();
+        if (
+            data.get('cardName') &&
+            data.get('cardNumber') &&
+            data.get('expDate')
+        ) {
+            props.handleNext();
+        }
+        else {
+            setError('Please enter valid card details');
+        }
+        
     };
 
     const formatCardNumber = (cardNumber: string) => {
@@ -85,6 +98,7 @@ export default function PaymentForm(props: paymentFormProps) {
                         />
                     </Grid>
                 </Grid>
+                {error && <p style={{position:'absolute'}}>{error}</p>}
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button onClick={props.handleBack} sx={{ mt: 3, ml: 1 }}>
                         Back
