@@ -3,8 +3,10 @@ import Product from '../../models/Product';
 import UpdateProduct from '../../models/UpdateProduct';
 import Rating from '../../models/RatingResponse';
 import eCommerceClient, { eCommerceApiResponse } from './eCommerceClient';
+import Order from '../../models/Order';
 
 const baseURL = '/api/product';
+const baseOrderURL = '/api/order';
 
 export const apiGetAllProducts = async (): Promise<eCommerceApiResponse> => {
     const response = await eCommerceClient.get<Product[]>(`${baseURL}`);
@@ -25,8 +27,12 @@ export const apiUpdateProduct = async (product: UpdateProduct, token: string): P
     return { status: response.status, payload: product };
 };
 
-export const apiPurchase = async (products: { id: number; }[],): Promise<eCommerceApiResponse> => {
-    const response = await eCommerceClient.patch<Product[]>(`${baseURL}`, products);
+export const apiPurchase = async (order: Order, token: string): Promise<eCommerceApiResponse> => {
+    const response = await eCommerceClient.post<Product[]>(`${baseOrderURL}/place`, order, {
+        headers: {
+            Authorization: token,
+        },
+    });
     return { status: response.status, payload: response.data };
 };
 
