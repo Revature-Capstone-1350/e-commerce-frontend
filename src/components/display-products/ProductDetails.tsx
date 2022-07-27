@@ -9,7 +9,7 @@ import UpdateProductRequest from '../../models/UpdateProduct';
 import { useAppSelector } from '../../store/hooks';
 import { currentUser, UserState } from '../../store/userSlice';
 import Rating from '../../models/RatingResponse';
-import { apiGetProductById, apiGetReviewByProductId, apiPostReviewByProductId, apiUpdateProduct } from '../../remote/e-commerce-api/productService';
+import { apiDeleteProductByProductId, apiGetProductById, apiGetReviewByProductId, apiPostReviewByProductId, apiUpdateProduct } from '../../remote/e-commerce-api/productService';
 
 const Container = styled.div`
     padding: 20px;
@@ -234,6 +234,18 @@ const ProductDetail = () => {
 
     };
 
+    const handleDelete = async function() {
+        try {
+            await apiDeleteProductByProductId(
+                `${product.productId}`,
+                user.token
+            );
+            setError('Product Deleted!');
+        } catch (error: any) {
+            setError('Could not delete product!');
+        }
+    };
+
     return (
         <React.Fragment>
             <Container>
@@ -252,6 +264,7 @@ const ProductDetail = () => {
                             <input onChange={(e: SyntheticEvent) => setDescription((e.target as HTMLInputElement).value)}
                                 placeholder={product.description} defaultValue={description} ></input>
                             <Select
+                                style={{marginTop:'1em'}}
                                 id="demo-simple-select-helper"
                                 value={category}
                                 label="Search"
@@ -272,6 +285,9 @@ const ProductDetail = () => {
                             <UpdateProduct onClick={updateProduct}>
                                 Update Product
                             </UpdateProduct>
+                            <UpdateProduct onClick={() => {handleDelete();}}>
+                                DELETE PRODUCT
+                            </UpdateProduct>
                         </ProductInfoBottom>
                     </ProductInfo>
                         :
@@ -284,7 +300,9 @@ const ProductDetail = () => {
                             <ProductInfoBottom>
                                 <h5>Category: {product.category}</h5>
                                 <h5>Product Id: {product.productId}</h5>
+                                {error && <p>{error}</p>}
                                 <AddToCart onClick={() => {
+                                    setError('Item Added!');
                                     addItemToCart({ ...product });
                                 }}>
                                     Add to Cart

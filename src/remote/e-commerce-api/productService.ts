@@ -30,8 +30,12 @@ export const apiPurchase = async (products: { id: number; }[],): Promise<eCommer
     return { status: response.status, payload: response.data };
 };
 
-export const apiDeleteProduct = async (id: number): Promise<eCommerceApiResponse> => {
-    const response = await eCommerceClient.delete<Product>(`${baseURL}/${id}`);
+export const apiDeleteProductByProductId = async (id: string, token: string): Promise<eCommerceApiResponse> => {
+    const response = await eCommerceClient.delete<UpdateProduct>(`${baseURL}/deleteproduct/${id}`, {
+        headers: {
+            Authorization: token,
+        },
+    });
     return { status: response.status, payload: response.data };
 };
 

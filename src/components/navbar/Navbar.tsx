@@ -77,6 +77,7 @@ const Navbar = () => {
                 <Left>
                     {/* Left Side of Navbar*/}
                     <Logo
+                        id='logo' 
                         onClick={() => {
                             navigate('/');
                         }}
@@ -90,25 +91,44 @@ const Navbar = () => {
                     {/* Navbar Rendering for Guest/Not Logged in*/}
                     {user.id === 0 &&
                         <>
-                            <MenuItem onClick={() => { navigate('/register'); }}> REGISTER </MenuItem>
-                            <MenuItem onClick={() => { navigate('/login'); }}>SIGN IN</MenuItem>
+                            <MenuItem 
+                                id='register-btn' 
+                                onClick={() => { navigate('/register'); }}
+                            > REGISTER </MenuItem>
+                            <MenuItem 
+                                id='login-btn' 
+                                onClick={() => { navigate('/login'); }}
+                            >SIGN IN</MenuItem>
                         </>
                     }
                     {/* Navbar Rendering for Admins*/}
                     {user.role === 'ADMIN' &&
                         <>
-                            <MenuItem onClick={() => { navigate('/createproduct'); }}>CREATE PRODUCT</MenuItem>
-                            <MenuItem onClick={() => { logout(); }}>LOGOUT</MenuItem>
+                            <MenuItem 
+                                id='create-product-btn' 
+                                onClick={() => { navigate('/createproduct'); }}
+                            >CREATE PRODUCT</MenuItem>
+                            <MenuItem 
+                                id='logout-btn' 
+                                onClick={() => { logout(); }}
+                            >LOGOUT</MenuItem>
                         </>
                     }
                     {/* Navbar Rendering for Basic Users*/}
                     {user.id !== 0 && user.role !== 'ADMIN' &&
                         <>
-                            <MenuItem onClick={() => { navigate('/profile'); }}>PROFILE</MenuItem>
-                            <MenuItem onClick={() => { logout(); }}>LOGOUT</MenuItem>
+                            <MenuItem 
+                                id='profile-btn'
+                                onClick={() => { navigate('/profile'); }}
+                            >PROFILE</MenuItem>
+                            <MenuItem 
+                                id='logout-btn' 
+                                onClick={() => { logout(); }}
+                            >LOGOUT</MenuItem>
                         </>
                     }
                     <MenuItem
+                        id='view-cart-btn' 
                         onClick={() => {
                             navigate('/cart');
                         }}
