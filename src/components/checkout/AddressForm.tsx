@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import { Box, Button } from '@mui/material';
 import Address from '../../models/Address';
 import '../../css/customMUI.css';
+import { useState } from 'react';
 
 
 interface IAddressProps {
@@ -13,12 +14,15 @@ interface IAddressProps {
 }
 
 /**
- * Handles sumbission of addresses.
+ * Handles submission of addresses.
  * 
  * @returns {void}
  * @param {IAddressProps} props Address properties
  */
 export default function AddressForm(props: IAddressProps) {
+    const [error, setError] = useState<string>('');
+
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -32,7 +36,22 @@ export default function AddressForm(props: IAddressProps) {
             zip: `${data.get('zip')}`,
             country: `${data.get('country')}`,
         });
-        props.handleNext();
+        if (
+            data.get('firstName') && 
+            data.get('lastName') &&
+            data.get('address1') &&
+            data.get('city') &&
+            (''+data.get('city')).length <= 50 &&
+            data.get('state') &&
+            (''+data.get('state')).length === 2 &&
+            data.get('zip') &&
+            (''+data.get('zip')).length <= 10 
+            ) {
+                props.handleNext();
+            }
+            else {
+                setError('Please enter a valid address');
+            }
     };
 
     return (
@@ -101,7 +120,7 @@ export default function AddressForm(props: IAddressProps) {
                         <TextField
                             id='state'
                             name='state'
-                            label='State/Province/Region'
+                            label='State/Province/Region Code *'
                             fullWidth
                             variant='standard'
                         />
@@ -129,6 +148,7 @@ export default function AddressForm(props: IAddressProps) {
                         />
                     </Grid>
                 </Grid>
+                {error && <p style={{position:'absolute'}}>{error}</p>}
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button type='submit' variant='contained' sx={{ mt: 3, ml: 1 }}>
                         Next
