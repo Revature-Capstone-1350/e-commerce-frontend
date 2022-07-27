@@ -1,9 +1,6 @@
 /// <reference types="cypress" />
 
 context('Actions', () => {
-  beforeEach(() => {
-
-  })
   it('navigate to register', () => {
     cy.visit('http://localhost:3000/');
     cy.get('.register-btn').click();

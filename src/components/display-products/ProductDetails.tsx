@@ -236,7 +236,7 @@ const ProductDetail = () => {
 
     const handleDelete = async function() {
         try {
-            const response = await apiDeleteProductByProductId(
+            await apiDeleteProductByProductId(
                 `${product.productId}`,
                 user.token
             );
@@ -302,7 +302,9 @@ const ProductDetail = () => {
                             <ProductInfoBottom>
                                 <h5>Category: {product.category}</h5>
                                 <h5>Product Id: {product.productId}</h5>
+                                {error && <p>{error}</p>}
                                 <AddToCart onClick={() => {
+                                    setError('Item added!');
                                     addItemToCart({ ...product });
                                 }}>
                                     Add to Cart
