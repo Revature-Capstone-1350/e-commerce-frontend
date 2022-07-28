@@ -101,6 +101,12 @@ const Navbar = () => {
                             >SIGN IN</MenuItem>
                         </>
                     }
+                    {(user.id !== 0 || user.role === 'ADMIN') &&
+                        <MenuItem 
+                            id='order-btn' 
+                            onClick={() => { navigate('/orders'); }}
+                        >LOGOUT</MenuItem>
+                    }
                     {/* Navbar Rendering for Admins*/}
                     {user.role === 'ADMIN' &&
                         <>
@@ -108,10 +114,6 @@ const Navbar = () => {
                                 id='create-product-btn' 
                                 onClick={() => { navigate('/createproduct'); }}
                             >CREATE PRODUCT</MenuItem>
-                            <MenuItem 
-                                id='logout-btn' 
-                                onClick={() => { logout(); }}
-                            >LOGOUT</MenuItem>
                         </>
                     }
                     {/* Navbar Rendering for Basic Users*/}
@@ -121,11 +123,13 @@ const Navbar = () => {
                                 id='profile-btn'
                                 onClick={() => { navigate('/profile'); }}
                             >PROFILE</MenuItem>
-                            <MenuItem 
-                                id='logout-btn' 
-                                onClick={() => { logout(); }}
-                            >LOGOUT</MenuItem>
                         </>
+                    }
+                    {(user.id !== 0 || user.role === 'ADMIN') &&
+                        <MenuItem 
+                            id='logout-btn' 
+                            onClick={() => { logout(); }}
+                        >LOGOUT</MenuItem>
                     }
                     <MenuItem
                         id='view-cart-btn' 

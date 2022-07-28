@@ -5,6 +5,7 @@ import Checkout from '../components/checkout/Checkout';
 import { DisplayProducts } from '../components/display-products/DisplayProducts';
 import ProductDetail from '../components/display-products/ProductDetails';
 import Login from '../components/login/Login';
+import { OrdersView } from '../components/orders/OrderPage';
 import { CreateProducts } from '../components/products/CreateProducts';
 import Profile from '../components/profile/profile';
 import Register from '../components/register/Register';
@@ -19,5 +20,6 @@ export const AppRoutes: React.FC<unknown> = () => (
         <Route path='/createproduct' element={<CreateProducts />} />
         <Route path='/:id/' element={<ProductDetail />} />
         <Route path='/profile' element={<Profile />} />
+        <Route path='/orders' element={<OrdersView />} />
     </Routes>
 );
