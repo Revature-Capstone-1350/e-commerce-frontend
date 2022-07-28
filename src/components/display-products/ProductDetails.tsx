@@ -88,7 +88,6 @@ const ProductReviews = styled.div`
 `;
 
 const Review = styled.div`
-flex-direction: column-reverse;
     border: 1px solid;
     padding: 0px 10px;
     margin-top: 10px;
@@ -232,14 +231,14 @@ const ProductDetail = () => {
                 user.token,
             );
             if (await resp && (await resp).status < 400) {
-                setReviews([new Rating(
-                    Math.floor(Math.random() * Number.MAX_SAFE_INTEGER/2),
+                setReviews([...reviews, new Rating(
+                    Math.floor((1+Math.random()) * Number.MAX_SAFE_INTEGER/2),
                     parseInt(rating),
                     description,
                     user.id,
                     user.firstName + ' ' + user.lastName,
                     product.productId
-                    ), ...reviews]);
+                    )]);
             }
         }
 
@@ -367,7 +366,7 @@ const ProductDetail = () => {
                             <h5>{review.description}</h5>
                             <h6>- {review.reviewerName}</h6>
                         </Review>
-                    </>) : <><h1>No reviews yet!</h1></>}
+                    </>).reverse() : <><h1>No reviews yet!</h1></>}
                 </ProductReviews>
             </Container>
         </React.Fragment >
