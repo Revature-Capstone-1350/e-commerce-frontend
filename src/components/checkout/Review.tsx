@@ -12,12 +12,15 @@ import { CartContext } from '../../context/cart.context';
 import Order from '../../models/Order';
 import { useAppSelector } from '../../store/hooks';
 import { UserState, currentUser } from '../../store/userSlice';
+import { useState } from 'react';
+
 
 interface reviewProps {
   handleBack: () => void;
   handleNext: () => void;
   address: Address;
   payments: PaymentDetail[];
+  setOrderNo: (arg0:number) => void;
 }
 
 /**
@@ -26,16 +29,24 @@ interface reviewProps {
  */
 export default function Review(props: reviewProps) {
   const { cart, setCart } = React.useContext(CartContext);
+  const [error, setError] = useState<string>('');
 
   const user: UserState = useAppSelector(currentUser);
 
-  const handleSubmit = (event: React.MouseEvent) => {
+  const handleSubmit = async (event: React.MouseEvent) => {
     event.preventDefault();
-
-    const order = new Order(0,0,props.address,cart,'');
-    apiPurchase(order, user.token);
-    setCart([]);
-    props.handleNext();
+    try {
+      const order = new Order(0,0,props.address,cart,'');
+      const resp = await apiPurchase(order, user.token);
+      console.log('printing resp next line');
+      console.log(resp.payload.orderId);
+      props.setOrderNo(resp.payload.orderId);
+      setCart([]);
+      props.handleNext();
+    } catch (error) {
+      setError('Could not place order.');
+    }
+    
   };
 
   return (
@@ -58,9 +69,9 @@ export default function Review(props: reviewProps) {
           <Typography variant='subtitle1' sx={{ fontWeight: 700 }}>
             ${' '}
             {cart.reduce<number>(
-              (total, product) => total + product.price,
+              (total, product) => Math.round(total*100 + product.price*100)/100,
               0,
-            )}
+            ).toFixed(2)}
           </Typography>
         </ListItem>
       </List>
@@ -94,6 +105,7 @@ export default function Review(props: reviewProps) {
           </Grid>
         </Grid>
       </Grid>
+      {error && <p style={{position:'absolute'}}>{error}</p>}
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Button onClick={props.handleBack} sx={{ mt: 3, ml: 1 }}>
           Back
