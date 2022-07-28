@@ -23,6 +23,8 @@ interface reviewProps {
   setOrderNo: (arg0:number) => void;
 }
 
+let hasSubmit = false;
+
 /**
  * @returns {void}
  * @param {reviewProps} props props for review
@@ -35,17 +37,25 @@ export default function Review(props: reviewProps) {
 
   const handleSubmit = async (event: React.MouseEvent) => {
     event.preventDefault();
-    try {
-      const order = new Order(0,0,props.address,cart,'');
-      const resp = await apiPurchase(order, user.token);
-      console.log('printing resp next line');
-      console.log(resp.payload.orderId);
-      props.setOrderNo(resp.payload.orderId);
-      setCart([]);
-      props.handleNext();
-    } catch (error) {
-      setError('Could not place order.');
+    if (hasSubmit) {
+      setError('Still awaiting response. Please wait.');
     }
+    else {
+      try {
+        hasSubmit = true;
+        const order = new Order(0,0,props.address,cart,'');
+        const resp = await apiPurchase(order, user.token);
+        console.log('printing resp next line');
+        console.log(resp.payload.orderId);
+        props.setOrderNo(resp.payload.orderId);
+        setCart([]);
+        props.handleNext();
+      } catch (error) {
+        setError('Could not place order.');
+        hasSubmit = false;
+      }
+    }
+    
     
   };
 
