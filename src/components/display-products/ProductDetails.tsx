@@ -88,6 +88,7 @@ const ProductReviews = styled.div`
 `;
 
 const Review = styled.div`
+flex-direction: column-reverse;
     border: 1px solid;
     padding: 0px 10px;
     margin-top: 10px;
@@ -232,7 +233,7 @@ const ProductDetail = () => {
             );
             if (await resp && (await resp).status < 400) {
                 setReviews([new Rating(
-                    Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
+                    Math.floor(Math.random() * Number.MAX_SAFE_INTEGER/2),
                     parseInt(rating),
                     description,
                     user.id,
@@ -361,7 +362,7 @@ const ProductDetail = () => {
                     }
                     {/* This is mapping through reviews to display each review */}
                     {reviews ? reviews.map((review) => <>
-                        <Review>
+                        <Review key={review.id}>
                             <h3>{'☆'.repeat((review.rating) ? review.rating : 1)}</h3>
                             <h5>{review.description}</h5>
                             <h6>- {review.reviewerName}</h6>
