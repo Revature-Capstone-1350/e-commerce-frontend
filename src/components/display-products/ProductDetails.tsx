@@ -225,11 +225,21 @@ const ProductDetail = () => {
             setMessage('Please write a description for your review!');
         } else {
             setMessage('Review Added!');
-            apiPostReviewByProductId(
+            const resp = apiPostReviewByProductId(
                 `${product.productId}`,
                 JSON.parse(JSON.stringify({ rating: rating, description: description })),
                 user.token,
             );
+            if (await resp && (await resp).status < 400) {
+                setReviews([new Rating(
+                    Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
+                    parseInt(rating),
+                    description,
+                    user.id,
+                    user.firstName + ' ' + user.lastName,
+                    product.productId
+                    ), ...reviews]);
+            }
         }
 
     };
