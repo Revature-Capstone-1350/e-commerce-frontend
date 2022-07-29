@@ -4,6 +4,7 @@ import UpdateProduct from '../../models/UpdateProduct';
 import Rating from '../../models/RatingResponse';
 import eCommerceClient, { eCommerceApiResponse } from './eCommerceClient';
 import Order from '../../models/Order';
+import OrderDTO from '../../components/dtos/OrderDTO';
 
 const baseURL = '/api/product';
 const baseOrderURL = '/api/order';
@@ -84,11 +85,23 @@ export const apiGetReviewByProductId = async (id: string): Promise<eCommerceApiR
 };
 
 export const apiGetOrdersByUserId = async (userId: string, token: string): Promise<eCommerceApiResponse> => {
-    const response = await eCommerceClient.get<Rating>(
+    const response = await eCommerceClient.get<OrderDTO>(
         `${baseOrderURL}/userid/${userId}`,
         {
             headers: {
                 Authorization: token,
+            },
+        },
+    );
+    return { status: response.status, payload: response.data };
+};
+
+export const apiGetAllOrders = async (adminToken: string): Promise<eCommerceApiResponse> => {
+    const response = await eCommerceClient.get<OrderDTO>(
+        `${baseOrderURL}`,
+        {
+            headers: {
+                Authorization: adminToken,
             },
         },
     );
