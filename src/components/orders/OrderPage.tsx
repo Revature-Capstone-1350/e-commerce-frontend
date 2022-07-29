@@ -30,7 +30,7 @@ export const OrdersView = () => {
 
 
     useEffect(() => {
-        if (!hasSentReq) {
+        if (!hasSentReq || (orders && !orders[0].userId)) {
             hasSentReq = true;
             console.log('requesting orders form API');
             getOrders();
