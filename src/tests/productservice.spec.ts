@@ -1,3 +1,4 @@
+import Rating from '../models/RatingResponse';
 import eCommerceClient from '../remote/e-commerce-api/eCommerceClient';
 import { apiCreateProduct, apiGetAllProducts, apiGetProductById, apiGetReviewByProductId, apiPostReviewByProductId, apiUpdateProduct } from '../remote/e-commerce-api/productService';
 
@@ -160,7 +161,7 @@ describe('Add Review', () => {
 
         // Call the API
         const result = await apiPostReviewByProductId('1',
-            JSON.parse(JSON.stringify({ rating: 5, description: 'comment' })), 'token');
+            { rating: 5, description: 'comment' } as Rating, 'token');
 
         // Assert the result
         expect(eCommerceClient.post).toHaveBeenCalledWith('/api/product/rating/1', review, {

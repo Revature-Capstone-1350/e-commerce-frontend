@@ -13,6 +13,7 @@ import PaymentForm from './PaymentForm';
 import Review from './Review';
 import Address from '../../models/Address';
 import PaymentDetail from '../../models/PaymentDetail';
+import { useState } from 'react';
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
@@ -33,6 +34,7 @@ let paymentDetail = [
     { name: 'Expiry date', detail: '' },
 ];
 
+
 const theme = createTheme();
 
 /**
@@ -40,6 +42,7 @@ const theme = createTheme();
  */
 export default function Checkout() {
     const [activeStep, setActiveStep] = React.useState(0);
+    const [orderNo, setOrderNo] = useState<number>(0);
 
     const handleNext = () => {
         setActiveStep(activeStep + 1);
@@ -80,6 +83,7 @@ export default function Checkout() {
                         handleBack={handleBack}
                         payments={paymentDetail}
                         address={address}
+                        setOrderNo={setOrderNo}
                     />
                 );
             default:
@@ -120,7 +124,7 @@ export default function Checkout() {
                                     Thank you for your order.
                                 </Typography>
                                 <Typography variant='subtitle1'>
-                                    Your order number is #2001539. We have emailed your order
+                                    Your order number is #{orderNo}. We have emailed your order
                                     confirmation, and will send you an update when your order has
                                     shipped.
                                 </Typography>

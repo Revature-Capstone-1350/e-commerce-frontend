@@ -217,7 +217,7 @@ const ProductDetail = () => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevents page from refreshing
         const data = new FormData(event.currentTarget); // Gets form data
-        const rating = `${data.get('rating')}`;
+        const rating = parseInt(`${data.get('rating')}`);
         const description = `${data.get('description')}`;
         if (!rating) {
             setMessage('Please leave a Star Rating');
@@ -225,11 +225,21 @@ const ProductDetail = () => {
             setMessage('Please write a description for your review!');
         } else {
             setMessage('Review Added!');
-            apiPostReviewByProductId(
+            const resp = apiPostReviewByProductId(
                 `${product.productId}`,
-                JSON.parse(JSON.stringify({ rating: rating, description: description })),
+                { rating, description} as Rating,
                 user.token,
             );
+            if (await resp && (await resp).status < 400) {
+                setReviews([...reviews, new Rating(
+                    Math.floor((1+Math.random()) * Number.MAX_SAFE_INTEGER/2),
+                    rating,
+                    description,
+                    user.id,
+                    user.firstName + ' ' + user.lastName,
+                    product.productId
+                    )]);
+            }
         }
 
     };
@@ -351,12 +361,12 @@ const ProductDetail = () => {
                     }
                     {/* This is mapping through reviews to display each review */}
                     {reviews ? reviews.map((review) => <>
-                        <Review>
+                        <Review key={review.id}>
                             <h3>{'☆'.repeat((review.rating) ? review.rating : 1)}</h3>
                             <h5>{review.description}</h5>
                             <h6>- {review.reviewerName}</h6>
                         </Review>
-                    </>) : <><h1>No reviews yet!</h1></>}
+                    </>).reverse() : <><h1>No reviews yet!</h1></>}
                 </ProductReviews>
             </Container>
         </React.Fragment >
