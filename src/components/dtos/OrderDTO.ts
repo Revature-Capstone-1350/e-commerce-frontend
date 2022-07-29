@@ -1,5 +1,5 @@
-import AddressDTO from "./AddressDTO";
-import ProductInfo from "./ProductInfo";
+import AddressDTO from './AddressDTO';
+import ProductInfo from './ProductInfo';
 
 export default class OrderDTO {
   orderId: number;
