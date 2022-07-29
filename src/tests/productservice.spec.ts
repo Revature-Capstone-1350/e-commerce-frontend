@@ -160,7 +160,7 @@ describe('Add Review', () => {
 
         // Call the API
         const result = await apiPostReviewByProductId('1',
-            JSON.parse(JSON.stringify({ rating: 5, description: 'comment' })), 'token');
+            { rating: 5, description: 'comment' }, 'token');
 
         // Assert the result
         expect(eCommerceClient.post).toHaveBeenCalledWith('/api/product/rating/1', review, {

@@ -217,7 +217,7 @@ const ProductDetail = () => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevents page from refreshing
         const data = new FormData(event.currentTarget); // Gets form data
-        const rating = `${data.get('rating')}`;
+        const rating = parseInt(`${data.get('rating')}`);
         const description = `${data.get('description')}`;
         if (!rating) {
             setMessage('Please leave a Star Rating');
@@ -227,13 +227,13 @@ const ProductDetail = () => {
             setMessage('Review Added!');
             const resp = apiPostReviewByProductId(
                 `${product.productId}`,
-                JSON.parse(JSON.stringify({ rating: rating, description: description })),
+                { rating, description},
                 user.token,
             );
             if (await resp && (await resp).status < 400) {
                 setReviews([...reviews, new Rating(
                     Math.floor((1+Math.random()) * Number.MAX_SAFE_INTEGER/2),
-                    parseInt(rating),
+                    rating,
                     description,
                     user.id,
                     user.firstName + ' ' + user.lastName,

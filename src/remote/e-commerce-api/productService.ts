@@ -64,7 +64,7 @@ export const apiCreateProduct = async (product: CreateProductRequest, token: str
 
 export const apiPostReviewByProductId = async (
     id: string,
-    rating: Record<string, never>,
+    rating: any,
     token: string,
 ): Promise<eCommerceApiResponse> => {
     const response = await eCommerceClient.post<Rating>(
