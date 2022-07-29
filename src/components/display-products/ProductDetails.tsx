@@ -227,7 +227,7 @@ const ProductDetail = () => {
             setMessage('Review Added!');
             const resp = apiPostReviewByProductId(
                 `${product.productId}`,
-                { rating, description},
+                { rating, description} as Rating,
                 user.token,
             );
             if (await resp && (await resp).status < 400) {
