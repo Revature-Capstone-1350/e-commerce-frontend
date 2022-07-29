@@ -1,15 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { SyntheticEvent, useState } from 'react';
+import React, { SyntheticEvent, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { Button, MenuItem, Select } from '@mui/material';
 import styled from 'styled-components';
-import { apiCreateProduct } from '../../remote/e-commerce-api/productService';
+import { apiCreateProduct, apiGetOrdersByUserId } from '../../remote/e-commerce-api/productService';
 import CreateProductRequest from '../../models/CreateProductRequest';
 import { useAppSelector } from '../../store/hooks';
 import { UserState, currentUser } from '../../store/userSlice';
+import OrderDTO from '../dtos/OrderDTO';
+import AddressDTO from '../dtos/AddressDTO';
+import ProductInfo from '../dtos/ProductInfo';
 
 const CreateDiv = styled.div`
     display: flex;
@@ -22,6 +25,8 @@ const TitleDiv = styled.div`
     justify-content: center;
 `;
 
+let hasSentReq = false;
+
 export const OrdersView = () => {
     // initializing state
     const [name, setName] = useState<string>('');
@@ -32,8 +37,30 @@ export const OrdersView = () => {
     const [category, setCategory] = useState<number>(0);
     const [message, setMessage] = useState<string>('');
 
+    const [orders, setOrders] = useState<OrderDTO[]>([new OrderDTO(0,0,new AddressDTO(0,'','','','',''),[],'')]);
+    // 
     // Grabing the current user from state
     const user: UserState = useAppSelector(currentUser);
+
+    const getOrders = async function() {
+        const orderResp:OrderDTO[] = (await apiGetOrdersByUserId(''+user.id, user.token)).payload as unknown as OrderDTO[];
+        setOrders(orderResp);
+    };
+
+    useEffect(() => {
+        console.log('State \'orders\' was updated');
+        console.log(orders);
+    }, [orders]);
+
+
+    useEffect(() => {
+        if (!hasSentReq) {
+            hasSentReq = true;
+            console.log('requesting orders form API');
+            getOrders();
+        }
+    }, []);
+
 
     const sendNewProduct = async () => {
         const priceNum = parseFloat(price).toFixed(2); // converts price to a number with 2 decimal places
@@ -69,96 +96,11 @@ export const OrdersView = () => {
     };
     return (
         <React.Fragment>
-            <TitleDiv>
-                <h1>Create a new product</h1>
-            </TitleDiv>
-            <CreateDiv>
-                <br />
-
-                <br />
-                <Box
-                    component='form'
-                    sx={{
-                        '& > :not(style)': { m: 1 },
-                    }}
-                    noValidate
-                    autoComplete='off'
-                >
-                    <FormControl>
-                        <InputLabel htmlFor='component-outlined'>Name</InputLabel>
-                        <OutlinedInput
-                            id='component-outlined'
-                            value={name}
-                            label='Name'
-                            onChange={(e: SyntheticEvent) => setName((e.target as HTMLInputElement).value)} />
-
-                    </FormControl>
-                    <br />
-                    <FormControl>
-                        <InputLabel htmlFor='component-outlined'>Description</InputLabel>
-                        <OutlinedInput
-                            id='component-outlined'
-                            value={description}
-                            label='Description'
-                            onChange={(e: SyntheticEvent) => setDescription((e.target as HTMLInputElement).value)} />
-
-                    </FormControl>
-                    <br />
-                    <FormControl>
-                        <InputLabel htmlFor='component-outlined'>Price</InputLabel>
-                        <OutlinedInput
-                            id='component-outlined'
-                            value={price}
-                            label='Price'
-                            onChange={(e: SyntheticEvent) => setPrice((e.target as HTMLInputElement).value)} />
-
-                    </FormControl>
-                    <br />
-                    <FormControl>
-                        <InputLabel htmlFor='component-outlined'>Small Image URL</InputLabel>
-                        <OutlinedInput
-                            id='component-outlined'
-                            value={imageS}
-                            label='Small Image URL'
-                            onChange={(e: SyntheticEvent) => setImageS((e.target as HTMLInputElement).value)} />
-
-                    </FormControl>
-                    <br />
-                    <FormControl>
-                        <InputLabel htmlFor='component-outlined'>Medium Image </InputLabel>
-                        <OutlinedInput
-                            id='component-outlined'
-                            value={imageM}
-                            label='Medium Image URL'
-                            onChange={(e: SyntheticEvent) => setImageM((e.target as HTMLInputElement).value)} />
-
-                    </FormControl>
-                    <br />
-                    {/* This is a drop down for category state */}
-                    <Select
-                        id='demo-simple-select-helper'
-                        value={category}
-                        label='Search'
-                        onChange={event => setCategory(event.target.value as number)}>
-                        <MenuItem value={0}>Category</MenuItem>
-                        <MenuItem value={1}>Cloud</MenuItem>
-                        <MenuItem value={2}>Dawn</MenuItem>
-                        <MenuItem value={3}>Day</MenuItem>
-                        <MenuItem value={4}>Dusk</MenuItem>
-                        <MenuItem value={5}>Moon</MenuItem>
-                        <MenuItem value={6}>Night</MenuItem>
-                        <MenuItem value={7}>Space</MenuItem>
-                        <MenuItem value={8}>Sun</MenuItem>
-                    </Select>
-                    {message ?
-                        <h4>{message}</h4>
-                        :
-                        <><br /></>
-                    }
-                    <Button id='createButton' onClick={sendNewProduct} variant='contained'>Create</Button>
-
-                </Box>
-            </CreateDiv>
+            {orders.map((order) => (
+                            <div key={order.orderId}>
+                                <p>{order.orderId}</p>
+                            </div>
+                        ))}
         </React.Fragment>
     );
 };

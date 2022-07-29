@@ -101,15 +101,21 @@ const Navbar = () => {
                             >SIGN IN</MenuItem>
                         </>
                     }
-                    {(user.id !== 0 || user.role === 'ADMIN') &&
-                        <MenuItem 
-                            id='order-btn' 
-                            onClick={() => { navigate('/orders'); }}
-                        >LOGOUT</MenuItem>
+                    {user.id !== 0 && user.role !== 'ADMIN' &&
+                        <>
+                            <MenuItem 
+                                id='order-btn' 
+                                onClick={() => { navigate('/ordersbasic'); }}
+                            >ORDERS</MenuItem>
+                        </>
                     }
                     {/* Navbar Rendering for Admins*/}
                     {user.role === 'ADMIN' &&
                         <>
+                            <MenuItem 
+                                id='order-btn' 
+                                onClick={() => { navigate('/ordersadmin'); }}
+                            >ORDERS</MenuItem>
                             <MenuItem 
                                 id='create-product-btn' 
                                 onClick={() => { navigate('/createproduct'); }}

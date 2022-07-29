@@ -82,3 +82,15 @@ export const apiGetReviewByProductId = async (id: string): Promise<eCommerceApiR
     const response = await eCommerceClient.get<Rating>(`${baseURL}/rating/${id}`);
     return { status: response.status, payload: response.data };
 };
+
+export const apiGetOrdersByUserId = async (userId: string, token: string): Promise<eCommerceApiResponse> => {
+    const response = await eCommerceClient.get<Rating>(
+        `${baseOrderURL}/userid/${userId}`,
+        {
+            headers: {
+                Authorization: token,
+            },
+        },
+    );
+    return { status: response.status, payload: response.data };
+};
